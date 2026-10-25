@@ -5,7 +5,7 @@ import { Icon } from './Icon';
 export function EmptyState({ message, action }: { message: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-3 py-4 text-center">
-      <Icon name="lens" className="size-8 text-fg-subtle" />
+      <Icon name="mark" className="size-8 text-fg-subtle" />
       <p className="text-fg-muted">{message}</p>
       {action}
     </div>

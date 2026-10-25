@@ -38,7 +38,7 @@ export function VerdictCard({ verdict, counts, requestsUsed, dataDate }: Verdict
     >
       <div className="flex items-start gap-3">
         <span className={`rounded-md p-2 ${verdictStyle[verdict]}`}>
-          <Icon name="lens" className="size-6" />
+          <Icon name="mark" className="size-6" />
         </span>
         <div className="flex flex-col gap-1">
           <h2 className="text-xl font-bold">{t(`verdict.${verdict}.title`)}</h2>
