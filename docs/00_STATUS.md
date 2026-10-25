@@ -4,7 +4,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-090: `LICENSE` (MIT, Q-1 confirmed by Andy), `PRIVACY.md` final for v0.1, `docs/store/LISTING.md` (EN/ID text, permission justifications), 10 screenshots in `docs/store/screenshots/` via `tools/store-shots/shots.sh`; all v0.1 roadmap rows ticked; `pnpm check` green
+- **Last done:** 2026-10-25, refreshed `README.md` for GitHub/open-source developer onboarding: accurate v0.1 scope, safety model, setup, validation, architecture, contribution, security, and documentation links; `pnpm check` green
 - **Next task:** v0.1 release prep: manual checks in `08_TEST_PLAN.md` (real site with WAF, ≤ 60 requests, EN/ID, themes, keyboard), `pnpm zip`, tag. Then v0.2 F-030
 
 ## Blockers and open questions
@@ -18,6 +18,9 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 ## Notes for the next session
 
 - Product handoff before H-002: F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green
+
+- README states v0.1 only: Composer package matching and signed advisory updates remain v0.2; it does not claim publication before the Chrome Web Store release.
+- F-090 store assets: 10 screenshots in `docs/store/screenshots/`, generated with `tools/store-shots/shots.sh`; manual real-site checks still gate the release.
 
 - pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
 - Manifest: `storage`, `activeTab`, `scripting`, `optional_host_permissions`.
