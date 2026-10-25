@@ -94,5 +94,14 @@
   "check.CF-02.fix": "Turn on a free TLS certificate (for example Let's Encrypt) at your host and redirect all HTTP traffic to HTTPS.",
   "check.CF-04.title": "Directory listing is on",
   "check.CF-04.impact": "Anyone can browse your folders and download files you never linked, such as uploads or backups.",
-  "check.CF-04.fix": "Turn off directory listing in your web server (Apache: Options -Indexes; nginx: autoindex off)."
+  "check.CF-04.fix": "Turn off directory listing in your web server (Apache: Options -Indexes; nginx: autoindex off).",
+  "check.VU-01.title": "Your PHP version is affected by PHP2Shell",
+  "check.VU-01.impact": "Attackers can run code on your server without logging in. A working exploit exists (CVE-2026-109618, CVE-2026-109619).",
+  "check.VU-01.fix": "Update PHP to 8.5.12, 8.4.27, 8.3.36, 8.2.35 or newer. If your host backports fixes (Ubuntu, Debian, RHEL), confirm the PHP package is patched.",
+  "check.VU-01.eol.title": "Your PHP version no longer gets security fixes",
+  "check.VU-01.eol.impact": "This PHP version reached end of life, so new security holes stay open.",
+  "check.VU-01.eol.fix": "Upgrade to a PHP version that still gets security fixes, then test your site.",
+  "check.VU-01.hidden.title": "Your PHP version is hidden",
+  "check.VU-01.hidden.impact": "We could not see which PHP version runs your site, so we cannot tell if it is affected by PHP2Shell.",
+  "check.VU-01.hidden.fix": "Ask your host which PHP version you run, or check your hosting panel. It should be 8.5.12, 8.4.27, 8.3.36, 8.2.35 or newer."
 }

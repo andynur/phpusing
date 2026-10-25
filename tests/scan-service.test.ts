@@ -41,7 +41,12 @@ describe('scan service', () => {
     const stored = (await fakeBrowser.storage.session.get(scanKey(TAB, ORIGIN)))[
       scanKey(TAB, ORIGIN)
     ];
-    expect(stored).toMatchObject({ origin: ORIGIN, requestsUsed: 32, verdict: 'unknown' });
+    expect(stored).toMatchObject({
+      origin: ORIGIN,
+      requestsUsed: 32,
+      verdict: 'unknown',
+      dataVersion: '2026-10-25.1',
+    });
     expect(await fakeBrowser.storage.local.get(null)).not.toHaveProperty(scanKey(TAB, ORIGIN));
   });
 

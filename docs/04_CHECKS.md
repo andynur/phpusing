@@ -58,7 +58,7 @@ Budget order when trimming: C first, then H, then M, L.
 
 | ID | Input | Data | Sev |
 |---|---|---|---|
-| VU-01 | FP-01 PHP version | PHP2Shell fixed versions (unverified, see Q-2) + endoflife.date PHP cycles | C if affected by PHP2Shell; H if EOL; confidence `likely` (distro backports) |
+| VU-01 | FP-01 PHP version | PHP2Shell fixed versions (verified on php.net 2026-10-25) + endoflife.date PHP cycles | C if affected by PHP2Shell; H if EOL; confidence `likely` (distro backports) |
 | VU-02 | `composer.lock` (exposed or dropped) | Packagist advisories + OSV (`05_ADVISORY_DATA.md`) | From advisory CVSS: ≥ 9 C, ≥ 7 H, ≥ 4 M, else L. KEV → C |
 | VU-03 | WordPress core version (FP-04) | Wordfence Intelligence (pending Q-3) | by CVSS (v0.3) |
 | VU-04 | Plugin versions from `/wp-content/plugins/<slug>/readme.txt` `Stable tag` | same | by CVSS (v0.3) |

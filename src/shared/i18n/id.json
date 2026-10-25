@@ -94,5 +94,14 @@
   "check.CF-02.fix": "Aktifkan sertifikat TLS gratis (misalnya Let's Encrypt) di hosting Anda dan alihkan semua lalu lintas HTTP ke HTTPS.",
   "check.CF-04.title": "Daftar isi folder terbuka untuk publik",
   "check.CF-04.impact": "Siapa pun bisa menelusuri folder dan mengunduh file yang tidak pernah Anda tautkan, seperti upload atau backup.",
-  "check.CF-04.fix": "Matikan daftar isi folder di server (Apache: Options -Indexes; nginx: autoindex off)."
+  "check.CF-04.fix": "Matikan daftar isi folder di server (Apache: Options -Indexes; nginx: autoindex off).",
+  "check.VU-01.title": "Versi PHP Anda terdampak PHP2Shell",
+  "check.VU-01.impact": "Penyerang bisa menjalankan kode di server Anda tanpa login. Exploit-nya sudah ada (CVE-2026-109618, CVE-2026-109619).",
+  "check.VU-01.fix": "Perbarui PHP ke 8.5.12, 8.4.27, 8.3.36, 8.2.35, atau lebih baru. Jika hosting Anda memakai backport (Ubuntu, Debian, RHEL), pastikan paket PHP sudah ditambal.",
+  "check.VU-01.eol.title": "Versi PHP Anda tidak lagi mendapat perbaikan keamanan",
+  "check.VU-01.eol.impact": "Versi PHP ini sudah habis masa dukungannya, jadi celah keamanan baru tidak akan ditutup.",
+  "check.VU-01.eol.fix": "Tingkatkan ke versi PHP yang masih mendapat perbaikan keamanan, lalu uji situs Anda.",
+  "check.VU-01.hidden.title": "Versi PHP Anda disembunyikan",
+  "check.VU-01.hidden.impact": "Kami tidak bisa melihat versi PHP situs Anda, jadi tidak bisa memastikan apakah terdampak PHP2Shell.",
+  "check.VU-01.hidden.fix": "Tanyakan versi PHP ke hosting Anda, atau cek di panel hosting. Versinya harus 8.5.12, 8.4.27, 8.3.36, 8.2.35, atau lebih baru."
 }

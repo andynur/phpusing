@@ -1,6 +1,8 @@
 import { browser } from 'wxt/browser';
+import { loadAdvisories } from '../../advisories/load';
 import { analyze } from '../../checks';
 import { fingerprint, parseMarkers, readMarkers } from '../../checks/fingerprint';
+import { checkPhpVersion } from '../../checks/versions';
 import { ScanRateLimiter } from '../../scanner/budget';
 import { buildPlan } from '../../scanner/plan';
 import { runScan } from '../../scanner/scan';
@@ -80,15 +82,23 @@ export function createScanService({
         slotDelayMs,
         onProgress: (p) => broadcast({ type: 'scan/progress', tabId, ...p }),
       });
+      // VU-01 needs no requests: it matches the fingerprint against bundled data.
+      const data = loadAdvisories();
+      const vu = checkPhpVersion(fp, data, startedAt.slice(0, 10));
+      const findings = [...run.findings, ...vu.findings];
       const result: ScanResult = {
         origin,
         startedAt,
         requestsUsed: run.requestsUsed,
         fingerprint: fp,
-        findings: run.findings,
-        // phpSupported comes from VU-01 (F-020); until then a scan is never calm.
-        verdict: computeVerdict({ findings: run.findings, fingerprint: fp, blocked: run.blocked }),
-        dataVersion: '',
+        findings,
+        verdict: computeVerdict({
+          findings,
+          fingerprint: fp,
+          blocked: run.blocked,
+          phpSupported: vu.phpSupported,
+        }),
+        dataVersion: data.version,
         ...(run.blocked ? { blocked: true } : {}),
       };
       await browser.storage.session.set({ [scanKey(tabId, origin)]: result });

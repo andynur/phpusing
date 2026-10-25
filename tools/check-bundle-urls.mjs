@@ -16,6 +16,9 @@ const ALLOWED = [
   'https://github.com/andynur/phpusing',
   // Reference links in findings: opened by the user in a tab, never fetched by the extension.
   'https://nvd.nist.gov/vuln/detail/',
+  // Source URLs inside the bundled advisory snapshot; shown as references, never fetched.
+  'https://www.php.net/',
+  'https://endoflife.date/php',
 ];
 
 function* files(dir) {

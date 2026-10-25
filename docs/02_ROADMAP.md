@@ -4,6 +4,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 
 ## v0.1 — MVP (target: as soon as possible, PHP2Shell window)
 
+- [x] H-002 Shared check/review skills and one bounded Codex/Claude reviewer (see `10_AGENT_HARNESS.md`)
 - [x] H-001 Agent harness: shared context routing, compact checks, Codex/Claude project setup (see `10_AGENT_HARNESS.md`)
 - [x] F-000 Scaffold: WXT, React, Tailwind 4 tokens, Vitest, ESLint/Prettier, `pnpm check`
 - [x] F-001 i18n core: `en.json`, `id.json`, `t()`, EN/ID toggle, parity test
@@ -13,7 +14,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [x] F-012 Fingerprint: FP-01..FP-05
 - [x] F-013 Exposure checks: EX-01..EX-12
 - [x] F-014 Config checks: CF-01, CF-02, CF-04
-- [ ] F-020 PHP core version check: VU-01 (PHP2Shell + EOL), bundled data
+- [x] F-020 PHP core version check: VU-01 (PHP2Shell + EOL), bundled data
 - [x] F-021 Verdict and severity logic
 - [ ] F-022 Report page with Copy message for developer (EN/ID)
 - [ ] F-090 Store listing EN/ID, screenshots, `PRIVACY.md` final, license

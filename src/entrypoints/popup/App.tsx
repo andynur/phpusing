@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { browser } from 'wxt/browser';
 import { authorize, isAuthorized, requestHostPermission } from '../../shared/consent';
+import { dataDate } from '../../advisories/load';
 import { useI18n } from '../../shared/i18n/I18nProvider';
 import {
   parseBroadcast,
@@ -156,7 +157,7 @@ export function App() {
           verdict={view.result.verdict}
           counts={countSeverities(view.result.findings)}
           requestsUsed={view.result.requestsUsed}
-          dataDate={view.result.dataVersion}
+          dataDate={dataDate(view.result.dataVersion)}
         />
       )}
       <Card>

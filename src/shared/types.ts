@@ -51,7 +51,7 @@ export interface ScanResult {
   fingerprint: Fingerprint;
   findings: Finding[];
   verdict: Verdict;
-  /** ISO date of the advisory data used; empty until advisory data ships (F-020). */
+  /** Advisory data version, e.g. "2026-10-25.1" (05_ADVISORY_DATA.md). */
   dataVersion: string;
   blocked?: boolean;
 }

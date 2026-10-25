@@ -34,6 +34,8 @@ All values in `php` entries must carry a source URL. Never hand-type a CVE ID or
 
 ## In-extension use
 
+- v0.1: `data/snapshot/advisories.json` is curated by hand (PHP2Shell from the php.net advisory of 21 Oct 2026, PHP cycles from endoflife.date on 2026-10-25), with `packages` empty. It ships inside the extension package, so it is not separately signed; the pipeline and signatures arrive with F-030.
+
 - Bundled snapshot loads first, so scans work offline and on first run.
 - Update: download the **whole** file (never per-package or sharded requests, so the host learns nothing about the user's stack). Verify the Ed25519 signature with the public key compiled into the extension (WebCrypto `Ed25519`; fallback to a vetted small library only if needed, with a decision entry). Reject on mismatch and keep the old data.
 - Report always shows the data version date. Warn if older than 14 days.

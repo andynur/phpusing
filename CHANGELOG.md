@@ -4,6 +4,9 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: PHP version check VU-01 for PHP2Shell (CVE-2026-109618, CVE-2026-109619) and end-of-life branches, with bundled advisory snapshot `2026-10-25.1` (F-020).
+- chore: add shared phpusing check/review skills and an optional bounded reviewer for Codex and Claude.
+
 - feat: verdict from findings (major, mild, calm, unknown) and toolbar badge `!`/`?` (F-021).
 - feat: config checks for debug mode, plain HTTP and directory listing (CF-01, CF-02, CF-04) (F-014).
 - feat: exposure checks EX-01..EX-12 (.env, .git, composer files, Laravel log, phpinfo, Ignition, PHPUnit eval-stdin, Telescope/Horizon, DB admin tools, backups) with redacted evidence (F-013).
