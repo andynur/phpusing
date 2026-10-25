@@ -20,7 +20,9 @@ import { EmptyState } from '../../shared/ui/EmptyState';
 import { LangToggle } from '../../shared/ui/LangToggle';
 import { ProgressBar } from '../../shared/ui/ProgressBar';
 import { VerdictCard } from '../../shared/ui/VerdictCard';
-import { countSeverities } from '../../shared/verdict';
+import { reportPath } from '../../shared/report-url';
+import { FindingRow } from '../../shared/ui/FindingRow';
+import { countSeverities, sortFindings } from '../../shared/verdict';
 
 interface Target {
   tabId: number;
@@ -139,6 +141,13 @@ export function App() {
     send({ type: 'scan/cancel', tabId: target.tabId }).catch(() => {});
   }
 
+  // tabs.create needs no `tabs` permission.
+  function openReport({ tabId, origin }: Target) {
+    void browser.tabs.create({
+      url: browser.runtime.getURL(reportPath(tabId, origin)),
+    });
+  }
+
   function handleAgain(target: Target) {
     startScan(target).catch(() => setView({ kind: 'blocked', reason: 'error' }));
   }
@@ -159,6 +168,15 @@ export function App() {
           requestsUsed={view.result.requestsUsed}
           dataDate={dataDate(view.result.dataVersion)}
         />
+      )}
+      {view.kind === 'done' && view.result.findings.length > 0 && (
+        <ul className="flex flex-col gap-2">
+          {sortFindings(view.result.findings)
+            .slice(0, 3)
+            .map((f, i) => (
+              <FindingRow key={`${f.checkId}-${i}`} finding={f} />
+            ))}
+        </ul>
       )}
       <Card>
         {view.kind === 'loading' && <EmptyState message={t('popup.loading')} />}
@@ -205,6 +223,7 @@ export function App() {
                     {t('popup.blocked')}
                   </p>
                 )}
+                <Button onClick={() => openReport(view)}>{t('popup.openReport')}</Button>
                 <Button variant="secondary" onClick={() => handleAgain(view)}>
                   {t('popup.checkAgain')}
                 </Button>

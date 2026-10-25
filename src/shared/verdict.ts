@@ -1,4 +1,10 @@
-import type { Finding, Fingerprint, SeverityCounts, Verdict } from './types';
+import {
+  SEVERITIES,
+  type Finding,
+  type Fingerprint,
+  type SeverityCounts,
+  type Verdict,
+} from './types';
 
 export function countSeverities(findings: readonly Finding[]): SeverityCounts {
   const counts: SeverityCounts = {};
@@ -26,4 +32,11 @@ export function computeVerdict({
   if (counts.high || counts.medium) return 'mild';
   if (blocked || !fingerprint.phpDetected || !fingerprint.php || !phpSupported) return 'unknown';
   return 'calm';
+}
+
+/** Most severe first; stable within a severity. */
+export function sortFindings(findings: readonly Finding[]): Finding[] {
+  return [...findings].sort(
+    (a, b) => SEVERITIES.indexOf(a.severity) - SEVERITIES.indexOf(b.severity),
+  );
 }

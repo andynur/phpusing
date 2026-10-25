@@ -16,7 +16,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [x] F-014 Config checks: CF-01, CF-02, CF-04
 - [x] F-020 PHP core version check: VU-01 (PHP2Shell + EOL), bundled data
 - [x] F-021 Verdict and severity logic
-- [ ] F-022 Report page with Copy message for developer (EN/ID)
+- [x] F-022 Report page with Copy message for developer (EN/ID)
 - [ ] F-090 Store listing EN/ID, screenshots, `PRIVACY.md` final, license
 
 ## v0.2 — Composer depth

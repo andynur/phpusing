@@ -1,14 +1,20 @@
 import { useI18n } from '../i18n/I18nProvider';
-import { LANGS } from '../i18n';
+import { LANGS, type Lang, type MessageKey } from '../i18n';
 
-// Segmented EN | ID control (DESIGN.md §6).
-export function LangToggle() {
-  const { lang, setLang, t } = useI18n();
+// Segmented EN | ID control (DESIGN.md §6). Controls the UI language unless value/onChange are given.
+export function LangToggle({
+  value,
+  onChange,
+  labelKey = 'lang.label',
+}: { value?: Lang; onChange?: (lang: Lang) => void; labelKey?: MessageKey } = {}) {
+  const { lang: uiLang, setLang: setUiLang, t } = useI18n();
+  const lang = value ?? uiLang;
+  const setLang = onChange ?? setUiLang;
 
   return (
     <div
       role="group"
-      aria-label={t('lang.label')}
+      aria-label={t(labelKey)}
       className="inline-flex rounded-sm border border-border bg-surface p-0.5"
     >
       {LANGS.map((code) => {

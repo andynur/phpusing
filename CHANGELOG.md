@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: report page with findings by severity, Copy message for developer (EN/ID), stale-data warning, limits note and settings (allowed sites, local targets); popup shows top three findings and opens the report (F-022).
 - feat: PHP version check VU-01 for PHP2Shell (CVE-2026-109618, CVE-2026-109619) and end-of-life branches, with bundled advisory snapshot `2026-10-25.1` (F-020).
 - chore: add shared phpusing check/review skills and an optional bounded reviewer for Codex and Claude.
 

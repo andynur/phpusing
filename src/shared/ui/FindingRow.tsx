@@ -2,6 +2,7 @@ import { useId, useState } from 'react';
 import { useI18n } from '../i18n/I18nProvider';
 import type { Finding } from '../types';
 import { ConfidenceTag } from './ConfidenceTag';
+import { CopyButton } from './CopyButton';
 import { Icon } from './Icon';
 import { SeverityBadge } from './SeverityBadge';
 
@@ -18,9 +19,12 @@ function isSafeUrl(url: string): boolean {
 export function FindingRow({
   finding,
   defaultOpen = false,
+  copyText,
 }: {
   finding: Finding;
   defaultOpen?: boolean;
+  /** Developer message; shows the Copy button when given (report page). */
+  copyText?: string;
 }) {
   const { t } = useI18n();
   const [open, setOpen] = useState(defaultOpen);
@@ -102,6 +106,7 @@ export function FindingRow({
               </ul>
             </section>
           )}
+          {copyText && <CopyButton text={copyText} />}
         </div>
       )}
     </li>

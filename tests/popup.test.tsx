@@ -135,6 +135,14 @@ describe('popup check flow', () => {
     expect(screen.getByRole('heading', { name: "Can't tell yet" })).toBeInTheDocument();
     expect(screen.getByText('41 requests')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Check again' })).toBeInTheDocument();
+
+    const create = vi
+      .spyOn(fakeBrowser.tabs, 'create')
+      .mockImplementation(async () => ({}) as never);
+    await userEvent.click(screen.getByRole('button', { name: 'Open full report' }));
+    expect(create).toHaveBeenCalledWith({
+      url: expect.stringContaining('/report.html?tab=7&origin=https%3A%2F%2Fshop.example.com'),
+    });
   });
 
   it('explains a refused start and keeps the button', async () => {

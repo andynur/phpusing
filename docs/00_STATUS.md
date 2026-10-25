@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, H-002: shared check/review skills and bounded Codex/Claude reviewer; skill validation, scenario evaluation and `pnpm check` passed. See `10_AGENT_HARNESS.md`.
-- **Next task:** F-022, report page (all findings by severity, Copy message for developer EN/ID, FR-14 footer, settings: language, authorized sites revoke, local targets toggle); popup gets "Open full report"
+- **Last done:** 2026-10-25, F-022 report page: `src/entrypoints/report/`, `developer-message.ts`, `report-url.ts`, `CopyButton`, popup top-3 + Open full report; `pnpm check` green
+- **Next task:** F-090, store listing EN/ID, screenshots, `PRIVACY.md` final, license (Q-1 needs Andy's confirmation)
 
 ## Blockers and open questions
 
@@ -23,6 +23,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 - pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
 - Manifest: `storage`, `activeTab`, `scripting`, `optional_host_permissions`.
 - F-020: Q-2 resolved on php.net (CVE-2026-109618/109619; fixed 8.5.12, 8.4.27, 8.3.36, 8.2.35; 8.1 and older no upstream release, treated as affected). Unverified single-vendor claim (Abstract Security) that patched 8.2.35 is still exploitable: not reflected in data. KEV flag not set: no CISA KEV entry verified. Refresh `advisories.json` by hand until F-030.
+- F-022: not done: manual theme override (FR-16, follows system only), data "Update now" (FR-17, needs F-031 in v0.2). Report reads `scan:<tab>:<origin>` from `storage.session` via `?tab=&origin=`.
 - F-021: `calm` needs `phpSupported: true` from VU-01.
 - F-014: CF-02 deviates from the catalog's https probe (see 04_CHECKS.md row). `analyze` ignores the fingerprint so far; VU-01 will use `fingerprint.php`.
 - F-013: `PathCheck` + `runPathChecks` in `exposure.ts` are reusable for CF-04. Fixtures are excluded from Prettier (raw bytes matter). All 26 paths are always planned; budget trims by severity.
