@@ -1,4 +1,6 @@
 import { useI18n } from '../../shared/i18n/I18nProvider';
+import { Card } from '../../shared/ui/Card';
+import { EmptyState } from '../../shared/ui/EmptyState';
 import { LangToggle } from '../../shared/ui/LangToggle';
 
 // Popup shell: 380 px wide, max 600 px tall (DESIGN.md §3 Layout).
@@ -14,9 +16,9 @@ export function App() {
         </div>
         <LangToggle />
       </header>
-      <section className="rounded-lg border border-border bg-surface p-4 shadow-card">
-        <p className="text-fg-muted">{t('popup.empty')}</p>
-      </section>
+      <Card>
+        <EmptyState message={t('popup.empty')} />
+      </Card>
     </main>
   );
 }

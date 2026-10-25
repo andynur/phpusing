@@ -82,9 +82,9 @@ interface Finding {
   checkId: string;            // e.g. "EX-01"
   severity: Severity;
   confidence: Confidence;
-  titleKey: string;           // i18n key
-  impactKey: string;
-  fixKey: string;
+  titleKey: MessageKey;       // i18n key, typed so missing strings fail typecheck
+  impactKey: MessageKey;
+  fixKey: MessageKey;
   evidence: string[];         // redacted, e.g. ["GET /.env → 200", "keys: APP_KEY, DB_PASSWORD"]
   refs: { label: string; url: string }[];
   kev?: boolean;
