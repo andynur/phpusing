@@ -20,3 +20,22 @@ export interface Finding {
 }
 
 export type SeverityCounts = Partial<Record<Severity, number>>;
+
+export interface Fingerprint {
+  php?: string;
+  server?: string;
+  framework?: string;
+  cms?: string;
+}
+
+export interface ScanResult {
+  origin: string;
+  startedAt: string;
+  requestsUsed: number;
+  fingerprint: Fingerprint;
+  findings: Finding[];
+  verdict: Verdict;
+  /** ISO date of the advisory data used; empty until advisory data ships (F-020). */
+  dataVersion: string;
+  blocked?: boolean;
+}

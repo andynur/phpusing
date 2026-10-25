@@ -15,19 +15,21 @@ interface VerdictCardProps {
   verdict: Verdict;
   counts: SeverityCounts;
   requestsUsed: number;
-  /** ISO date of the advisory data, e.g. "2026-10-25". */
+  /** ISO date of the advisory data, e.g. "2026-10-25". Empty until advisory data ships. */
   dataDate: string;
 }
 
 export function VerdictCard({ verdict, counts, requestsUsed, dataDate }: VerdictCardProps) {
   const { lang, t } = useI18n();
   const shown = SEVERITIES.filter((s) => (counts[s] ?? 0) > 0);
-  const date = new Intl.DateTimeFormat(lang === 'id' ? 'id-ID' : 'en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(dataDate));
+  const date = dataDate
+    ? new Intl.DateTimeFormat(lang === 'id' ? 'id-ID' : 'en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'UTC',
+      }).format(new Date(dataDate))
+    : '';
 
   return (
     <section
@@ -52,7 +54,11 @@ export function VerdictCard({ verdict, counts, requestsUsed, dataDate }: Verdict
           ))}
         </ul>
       )}
-      <p className="text-xs text-fg-subtle">{t('verdict.meta', { count: requestsUsed, date })}</p>
+      <p className="text-xs text-fg-subtle">
+        {date
+          ? t('verdict.meta', { count: requestsUsed, date })
+          : t('verdict.metaRequests', { count: requestsUsed })}
+      </p>
     </section>
   );
 }

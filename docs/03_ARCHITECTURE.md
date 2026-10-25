@@ -56,7 +56,7 @@ Forbidden: `<all_urls>` as a static permission, `cookies`, `webRequest`, `tabs`,
 
 - `credentials: "omit"`, `redirect: "manual"`, `cache: "no-store"`.
 - `AbortSignal.timeout(8000)` combined with the scan's cancel signal.
-- Read the body with a stream reader; stop at 64 KB (`Range: bytes=0-65535` sent as a hint).
+- Read the body with a stream reader; stop at 64 KB. No `Range` header: it adds 206/416 handling and the stream cap already bounds the download.
 - Return `{ url, status, headers (allowlisted), bodyText (≤64 KB), bodyHash, contentType }`.
 - Never pass bodies outside `src/checks/`; checks return redacted evidence only.
 
@@ -66,11 +66,12 @@ Forbidden: `<all_urls>` as a static permission, `cookies`, `webRequest`, `tabs`,
 |---|---|---|
 | `scan/start` | popup → bg | `{ tabId }` |
 | `scan/cancel` | popup → bg | `{ tabId }` |
-| `scan/progress` | bg → popup | `{ done, total, phase }` |
-| `scan/result` | bg → popup/report | `ScanResult` |
+| `scan/progress` | bg → popup | `{ tabId, done, total, phase }` |
+| `scan/result` | bg → popup/report | `{ tabId, result: ScanResult }` |
+| `scan/error` | bg → popup | `{ tabId, reason }` (cancelled, busy, rate-limited, not-authorized, unsupported, failed) |
 | `data/update` | report → bg | — |
 
-All messages are typed and runtime-validated.
+All messages are typed and runtime-validated. `scan/start` replies `{ ok }` or `{ ok: false, reason }`; the background re-runs preflight and never trusts the popup.
 
 ## Core types (`src/shared/types.ts`)
 
@@ -118,9 +119,9 @@ No scan history in `local`. Ever (D-006).
 
 ```
 src/
-  entrypoints/ background.ts, popup/, report/
+  entrypoints/ background/ (index.ts, scan-service.ts), popup/, report/
   checks/      fingerprint.ts, exposure.ts, config.ts, versions.ts
-  scanner/     fetch.ts, budget.ts, baseline.ts, plan.ts
+  scanner/     fetch.ts, budget.ts, baseline.ts, plan.ts, scan.ts
   advisories/  load.ts, verify.ts, composer-semver.ts
   shared/      types.ts, messages.ts, verdict.ts, i18n/{en,id}.json, ui/
 tools/build-data/   advisory pipeline (Node, not shipped)
