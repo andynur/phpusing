@@ -30,37 +30,6 @@
   --c-shadow-card: 0 1px 2px rgb(0 0 0 / 0.06);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-    --c-canvas: #121116;
-    --c-surface: #1b1a21;
-    --c-surface-muted: #26252d;
-    --c-border: #2f2d37;
-    --c-fg: #ecebf0;
-    --c-fg-muted: #b6b4bf;
-    --c-fg-subtle: #8f8d99;
-    --c-brand: #a597ff;
-    --c-brand-hover: #b8adff;
-    --c-on-brand: #121116;
-
-    --c-sev-critical-fg: #fda29b;
-    --c-sev-critical-bg: #3b1613;
-    --c-sev-high-fg: #f9b384;
-    --c-sev-high-bg: #3a2012;
-    --c-sev-medium-fg: #f5d06b;
-    --c-sev-medium-bg: #33290c;
-    --c-sev-low-fg: #93b4ff;
-    --c-sev-low-bg: #13224a;
-    --c-sev-info-fg: #b6b4bf;
-    --c-sev-info-bg: #26252d;
-    --c-sev-ok-fg: #7bdda8;
-    --c-sev-ok-bg: #0f2e20;
-
-    --c-shadow-card: none;
-  }
-}
-
 :root[data-theme='dark'] {
   color-scheme: dark;
   --c-canvas: #121116;

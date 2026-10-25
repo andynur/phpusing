@@ -119,6 +119,7 @@
   "settings.revoke": "Cabut",
   "settings.local": "Izinkan pemeriksaan alamat lokal dan jaringan privat (untuk developer)",
   "settings.data": "Data advisory: {version}",
+  "theme.label": "Tema",
   "finding.copy": "Salin pesan untuk developer",
   "finding.copied": "Tersalin",
   "message.header": "Temuan keamanan untuk {origin} (phpusing, pemeriksaan keamanan situs PHP)",
@@ -127,5 +128,8 @@
   "message.evidence": "Bukti:",
   "message.fix": "Cara memperbaiki:",
   "message.refs": "Referensi:",
-  "message.footer": "Diperiksa dari luar dengan permintaan baca saja pada {date}. Tidak ada serangan yang dicoba."
+  "message.footer": "Diperiksa dari luar dengan permintaan baca saja pada {date}. Tidak ada serangan yang dicoba.",
+  "theme.toDark": "Ganti ke mode gelap",
+  "theme.toLight": "Ganti ke mode terang",
+  "popup.more": "+{count} temuan lain di laporan lengkap"
 }

@@ -119,6 +119,7 @@
   "settings.revoke": "Revoke",
   "settings.local": "Allow checks on local and private network addresses (for developers)",
   "settings.data": "Advisory data: {version}",
+  "theme.label": "Theme",
   "finding.copy": "Copy message for developer",
   "finding.copied": "Copied",
   "message.header": "Security finding for {origin} (phpusing, PHP site security check)",
@@ -127,5 +128,8 @@
   "message.evidence": "Evidence:",
   "message.fix": "How to fix:",
   "message.refs": "References:",
-  "message.footer": "Checked from outside with read-only requests on {date}. No attack was attempted."
+  "message.footer": "Checked from outside with read-only requests on {date}. No attack was attempted.",
+  "theme.toDark": "Switch to dark mode",
+  "theme.toLight": "Switch to light mode",
+  "popup.more": "+{count} more in the full report"
 }

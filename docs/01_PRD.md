@@ -77,7 +77,7 @@ Out of scope as users: visitors checking third-party sites (PHPeek covers this),
 
 ### 5.4 Settings
 - FR-15. Language: EN / ID. Default from browser language (`id*` → ID, else EN).
-- FR-16. Theme follows system; manual override light/dark.
+- FR-16. Theme defaults to light; the owner can manually switch between light and dark.
 - FR-17. Advisory data: shows version date, **Update now** button, auto-check on scan if data is older than 7 days (single request to the static host; can be disabled).
 - FR-18. Manage authorized sites (list, revoke).
 

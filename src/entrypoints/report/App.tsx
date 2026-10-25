@@ -14,6 +14,8 @@ import { Card } from '../../shared/ui/Card';
 import { EmptyState } from '../../shared/ui/EmptyState';
 import { FindingRow } from '../../shared/ui/FindingRow';
 import { LangToggle } from '../../shared/ui/LangToggle';
+import { ThemeToggle } from '../../shared/ui/ThemeToggle';
+import { ThemeProvider } from '../../shared/theme/ThemeProvider';
 import { VerdictCard } from '../../shared/ui/VerdictCard';
 import { countSeverities } from '../../shared/verdict';
 
@@ -127,7 +129,7 @@ function Settings({ version }: { version?: string }) {
 }
 
 // Report page: max width 760 px, centered, 24 px padding (DESIGN.md §3 Layout).
-export function App() {
+function Report() {
   const { t } = useI18n();
   const [load, setLoad] = useState<Load>({ kind: 'loading' });
   const [now] = useState(() => Date.now());
@@ -152,7 +154,10 @@ export function App() {
               </p>
             )}
           </div>
-          <LangToggle />
+          <div className="flex shrink-0 items-center gap-1.5">
+            <LangToggle />
+            <ThemeToggle />
+          </div>
         </header>
         {load.kind === 'loading' && <EmptyState message={t('popup.loading')} />}
         {load.kind === 'missing' && <EmptyState message={t('report.missing')} />}
@@ -181,5 +186,13 @@ export function App() {
         <footer className="text-xs text-fg-subtle">{t('report.limits')}</footer>
       </main>
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <Report />
+    </ThemeProvider>
   );
 }
