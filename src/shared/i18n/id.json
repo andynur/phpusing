@@ -1,0 +1,11 @@
+{
+  "app.name": "phpusing",
+  "app.tagline": "Apakah situs PHP Anda bikin pusing?",
+  "lang.label": "Bahasa",
+  "lang.en": "EN",
+  "lang.id": "ID",
+  "lang.enName": "English",
+  "lang.idName": "Bahasa Indonesia",
+  "popup.empty": "Belum ada yang diperiksa. Fitur pemeriksaan hadir di versi berikutnya.",
+  "popup.loading": "Mencari sumber pusing…"
+}

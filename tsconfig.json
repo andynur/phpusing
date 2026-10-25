@@ -1,0 +1,13 @@
+{
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": [".wxt/wxt.d.ts", "src", "tests", "*.config.ts", "vitest.setup.ts"]
+}

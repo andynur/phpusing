@@ -1,0 +1,7 @@
+{
+  "extName": { "message": "phpusing" },
+  "extDescription": {
+    "message": "Cek apakah situs PHP Anda bikin pusing. Pemeriksaan lokal untuk file terbuka, konfigurasi berisiko dan versi rentan."
+  },
+  "actionTitle": { "message": "Periksa situs ini dengan phpusing" }
+}

@@ -27,6 +27,7 @@ Binding for every coding agent and model (Claude Code, Codex, Cursor, Copilot, G
 ## Hard rules
 
 1. Code, comments, tests, docs and commits in English. Every UI string in `en` and `id` (`docs/07_I18N.md`).
+   Commit messages: one short Conventional Commits line in English (`feat: add popup shell`). No body, no credits, no `Co-Authored-By` trailer.
 2. Scans are user-initiated, on the active tab's origin only. No bulk scans, URL lists, crawling, background polling or scheduled scans (D-005).
 3. Detection only. GET/HEAD requests with no attack payloads, no form submits, no fuzzing, no login attempts. Request budget and rate limits in `docs/06_SECURITY_PRIVACY.md` are hard limits.
 4. Host access only via runtime optional permission per origin (D-003). Never add `<all_urls>`, static host permissions, `cookies`, `webRequest`, `tabs` or `history`.

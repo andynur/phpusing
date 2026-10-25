@@ -3,9 +3,9 @@
 Single source of "where are we". Update at the end of every task. Keep it under 40 lines.
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
-- **Phase:** planning done, scaffold not started
-- **Last done:** 2026-10-25, initial docs and harness (AGENTS, PRD, design, architecture, checks catalog)
-- **Next task:** F-000, scaffold WXT + React + Tailwind 4 + Vitest + ESLint/Prettier, `pnpm check` green on an empty popup with the EN/ID toggle
+- **Phase:** scaffold done, building v0.1 features
+- **Last done:** 2026-10-25, F-000 scaffold + F-001 i18n core (`pnpm check` green: lint, typecheck, 18 tests, build, bundle URL allowlist)
+- **Next task:** F-002, primitives from `DESIGN.md` §6 (Button, SeverityBadge, VerdictCard, FindingRow, EmptyState) on top of `src/shared/ui/tokens.css`
 
 ## Blockers and open questions
 
@@ -19,4 +19,6 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 ## Notes for the next session
 
+- pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
+- Popup has only `storage` permission. F-010 adds `activeTab`, `scripting` and `optional_host_permissions`.
 - Owner of the sibling projects uses WXT (suitelens) and the same doc layout (moodlens). Reuse their configs where it saves work.

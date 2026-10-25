@@ -1,0 +1,57 @@
+{
+  "name": "phpusing",
+  "description": "Find out if your PHP site has a headache. Local-only checks for exposed files, risky config and vulnerable versions.",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andynur/phpusing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andynur/phpusing/issues"
+  },
+  "author": "Andy Nur <andynur.id@gmail.com>",
+  "packageManager": "pnpm@10.21.0",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "postinstall": "wxt prepare",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check:bundle": "node tools/check-bundle-urls.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@wxt-dev/module-react": "^1.2.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "jsdom": "^30.1.1",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3",
+    "wxt": "^0.21.4"
+  },
+  "engines": {
+    "node": ">=22.22"
+  }
+}

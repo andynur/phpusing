@@ -1,0 +1,168 @@
+/* Design tokens. Spec and contrast pairs: DESIGN.md §3. */
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light;
+  --c-canvas: #f7f6f2;
+  --c-surface: #ffffff;
+  --c-surface-muted: #efeeea;
+  --c-border: #e3e1da;
+  --c-fg: #1c1b22;
+  --c-fg-muted: #55535e;
+  --c-fg-subtle: #6b6975;
+  --c-brand: #5b45d6;
+  --c-brand-hover: #4b36c2;
+  --c-on-brand: #ffffff;
+
+  --c-sev-critical-fg: #b42318;
+  --c-sev-critical-bg: #fee4e2;
+  --c-sev-high-fg: #b93815;
+  --c-sev-high-bg: #ffede3;
+  --c-sev-medium-fg: #8a5a00;
+  --c-sev-medium-bg: #fef4d6;
+  --c-sev-low-fg: #1d4ed8;
+  --c-sev-low-bg: #e6eeff;
+  --c-sev-info-fg: #55535e;
+  --c-sev-info-bg: #efeeea;
+  --c-sev-ok-fg: #067647;
+  --c-sev-ok-bg: #ddf6e8;
+
+  --c-shadow-card: 0 1px 2px rgb(0 0 0 / 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --c-canvas: #121116;
+    --c-surface: #1b1a21;
+    --c-surface-muted: #26252d;
+    --c-border: #2f2d37;
+    --c-fg: #ecebf0;
+    --c-fg-muted: #b6b4bf;
+    --c-fg-subtle: #8f8d99;
+    --c-brand: #a597ff;
+    --c-brand-hover: #b8adff;
+    --c-on-brand: #121116;
+
+    --c-sev-critical-fg: #fda29b;
+    --c-sev-critical-bg: #3b1613;
+    --c-sev-high-fg: #f9b384;
+    --c-sev-high-bg: #3a2012;
+    --c-sev-medium-fg: #f5d06b;
+    --c-sev-medium-bg: #33290c;
+    --c-sev-low-fg: #93b4ff;
+    --c-sev-low-bg: #13224a;
+    --c-sev-info-fg: #b6b4bf;
+    --c-sev-info-bg: #26252d;
+    --c-sev-ok-fg: #7bdda8;
+    --c-sev-ok-bg: #0f2e20;
+
+    --c-shadow-card: none;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --c-canvas: #121116;
+  --c-surface: #1b1a21;
+  --c-surface-muted: #26252d;
+  --c-border: #2f2d37;
+  --c-fg: #ecebf0;
+  --c-fg-muted: #b6b4bf;
+  --c-fg-subtle: #8f8d99;
+  --c-brand: #a597ff;
+  --c-brand-hover: #b8adff;
+  --c-on-brand: #121116;
+
+  --c-sev-critical-fg: #fda29b;
+  --c-sev-critical-bg: #3b1613;
+  --c-sev-high-fg: #f9b384;
+  --c-sev-high-bg: #3a2012;
+  --c-sev-medium-fg: #f5d06b;
+  --c-sev-medium-bg: #33290c;
+  --c-sev-low-fg: #93b4ff;
+  --c-sev-low-bg: #13224a;
+  --c-sev-info-fg: #b6b4bf;
+  --c-sev-info-bg: #26252d;
+  --c-sev-ok-fg: #7bdda8;
+  --c-sev-ok-bg: #0f2e20;
+
+  --c-shadow-card: none;
+}
+
+/* Tailwind maps to tokens only; the default palette is removed (DESIGN.md §2 rule 1). */
+@theme {
+  --color-*: initial;
+  --color-canvas: var(--c-canvas);
+  --color-surface: var(--c-surface);
+  --color-surface-muted: var(--c-surface-muted);
+  --color-border: var(--c-border);
+  --color-fg: var(--c-fg);
+  --color-fg-muted: var(--c-fg-muted);
+  --color-fg-subtle: var(--c-fg-subtle);
+  --color-brand: var(--c-brand);
+  --color-brand-hover: var(--c-brand-hover);
+  --color-on-brand: var(--c-on-brand);
+  --color-sev-critical: var(--c-sev-critical-fg);
+  --color-sev-critical-bg: var(--c-sev-critical-bg);
+  --color-sev-high: var(--c-sev-high-fg);
+  --color-sev-high-bg: var(--c-sev-high-bg);
+  --color-sev-medium: var(--c-sev-medium-fg);
+  --color-sev-medium-bg: var(--c-sev-medium-bg);
+  --color-sev-low: var(--c-sev-low-fg);
+  --color-sev-low-bg: var(--c-sev-low-bg);
+  --color-sev-info: var(--c-sev-info-fg);
+  --color-sev-info-bg: var(--c-sev-info-bg);
+  --color-sev-ok: var(--c-sev-ok-fg);
+  --color-sev-ok-bg: var(--c-sev-ok-bg);
+
+  --font-sans: ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 13px;
+  --text-sm--line-height: 18px;
+  --text-base: 14px;
+  --text-base--line-height: 20px;
+  --text-lg: 16px;
+  --text-lg--line-height: 22px;
+  --text-xl: 20px;
+  --text-xl--line-height: 26px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 30px;
+
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-*: initial;
+  --shadow-card: var(--c-shadow-card);
+}
+
+body {
+  background: var(--c-canvas);
+  color: var(--c-fg);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation: none !important;
+  }
+}
+
+/* Layout frames (DESIGN.md §3 Layout). */
+@utility popup-frame {
+  width: 380px;
+  max-height: 600px;
+}
+
+@utility report-frame {
+  max-width: 760px;
+}
