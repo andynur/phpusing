@@ -15,7 +15,7 @@ Severity: **C** critical, **H** high, **M** medium, **L** low, **I** info.
 |---|---|---|---|
 | FP-01 | PHP version | `X-Powered-By: PHP/x.y.z` on baseline | `php` version, confidence `confirmed` if present |
 | FP-02 | Server | `Server` header | e.g. `nginx/1.24`, info only |
-| FP-03 | Laravel | cookie names `XSRF-TOKEN`, `*_session`; `meta[name=csrf-token]` | `framework: laravel` (likely) |
+| FP-03 | Laravel | cookie names `XSRF-TOKEN`, `*_session`; `meta[name=csrf-token]` only together with another PHP signal (Rails uses the same meta) | `framework: laravel` (likely) |
 | FP-04 | WordPress | `meta[name=generator]` WordPress, `/wp-content/` in script/link URLs | `cms: wordpress` + version if in generator |
 | FP-05 | Livewire | script src containing `livewire.js` or `livewire.min.js` | `livewire: present` |
 | FP-06 | CodeIgniter | cookie name `ci_session` | `framework: codeigniter` (likely) |

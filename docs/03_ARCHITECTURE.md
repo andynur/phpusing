@@ -45,7 +45,7 @@ Forbidden: `<all_urls>` as a static permission, `cookies`, `webRequest`, `tabs`,
 
 1. **Preflight:** origin from active tab; check consent flag and host permission; refuse forbidden schemes.
 2. **Baseline:** fetch `/` and one random path (`/phpusing-<random>`). Record status, length, body hash, and title for soft-404 detection.
-3. **Markers:** `executeScript` returns `{ cookieNames, metaGenerator, scriptSrcs (filtered), hasCsrfMeta }`. Cookie names only; values are never read.
+3. **Markers:** `executeScript` runs `readMarkers` (`src/checks/fingerprint.ts`) and returns `{ origin, cookieNames, metaGenerator, assetPaths (same-origin script/link paths, no query), hasCsrfMeta }`. Cookie names only; values are split off in the page. The background re-validates the shape and drops markers from another origin; the scan runs without markers if injection fails.
 4. **Fingerprint:** FP checks over baseline + markers.
 5. **Probe plan:** select EX/CF checks relevant to the fingerprint (WordPress paths only if WordPress is likely, etc.). Always include generic critical paths. Truncate to remaining budget by severity.
 6. **Probe:** fetch wrapper (below), concurrency 3. Stop early on 3 consecutive 403/429 → finding "scan blocked".

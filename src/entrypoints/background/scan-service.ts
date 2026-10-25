@@ -1,5 +1,6 @@
 import { browser } from 'wxt/browser';
 import { analyze } from '../../checks';
+import { fingerprint, parseMarkers, readMarkers } from '../../checks/fingerprint';
 import { ScanRateLimiter } from '../../scanner/budget';
 import { buildPlan } from '../../scanner/plan';
 import { runScan } from '../../scanner/scan';
@@ -13,7 +14,7 @@ import {
 } from '../../shared/messages';
 import { loadSettings } from '../../shared/settings';
 import { checkTarget } from '../../shared/target';
-import type { ScanResult } from '../../shared/types';
+import type { Fingerprint, Markers, ScanResult } from '../../shared/types';
 
 // Owns scans: preflight, one scan per tab, cancel, result storage (docs/03_ARCHITECTURE.md).
 
@@ -48,14 +49,32 @@ export function createScanService({
     return { origin: target.origin };
   }
 
+  // DOM markers (scan pipeline step 3). Optional: a scan still runs if the page refuses.
+  async function markersFor(tabId: number, origin: string): Promise<Markers | null> {
+    try {
+      const [frame] = await browser.scripting.executeScript({
+        target: { tabId },
+        func: readMarkers,
+      });
+      return parseMarkers(frame?.result, origin);
+    } catch {
+      return null;
+    }
+  }
+
   async function scan(tabId: number, origin: string, controller: AbortController) {
     const startedAt = new Date(now()).toISOString();
     try {
+      const markers = await markersFor(tabId, origin);
+      let fp: Fingerprint = {};
       const run = await runScan({
         origin,
         signal: controller.signal,
-        plan: buildPlan,
-        analyze,
+        plan: (baseline) => {
+          fp = fingerprint(baseline, markers);
+          return buildPlan(fp);
+        },
+        analyze: (context) => analyze(context, fp),
         fetchImpl,
         slotDelayMs,
         onProgress: (p) => broadcast({ type: 'scan/progress', tabId, ...p }),
@@ -64,7 +83,7 @@ export function createScanService({
         origin,
         startedAt,
         requestsUsed: run.requestsUsed,
-        fingerprint: {},
+        fingerprint: fp,
         findings: run.findings,
         // Verdict logic arrives with F-021.
         verdict: 'unknown',

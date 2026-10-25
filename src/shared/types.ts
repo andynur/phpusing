@@ -21,11 +21,27 @@ export interface Finding {
 
 export type SeverityCounts = Partial<Record<Severity, number>>;
 
+// Stack guess from baseline responses and DOM markers (04_CHECKS.md, FP rows).
 export interface Fingerprint {
+  /** True when any PHP signal was seen, even without a version. */
+  phpDetected?: boolean;
+  /** Raw version from `X-Powered-By: PHP/...`, e.g. "8.1.2-1ubuntu2.14". */
   php?: string;
   server?: string;
-  framework?: string;
-  cms?: string;
+  framework?: 'laravel';
+  cms?: 'wordpress';
+  cmsVersion?: string;
+  livewire?: boolean;
+}
+
+// Read from the page by scripting.executeScript (docs/03_ARCHITECTURE.md, step 3). Untrusted.
+export interface Markers {
+  origin: string;
+  cookieNames: string[];
+  metaGenerator: string;
+  /** Same-origin script and stylesheet paths, without query strings. */
+  assetPaths: string[];
+  hasCsrfMeta: boolean;
 }
 
 export interface ScanResult {
