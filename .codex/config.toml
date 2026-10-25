@@ -1,0 +1,3 @@
+# Balanced default for security-sensitive code; select low for mechanical edits.
+# Keep model, provider, trust and approval preferences in the user's configuration.
+model_reasoning_effort = "medium"

@@ -2,7 +2,9 @@
 
 ## Gates (`pnpm check`)
 
-lint → typecheck → unit tests → build → bundle URL allowlist test. All must pass before reporting a task done.
+harness tests → lint → typecheck → unit tests → build → bundle URL allowlist test. All must pass before reporting a task done.
+
+Runner regression tests use Node test (`pnpm check:harness`); see `10_AGENT_HARNESS.md` for compact output and logs.
 
 ## Unit tests (Vitest)
 

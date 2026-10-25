@@ -8,7 +8,6 @@
       "Bash(pnpm typecheck)",
       "Bash(pnpm test)",
       "Bash(pnpm build)",
-      "Bash(pnpm format)",
       "Bash(pnpm vitest run *)",
       "Bash(git status)",
       "Bash(git diff *)",
@@ -16,16 +15,6 @@
       "Bash(git show *)"
     ],
     "ask": ["Bash(git push *)", "Bash(pnpm add *)", "Bash(pnpm remove *)"],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./node_modules/**)",
-      "Read(./.output/**)",
-      "Read(./.wxt/**)",
-      "Read(./coverage/**)",
-      "Read(./pnpm-lock.yaml)",
-      "Read(./data/dist/**)",
-      "Read(./data/snapshot/*.json)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./**/*.pem)", "Read(./**/*.key)"]
   }
 }

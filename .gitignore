@@ -10,3 +10,7 @@ data/dist/
 *.pem
 *.key
 .DS_Store
+
+# Local agent diagnostics and personal overrides
+.agent-logs/
+.claude/settings.local.json

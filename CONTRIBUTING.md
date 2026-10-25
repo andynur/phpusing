@@ -9,3 +9,5 @@ Thanks for helping site owners sleep better.
 5. Fixtures must be synthetic. Never commit real secrets, logs or lock files from real sites.
 
 Pull requests that add payloads, bulk scanning, typed-URL scanning or telemetry will be closed (see `docs/09_DECISIONS.md`).
+
+For Codex/Claude setup and compact verification logs, see [the agent harness](docs/10_AGENT_HARNESS.md).

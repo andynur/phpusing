@@ -24,7 +24,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:bundle": "node tools/check-bundle-urls.mjs",
-    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle"
+    "check": "node tools/check.mjs",
+    "check:harness": "node --test tools/check.test.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

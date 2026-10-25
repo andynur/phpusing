@@ -11,6 +11,7 @@ const noHtmlInsertion = {
 export default tseslint.config(
   {
     ignores: [
+      '.agent-logs/**',
       '.output/**',
       '.wxt/**',
       'coverage/**',

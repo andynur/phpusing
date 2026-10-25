@@ -4,7 +4,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green
+- **Last done:** 2026-10-25, H-002: shared check/review skills and bounded Codex/Claude reviewer; skill validation, scenario evaluation and `pnpm check` passed. See `10_AGENT_HARNESS.md`.
 - **Next task:** F-022, report page (all findings by severity, Copy message for developer EN/ID, FR-14 footer, settings: language, authorized sites revoke, local targets toggle); popup gets "Open full report"
 
 ## Blockers and open questions
@@ -17,6 +17,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 | Q-5 | Advisory data host: GitHub Releases vs GitHub Pages. | agent | F-030 |
 
 ## Notes for the next session
+
+- Product handoff before H-002: F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green
 
 - pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
 - Manifest: `storage`, `activeTab`, `scripting`, `optional_host_permissions`.

@@ -8,7 +8,8 @@ Binding for every coding agent and model (Claude Code, Codex, Cursor, Copilot, G
 
 1. Read `docs/00_STATUS.md` (current release, next task, blockers).
 2. Read only the docs the task needs, using the routing table below. Do not read the whole `docs/` folder.
-3. Prefer targeted search (`grep`, symbol search) and partial file reads over full-file reads.
+3. Check `git status --short`; preserve unrelated changes. Prefer `rg` and partial reads.
+4. State one bounded task and its acceptance criteria; follow an explicit user task before the queued next feature.
 
 ## Context routing
 
@@ -22,6 +23,7 @@ Binding for every coding agent and model (Claude Code, Codex, Cursor, Copilot, G
 | UI strings, EN/ID toggle | `docs/07_I18N.md` |
 | UI, styling, copy tone | `DESIGN.md` |
 | Tests | `docs/08_TEST_PLAN.md` |
+| Agent configuration or verification tooling | `docs/10_AGENT_HARNESS.md` |
 | "Why was X decided?" | `docs/09_DECISIONS.md` (accepted decisions are binding) |
 
 ## Hard rules
@@ -49,11 +51,13 @@ Binding for every coding agent and model (Claude Code, Codex, Cursor, Copilot, G
 ## Verify
 
 ```bash
-pnpm check --silent        # lint + typecheck + test + build, short output
+pnpm check                 # compact, fail-fast full gate; logs in .agent-logs/
 pnpm vitest run <file>     # one test file
 ```
 
-Run `pnpm check` once before reporting. If it cannot run, say what ran and what is unverified.
+Review-only tasks and delegated reviewers report findings and evidence limits without editing handoff docs or running the full gate; the implementation owner performs those steps.
+Run focused tests while editing, then `pnpm check` before reporting. Re-run only after changes or failures.
+On failure, inspect the named log with targeted search. If blocked, report what ran and what is unverified.
 
 ## End of every task
 
@@ -64,6 +68,10 @@ Run `pnpm check` once before reporting. If it cannot run, say what ran and what 
 ## Token discipline
 
 - One task per session; hand off through `docs/00_STATUS.md`, not chat history.
+- Use one agent by default; `phpusing-review` may delegate one bounded reviewer when its criteria apply. No recursive delegation, automatic review loops or per-edit full gates.
+- Batch independent reads; expand context only to resolve a concrete uncertainty.
+- Use low reasoning for mechanical edits, medium for normal implementation, high for security or ambiguous failures.
+- Use `phpusing-check` for detection work and `phpusing-review` for bounded patch review; load only the matching skill. Prefer existing CLI tools over new integrations.
 - Quote only the decisive error line; never paste whole files or logs into reports.
 - Do not restate rules from this file in other docs; link to them.
 - Never read `node_modules/`, `.output/`, `.wxt/`, `coverage/`, `pnpm-lock.yaml` or generated advisory bundles under `data/dist/` unless the task is about them.
