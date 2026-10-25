@@ -17,7 +17,7 @@ Check your own PHP website for known security problems.
 
 phpusing tells you, in plain language, whether your PHP website has critical, known security problems.
 
-Open your site, click the phpusing icon and press "Check this site". In about 20 seconds you get a verdict and a short list of what to fix:
+Open your site, click the phpusing icon and press "Check this site". You get a verdict and a short list of what to fix:
 
 - Public secret files: .env, .git, composer.lock, Laravel logs, backups and database dumps
 - Debug mode, phpinfo pages, Laravel Ignition, Telescope and Horizon, Adminer and phpMyAdmin
@@ -40,7 +40,7 @@ Open source: https://github.com/andynur/phpusing
 
 phpusing memberi tahu Anda, dengan bahasa sederhana, apakah situs PHP Anda punya masalah keamanan kritis yang sudah dikenal.
 
-Buka situs Anda, klik ikon phpusing, lalu tekan "Periksa situs ini". Dalam sekitar 20 detik Anda mendapat hasil dan daftar singkat yang perlu diperbaiki:
+Buka situs Anda, klik ikon phpusing, lalu tekan "Periksa situs ini". Anda mendapat hasil dan daftar singkat yang perlu diperbaiki:
 
 - File rahasia yang terbuka: .env, .git, composer.lock, log Laravel, backup, dan dump database
 - Debug mode, halaman phpinfo, Laravel Ignition, Telescope dan Horizon, Adminer dan phpMyAdmin
@@ -79,12 +79,12 @@ Open source: https://github.com/andynur/phpusing
 - Category: Developer Tools.
 - Languages: English, Indonesian.
 
-## Screenshots (1280×800)
+## Screenshots and promotional assets
 
-In `docs/store/screenshots/` (`en-*` and `id-*`), made from the built extension with synthetic data: `pnpm build && tools/store-shots/shots.sh`. Light theme. Upload the five of one language per listing locale:
+Use the [brand and marketing kit](../marketing/README.md): five composed 1280 × 800 screenshots per locale, README headers, social cards, shared store promo tiles, localized campaign alternatives, and a padded store icon. [Marketing copy](../marketing/COPY.md) includes EN/ID announcements and alt text.
 
-1. Popup before a check: origin and "Check this site" with the consent box.
-2. Popup during a check: progress bar.
-3. Popup verdict "Major headache" with top findings (use a local fixture site with an exposed `.env`).
-4. Report page: findings by severity, one expanded with evidence and "Copy message for developer".
-5. Report page: settings with allowed sites.
+Upload `docs/marketing/en-store-01.png` through `en-store-05.png` to the English listing, and the matching `id-*` files to Indonesian. Sequence: consent, progress, priority findings, expanded report, settings in dark mode. The actual built UI uses synthetic example data; no live site is scanned to produce these images.
+
+Use the shared `store-promo-small.png` (440 × 280) and `store-promo-marquee.png` (1400 × 560) for promo slots, which Google's guidance describes as not locale-specific. See the kit guide for source links, icon packaging notes and regeneration.
+
+Original raw light-theme screenshots remain in `docs/store/screenshots/`, generated with `pnpm build && tools/store-shots/shots.sh`.

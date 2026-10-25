@@ -4,6 +4,11 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- docs: add EN/ID branding and marketing kit with actual-UI demo screenshots, README banners, social cards, store promo tiles, logo lockups, copy and a reproducible renderer; remove unverified timing claims from store copy.
+
+- feat: clearer popup for non-technical owners: logo header, compact language toggle plus a one-tap theme icon, site shown at the top, check IDs hidden, "+N more" hint, action buttons pinned at the bottom.
+- feat: extension icon set (16–128 px): outline dizzy head with spiral on the brand violet tile; in-app verdict mark matches; store screenshots refreshed.
+- feat: add a persisted light/dark theme toggle to popup and report; light is the default (FR-16).
 - docs: refresh the GitHub README with developer setup, validation, architecture, privacy boundaries, contribution, and security reporting guidance.
 - docs: MIT license, final privacy policy for v0.1, Chrome Web Store listing and screenshots in EN/ID (F-090).
 - feat: report page with findings by severity, Copy message for developer (EN/ID), stale-data warning, limits note and settings (allowed sites, local targets); popup shows top three findings and opens the report (F-022).

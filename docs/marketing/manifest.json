@@ -1,0 +1,128 @@
+[
+  {
+    "file": "en-store-01.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "en"
+  },
+  {
+    "file": "en-store-02.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "en"
+  },
+  {
+    "file": "en-store-03.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "en"
+  },
+  {
+    "file": "en-store-04.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "en"
+  },
+  {
+    "file": "en-store-05.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "en"
+  },
+  {
+    "file": "en-readme.png",
+    "width": 1400,
+    "height": 560,
+    "locale": "en"
+  },
+  {
+    "file": "en-social.png",
+    "width": 1200,
+    "height": 630,
+    "locale": "en"
+  },
+  {
+    "file": "en-promo-small.png",
+    "width": 440,
+    "height": 280,
+    "locale": "en"
+  },
+  {
+    "file": "en-promo-marquee.png",
+    "width": 1400,
+    "height": 560,
+    "locale": "en"
+  },
+  {
+    "file": "id-store-01.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "id"
+  },
+  {
+    "file": "id-store-02.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "id"
+  },
+  {
+    "file": "id-store-03.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "id"
+  },
+  {
+    "file": "id-store-04.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "id"
+  },
+  {
+    "file": "id-store-05.png",
+    "width": 1280,
+    "height": 800,
+    "locale": "id"
+  },
+  {
+    "file": "id-readme.png",
+    "width": 1400,
+    "height": 560,
+    "locale": "id"
+  },
+  {
+    "file": "id-social.png",
+    "width": 1200,
+    "height": 630,
+    "locale": "id"
+  },
+  {
+    "file": "id-promo-small.png",
+    "width": 440,
+    "height": 280,
+    "locale": "id"
+  },
+  {
+    "file": "id-promo-marquee.png",
+    "width": 1400,
+    "height": 560,
+    "locale": "id"
+  },
+  {
+    "file": "store-promo-small.png",
+    "width": 440,
+    "height": 280,
+    "locale": "en"
+  },
+  {
+    "file": "store-promo-marquee.png",
+    "width": 1400,
+    "height": 560,
+    "locale": "en"
+  },
+  {
+    "file": "store-icon-128.png",
+    "width": 128,
+    "height": 128,
+    "locale": "en"
+  }
+]

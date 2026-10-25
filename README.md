@@ -1,5 +1,7 @@
 # phpusing
 
+![phpusing: security checks for your PHP site, in plain language, right in your browser.](docs/marketing/en-readme.png)
+
 > Find the headache in your PHP site before an attacker does.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -10,7 +12,26 @@ It is detection tooling, not a vulnerability scanner or a guarantee of security.
 
 ## Status
 
-v0.1 is feature-complete and preparing for its first Chrome Web Store release. The extension is not published yet. Store screenshots and manual browser checks remain before release; see [project status](docs/00_STATUS.md).
+v0.1 is feature-complete and preparing for its first Chrome Web Store release. The extension is not published yet. The EN/ID marketing kit is ready; manual browser checks remain before release; see [project status](docs/00_STATUS.md).
+
+## Product preview
+
+![phpusing popup with prioritized findings; actual UI with synthetic example data.](docs/marketing/en-store-03.png)
+
+<details>
+<summary>Bahasa Indonesia</summary>
+
+![phpusing: cek keamanan situs PHP Anda dengan bahasa sederhana, langsung di browser.](docs/marketing/id-readme.png)
+
+phpusing membantu pemilik situs PHP memeriksa file terbuka, konfigurasi berisiko, dan masalah versi PHP yang dikenal. Pemeriksaan berjalan di browser, dengan izin Anda, pada situs di tab aktif. Gratis, sumber terbuka, tanpa akun atau pelacakan.
+
+![Hasil pusing berat dengan temuan menurut prioritas; UI aktual dengan data contoh sintetis.](docs/marketing/id-store-03.png)
+
+Hasil tenang bukan jaminan keamanan. Periksa hanya situs milik Anda atau yang boleh Anda uji. Belum dipublikasikan di Chrome Web Store.
+
+</details>
+
+[Brand kit and asset guide](docs/marketing/README.md) · [EN/ID marketing copy](docs/marketing/COPY.md)
 
 ## What it checks today
 

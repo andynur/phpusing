@@ -17,7 +17,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [x] F-020 PHP core version check: VU-01 (PHP2Shell + EOL), bundled data
 - [x] F-021 Verdict and severity logic
 - [x] F-022 Report page with Copy message for developer (EN/ID)
-- [x] F-090 Store listing EN/ID, screenshots, `PRIVACY.md` final, license
+- [x] F-090 Store listing EN/ID, screenshots, branding/marketing kit, `PRIVACY.md` final, license
 
 ## v0.2 — Composer depth
 
