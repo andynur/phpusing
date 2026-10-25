@@ -85,5 +85,14 @@
   "check.EX-11.fix": "Hapus Adminer atau phpMyAdmin dari situs publik, atau izinkan hanya alamat IP Anda sendiri.",
   "check.EX-12.title": "File backup atau dump database terbuka untuk publik",
   "check.EX-12.impact": "Siapa pun bisa mengunduh kode atau seluruh database Anda, termasuk data pelanggan.",
-  "check.EX-12.fix": "Hapus file backup dari folder web dan simpan backup di luar folder itu. Anggap datanya sudah bocor."
+  "check.EX-12.fix": "Hapus file backup dari folder web dan simpan backup di luar folder itu. Anggap datanya sudah bocor.",
+  "check.CF-01.title": "Debug mode aktif",
+  "check.CF-01.impact": "Halaman error menampilkan kode, path file, dan kadang password kepada siapa pun yang memicu error.",
+  "check.CF-01.fix": "Matikan debug mode di production (Laravel: APP_DEBUG=false), lalu bersihkan cache konfigurasi.",
+  "check.CF-02.title": "Situs Anda tidak memakai HTTPS",
+  "check.CF-02.impact": "Password dan cookie sesi dikirim tanpa enkripsi dan bisa dibaca atau diubah di Wi-Fi publik.",
+  "check.CF-02.fix": "Aktifkan sertifikat TLS gratis (misalnya Let's Encrypt) di hosting Anda dan alihkan semua lalu lintas HTTP ke HTTPS.",
+  "check.CF-04.title": "Daftar isi folder terbuka untuk publik",
+  "check.CF-04.impact": "Siapa pun bisa menelusuri folder dan mengunduh file yang tidak pernah Anda tautkan, seperti upload atau backup.",
+  "check.CF-04.fix": "Matikan daftar isi folder di server (Apache: Options -Indexes; nginx: autoindex off)."
 }

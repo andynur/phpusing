@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: config checks for debug mode, plain HTTP and directory listing (CF-01, CF-02, CF-04) (F-014).
 - feat: exposure checks EX-01..EX-12 (.env, .git, composer files, Laravel log, phpinfo, Ignition, PHPUnit eval-stdin, Telescope/Horizon, DB admin tools, backups) with redacted evidence (F-013).
 - chore: audit Codex/Claude harness, add compact fail-fast verification with local logs and runner regression tests, and tighten context routing.
 

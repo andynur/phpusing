@@ -85,5 +85,14 @@
   "check.EX-11.fix": "Remove Adminer or phpMyAdmin from the public site, or allow only your own IP address.",
   "check.EX-12.title": "A backup or database dump is public",
   "check.EX-12.impact": "Anyone can download your code or your whole database, including customer data.",
-  "check.EX-12.fix": "Delete backup files from the web folder and keep backups outside it. Treat the data as leaked."
+  "check.EX-12.fix": "Delete backup files from the web folder and keep backups outside it. Treat the data as leaked.",
+  "check.CF-01.title": "Debug mode is on",
+  "check.CF-01.impact": "Error pages show code, file paths and sometimes passwords to anyone who triggers an error.",
+  "check.CF-01.fix": "Turn debug mode off in production (Laravel: APP_DEBUG=false), then clear the config cache.",
+  "check.CF-02.title": "Your site does not use HTTPS",
+  "check.CF-02.impact": "Passwords and session cookies travel unencrypted and can be read or changed on public Wi-Fi.",
+  "check.CF-02.fix": "Turn on a free TLS certificate (for example Let's Encrypt) at your host and redirect all HTTP traffic to HTTPS.",
+  "check.CF-04.title": "Directory listing is on",
+  "check.CF-04.impact": "Anyone can browse your folders and download files you never linked, such as uploads or backups.",
+  "check.CF-04.fix": "Turn off directory listing in your web server (Apache: Options -Indexes; nginx: autoindex off)."
 }

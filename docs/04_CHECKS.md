@@ -50,7 +50,7 @@ Budget order when trimming: C first, then H, then M, L.
 | ID | Check | Method | Sev |
 |---|---|---|---|
 | CF-01 | Debug mode | Baseline random path body contains Ignition (`Ignition`, `flareapp`), Whoops (`Whoops! There was an error`), Symfony (`Symfony Exception`, `sf-dump`) or a PHP stack trace (`Stack trace:` + `.php:`) | C |
-| CF-02 | HTTPS | Origin is `http:` and `https:` version responds | M |
+| CF-02 | HTTPS | Origin is `http:` (the tab loaded over plain HTTP, no redirect). No `https:` probe: it is a second origin outside the granted permission (D-003) | M |
 | CF-03 | Security headers | Missing HSTS (https only), `X-Content-Type-Options`, CSP | I (shown collapsed) |
 | CF-04 | Directory listing | `/vendor/`, `/storage/`, `/uploads/`, `/wp-content/uploads/` body contains `Index of /` | H |
 

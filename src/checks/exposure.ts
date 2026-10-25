@@ -1,7 +1,7 @@
 import { isNotFound, isOk, safeText, type Baseline } from '../scanner/baseline';
 import type { ProbeMethod, ProbeResponse } from '../scanner/fetch';
 import type { ProbeSpec } from '../scanner/scan';
-import type { MessageKey } from '../shared/i18n';
+import { makeFinding } from './finding';
 import type { Confidence, Finding, Severity } from '../shared/types';
 
 // Exposure checks EX-01..EX-12 (04_CHECKS.md). Pure: responses in, redacted findings out.
@@ -195,16 +195,7 @@ export function runPathChecks(
       if (lines) evidence.push(`${check.method ?? 'GET'} ${path} → ${res.status}`, ...lines);
     }
     if (evidence.length === 0) continue;
-    findings.push({
-      checkId: check.id,
-      severity: check.severity,
-      confidence: check.confidence,
-      titleKey: `check.${check.id}.title` as MessageKey,
-      impactKey: `check.${check.id}.impact` as MessageKey,
-      fixKey: `check.${check.id}.fix` as MessageKey,
-      evidence,
-      refs: check.refs ?? [],
-    });
+    findings.push(makeFinding(check.id, check.severity, check.confidence, evidence, check.refs));
   }
   return findings;
 }
