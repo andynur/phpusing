@@ -45,6 +45,20 @@ describe('scan service', () => {
     expect(await fakeBrowser.storage.local.get(null)).not.toHaveProperty(scanKey(TAB, ORIGIN));
   });
 
+  it('marks a major verdict on the toolbar badge', async () => {
+    const badge = vi.spyOn(fakeBrowser.action, 'setBadgeText').mockImplementation(async () => {});
+    const service = createScanService({
+      slotDelayMs: 0,
+      fetchImpl: fakeFetch((p) =>
+        p === '/.git/HEAD' ? { body: 'ref: refs/heads/main\n' } : undefined,
+      ),
+    });
+    await service.handle({ type: 'scan/start', tabId: TAB });
+    const last = parseBroadcast(await done());
+    expect(last?.type === 'scan/result' && last.result.verdict).toBe('major');
+    expect(badge).toHaveBeenCalledWith({ tabId: TAB, text: '!' });
+  });
+
   it('refuses origins without consent or host permission', async () => {
     await fakeBrowser.storage.local.set({ authorizedOrigins: [] });
     const service = createScanService({ slotDelayMs: 0, fetchImpl: fakeFetch(() => ({})) });

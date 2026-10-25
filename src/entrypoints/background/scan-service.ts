@@ -15,6 +15,7 @@ import {
 import { loadSettings } from '../../shared/settings';
 import { checkTarget } from '../../shared/target';
 import type { Fingerprint, Markers, ScanResult } from '../../shared/types';
+import { computeVerdict } from '../../shared/verdict';
 
 // Owns scans: preflight, one scan per tab, cancel, result storage (docs/03_ARCHITECTURE.md).
 
@@ -85,12 +86,15 @@ export function createScanService({
         requestsUsed: run.requestsUsed,
         fingerprint: fp,
         findings: run.findings,
-        // Verdict logic arrives with F-021.
-        verdict: 'unknown',
+        // phpSupported comes from VU-01 (F-020); until then a scan is never calm.
+        verdict: computeVerdict({ findings: run.findings, fingerprint: fp, blocked: run.blocked }),
         dataVersion: '',
         ...(run.blocked ? { blocked: true } : {}),
       };
       await browser.storage.session.set({ [scanKey(tabId, origin)]: result });
+      // Toolbar badge (DESIGN.md §7): no badge for calm or mild, to avoid false reassurance.
+      const badge = result.verdict === 'major' ? '!' : result.verdict === 'unknown' ? '?' : '';
+      browser.action.setBadgeText({ tabId, text: badge }).catch(() => {});
       broadcast({ type: 'scan/result', tabId, result });
     } catch {
       broadcast({
