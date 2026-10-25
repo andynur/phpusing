@@ -44,5 +44,5 @@ Contributors and coding agents start with `AGENTS.md`.
 
 ## License
 
-To be decided (MIT proposed). See `docs/00_STATUS.md`.
+MIT. See `LICENSE`.
 # phpusing

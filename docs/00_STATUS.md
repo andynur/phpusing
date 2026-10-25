@@ -4,14 +4,13 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-022 report page: `src/entrypoints/report/`, `developer-message.ts`, `report-url.ts`, `CopyButton`, popup top-3 + Open full report; `pnpm check` green
-- **Next task:** F-090, store listing EN/ID, screenshots, `PRIVACY.md` final, license (Q-1 needs Andy's confirmation)
+- **Last done:** 2026-10-25, F-090: `LICENSE` (MIT, Q-1 confirmed by Andy), `PRIVACY.md` final for v0.1, `docs/store/LISTING.md` (EN/ID text, permission justifications, screenshot spec); all v0.1 roadmap rows ticked; `pnpm check` green
+- **Next task:** v0.1 release prep: take the 5 store screenshots (manual), manual checks in `08_TEST_PLAN.md` (real site with WAF, ≤ 60 requests, EN/ID, themes, keyboard), `pnpm zip`, tag. Then v0.2 F-030
 
 ## Blockers and open questions
 
 | ID | Question | Owner | Needed by |
 |---|---|---|---|
-| Q-1 | License: MIT proposed. Confirm. | Andy | v0.1 publish |
 | Q-3 | Wordfence Intelligence data license allows bundling in an open-source extension? | Andy | v0.3 |
 | Q-4 | Register `phpusing.dev` and GitHub org `phpusing` (both free on 2026-10-25). | Andy | v0.1 publish |
 | Q-5 | Advisory data host: GitHub Releases vs GitHub Pages. | agent | F-030 |

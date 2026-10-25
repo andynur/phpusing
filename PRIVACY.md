@@ -1,6 +1,6 @@
 # Privacy Policy — phpusing
 
-_Draft. Effective on first public release._
+_Effective from version 0.1.0._
 
 phpusing is a browser extension that checks a website you own for known security problems. It is built so that we, the developers, never receive any of your data.
 
@@ -13,11 +13,11 @@ Nothing. phpusing has no server, account, analytics, crash reporting or advertis
 - **When you click "Check this site"**, it sends a limited number of read-only requests (at most 60) to that site only. These requests are sent without your cookies.
 - **It reads cookie names and page markup** on that tab to recognize the platform (for example Laravel or WordPress). It never reads cookie values.
 - **Results** are kept in your browser's session memory and are deleted when the browser closes.
-- **Settings** (language, theme, the list of sites you authorized, data version) are stored locally in your browser.
+- **Settings** (language, the list of sites you allowed, whether local addresses may be checked) are stored locally in your browser.
 
-## The only other network request
+## No other network requests
 
-To stay current, the extension downloads one signed vulnerability data file from `<data host, to be set>`. The whole file is downloaded, so the host cannot tell which software your site uses. Like any web request, the host sees your IP address in its access logs. You can turn automatic data checks off in settings.
+Version 0.1 makes no request other than the checks above. Vulnerability data is bundled inside the extension and updated with each release. If a later version adds a data download, it will fetch one whole signed file, so the host cannot tell which software your site uses, and this policy will be updated first.
 
 ## Sensitive files
 
@@ -33,4 +33,4 @@ If phpusing finds a public secret file (for example `.env`), it reports only tha
 
 ## Contact
 
-Open an issue at `<GitHub repository URL, to be set>`.
+Open an issue at https://github.com/andynur/phpusing/issues.
