@@ -20,8 +20,11 @@ export function FindingRow({
   finding,
   defaultOpen = false,
   copyText,
+  showCheckId = true,
 }: {
   finding: Finding;
+  /** Hide the check ID where space is tight and readers are non-technical (popup). */
+  showCheckId?: boolean;
   defaultOpen?: boolean;
   /** Developer message; shows the Copy button when given (report page). */
   copyText?: string;
@@ -44,7 +47,7 @@ export function FindingRow({
       >
         <SeverityBadge severity={finding.severity} />
         <span className="min-w-0 flex-1 font-semibold">{t(finding.titleKey)}</span>
-        <span className="font-mono text-xs text-fg-subtle">{finding.checkId}</span>
+        {showCheckId && <span className="font-mono text-xs text-fg-subtle">{finding.checkId}</span>}
         <Icon
           name="chevron-down"
           className={

@@ -15,7 +15,7 @@ export function LangToggle({
     <div
       role="group"
       aria-label={t(labelKey)}
-      className="inline-flex rounded-sm border border-border bg-surface p-0.5"
+      className="inline-flex h-7 items-center rounded-sm border border-border bg-surface p-0.5"
     >
       {LANGS.map((code) => {
         const active = code === lang;

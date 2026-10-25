@@ -17,7 +17,7 @@ phpusing deals with real risk, so the **content is sober**: exact evidence, clea
 
 1. Tokens only. No raw hex, Tailwind palette colors (`bg-red-500`) or arbitrary values (`text-[13px]`) in components.
 2. Severity is never color alone: always icon + label + color.
-3. Every state works in light and dark; tokens switch under `[data-theme="dark"]` and `prefers-color-scheme`.
+3. Every state works in light and dark; the default is light and tokens switch only under `[data-theme="dark"]`.
 4. All copy through `t()` (`docs/07_I18N.md`), including `aria-label`.
 5. Use primitives from `src/shared/ui/` before writing new markup; add a prop instead of restyling at the call site.
 6. Scanned-site content (titles, markers) is shown in mono, truncated, as text only.
@@ -79,7 +79,7 @@ Tokens: `--c-sev-<name>-fg`, `--c-sev-<name>-bg`.
 
 ### Layout
 
-- Popup: 380 px wide, max 600 px tall, 16 px padding.
+- Popup: 380 px wide, max 600 px tall, 16 px padding. Order: header (mark, name, tagline; `LangToggle` + `ThemeToggle` top-right), site chip, verdict, top 3 findings + "+N more", status. Action buttons sit in a footer pinned to the bottom; the content above scrolls.
 - Report page: max width 760 px, centered, 24 px padding; single column.
 
 ## 4. Verdict system
@@ -111,11 +111,12 @@ Below the title: count by severity as badges, data date, requests used (e.g. "41
 | Component | Notes |
 |---|---|
 | `Button` | variants `primary`, `secondary`, `ghost`; sizes `sm`, `md`; full keyboard focus ring `--c-brand` 2 px offset 2 px |
-| `LangToggle` | segmented `EN | ID`, `aria-pressed`, top-right of popup and report |
+| `LangToggle` | segmented `EN | ID`, `aria-pressed`, top-right of popup and report, left of `ThemeToggle` |
+| `ThemeToggle` | one 28 px icon button (moon in light, sun in dark); `aria-label` names the action ("Switch to dark mode") |
 | `VerdictCard` | icon + title + body + severity counts; color set from §4 |
 | `SeverityBadge` | icon + label, `--c-sev-*`; `text-xs`, `--r-sm` |
 | `ConfidenceTag` | text only, `--c-fg-subtle`: "confirmed", "likely", "version hidden" |
-| `FindingRow` | collapsed: badge + title + check ID; expanded: impact, evidence (mono list), fix, refs, Copy message |
+| `FindingRow` | collapsed: badge + title + check ID (hidden in popup, `showCheckId={false}`); expanded: impact, evidence (mono list), fix, refs, Copy message |
 | `CopyButton` | shows "Copied" for 2 s, announced via `aria-live="polite"` |
 | `ProgressBar` | determinate, label "12 of 41 checks" |
 | `ConsentBox` | checkbox + one-line legal text + link to `WHAT_WE_NEVER_DO.md` |
@@ -123,7 +124,8 @@ Below the title: count by severity as badges, data date, requests used (e.g. "41
 
 ## 7. Logo and icon
 
-- Mark: a magnifying lens whose glass holds a small spiral (the "pusing" swirl). Works at 16 px as a simple lens + dot.
+- Mark: an outline head in profile with a dizzy spiral inside (the "pusing" swirl), white on a `--c-brand` violet rounded tile. Not red: red is reserved for `critical`, and a red toolbar icon would read as an alarm on every site. At 16 and 32 px the spiral becomes a dot; in-app `Icon name="mark"` is that small form in `currentColor`.
+- Sources: `tools/icons/mark.svg` (48 px and up) and `tools/icons/mark-small.svg` (16, 32 px); `tools/icons/render.sh` writes `public/icon/<size>.png`, which WXT adds to the manifest.
 - Toolbar icon states: default (outline), `!` badge for `major`, `?` for `unknown`. No badge for calm (avoid false reassurance on the toolbar).
 - Do not use or imitate the official PHP logo or the elePHPant.
 

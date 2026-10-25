@@ -18,10 +18,13 @@ import { Card } from '../../shared/ui/Card';
 import { ConsentBox } from '../../shared/ui/ConsentBox';
 import { EmptyState } from '../../shared/ui/EmptyState';
 import { LangToggle } from '../../shared/ui/LangToggle';
+import { ThemeToggle } from '../../shared/ui/ThemeToggle';
+import { ThemeProvider } from '../../shared/theme/ThemeProvider';
 import { ProgressBar } from '../../shared/ui/ProgressBar';
 import { VerdictCard } from '../../shared/ui/VerdictCard';
 import { reportPath } from '../../shared/report-url';
 import { FindingRow } from '../../shared/ui/FindingRow';
+import { Icon } from '../../shared/ui/Icon';
 import { countSeverities, sortFindings } from '../../shared/verdict';
 
 interface Target {
@@ -72,12 +75,15 @@ const reasonKey = {
   failed: 'popup.reason.failed',
 } as const;
 
+// Top findings in the popup; the rest live in the report.
+const POPUP_FINDINGS = 3;
+
 function send(request: Request): Promise<StartReply> {
   return browser.runtime.sendMessage(request) as Promise<StartReply>;
 }
 
 // Popup shell: 380 px wide, max 600 px tall (DESIGN.md §3 Layout).
-export function App() {
+function Popup() {
   const { t } = useI18n();
   const [view, setView] = useState<View>({ kind: 'loading' });
   const [checked, setChecked] = useState(false);
@@ -152,86 +158,128 @@ export function App() {
     startScan(target).catch(() => setView({ kind: 'blocked', reason: 'error' }));
   }
 
+  const findings = view.kind === 'done' ? sortFindings(view.result.findings) : [];
+  const hidden = findings.length - POPUP_FINDINGS;
+
+  // Header, site, verdict and status scroll; the action buttons stay pinned at the bottom.
   return (
-    <main className="popup-frame flex flex-col gap-4 bg-canvas p-4 text-sm text-fg">
-      <header className="flex items-start justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-semibold">{t('app.name')}</h1>
-          <p className="text-fg-muted">{t('app.tagline')}</p>
-        </div>
-        <LangToggle />
-      </header>
-      {view.kind === 'done' && (
-        <VerdictCard
-          verdict={view.result.verdict}
-          counts={countSeverities(view.result.findings)}
-          requestsUsed={view.result.requestsUsed}
-          dataDate={dataDate(view.result.dataVersion)}
-        />
-      )}
-      {view.kind === 'done' && view.result.findings.length > 0 && (
-        <ul className="flex flex-col gap-2">
-          {sortFindings(view.result.findings)
-            .slice(0, 3)
-            .map((f, i) => (
-              <FindingRow key={`${f.checkId}-${i}`} finding={f} />
-            ))}
-        </ul>
-      )}
-      <Card>
-        {view.kind === 'loading' && <EmptyState message={t('popup.loading')} />}
-        {view.kind === 'blocked' && <EmptyState message={t(blockedKey[view.reason])} />}
-        {view.kind !== 'loading' && view.kind !== 'blocked' && (
-          <div className="flex flex-col gap-3">
-            <p className="flex flex-col">
-              <span className="text-xs text-fg-muted">{t('popup.target')}</span>
-              <span className="truncate font-mono" title={view.origin}>
-                {view.origin}
-              </span>
-            </p>
-            {view.kind === 'ready' && (
-              <>
-                {!view.consented && <ConsentBox checked={checked} onChange={setChecked} />}
-                {view.denied && (
-                  <p role="status" className="text-fg-muted">
-                    {t('popup.permissionDenied')}
-                  </p>
-                )}
-                {view.reason && (
-                  <p role="status" className="text-fg-muted">
-                    {t(reasonKey[view.reason])}
-                  </p>
-                )}
-                <Button disabled={!view.consented && !checked} onClick={() => handleCheck(view)}>
-                  {t('popup.checkThisSite')}
-                </Button>
-              </>
-            )}
-            {view.kind === 'scanning' && (
-              <>
-                <p className="text-fg-muted">{t('popup.loading')}</p>
-                <ProgressBar done={view.done} total={view.total} />
-                <Button variant="secondary" onClick={() => handleCancel(view)}>
-                  {t('popup.cancel')}
-                </Button>
-              </>
-            )}
-            {view.kind === 'done' && (
-              <>
-                {view.result.blocked && (
-                  <p role="status" className="text-fg-muted">
-                    {t('popup.blocked')}
-                  </p>
-                )}
-                <Button onClick={() => openReport(view)}>{t('popup.openReport')}</Button>
-                <Button variant="secondary" onClick={() => handleAgain(view)}>
-                  {t('popup.checkAgain')}
-                </Button>
-              </>
-            )}
+    <main className="popup-frame flex flex-col bg-canvas text-sm text-fg">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4">
+        <header className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="rounded-md bg-brand p-1.5 text-on-brand">
+              <Icon name="mark" className="size-5" />
+            </span>
+            <div className="min-w-0">
+              <h1 className="text-lg font-semibold">{t('app.name')}</h1>
+              <p className="text-xs text-fg-muted">{t('app.tagline')}</p>
+            </div>
           </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <LangToggle />
+            <ThemeToggle />
+          </div>
+        </header>
+        {origin !== undefined && (
+          <p
+            className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2"
+            title={origin}
+          >
+            <Icon name="globe" className="size-4 text-fg-muted" />
+            <span className="sr-only">{t('popup.target')}</span>
+            <span className="truncate font-mono text-xs">{origin}</span>
+          </p>
         )}
-      </Card>
+        {view.kind === 'done' && (
+          <VerdictCard
+            verdict={view.result.verdict}
+            counts={countSeverities(view.result.findings)}
+            requestsUsed={view.result.requestsUsed}
+            dataDate={dataDate(view.result.dataVersion)}
+          />
+        )}
+        {findings.length > 0 && (
+          <ul className="flex flex-col gap-2">
+            {findings.slice(0, POPUP_FINDINGS).map((f, i) => (
+              <FindingRow key={`${f.checkId}-${i}`} finding={f} showCheckId={false} />
+            ))}
+          </ul>
+        )}
+        {hidden > 0 && (
+          <p className="text-center text-xs text-fg-muted">{t('popup.more', { count: hidden })}</p>
+        )}
+        {(view.kind === 'loading' || view.kind === 'blocked') && (
+          <Card>
+            <EmptyState
+              message={t(view.kind === 'loading' ? 'popup.loading' : blockedKey[view.reason])}
+            />
+          </Card>
+        )}
+        {view.kind === 'ready' && (
+          <>
+            {!view.consented && <ConsentBox checked={checked} onChange={setChecked} />}
+            {view.denied && (
+              <p role="status" className="text-fg-muted">
+                {t('popup.permissionDenied')}
+              </p>
+            )}
+            {view.reason && (
+              <p role="status" className="text-fg-muted">
+                {t(reasonKey[view.reason])}
+              </p>
+            )}
+          </>
+        )}
+        {view.kind === 'scanning' && (
+          <Card>
+            <div className="flex flex-col gap-3">
+              <p className="text-fg-muted">{t('popup.loading')}</p>
+              <ProgressBar done={view.done} total={view.total} />
+            </div>
+          </Card>
+        )}
+        {view.kind === 'done' && view.result.blocked && (
+          <p role="status" className="text-fg-muted">
+            {t('popup.blocked')}
+          </p>
+        )}
+      </div>
+      {(view.kind === 'ready' || view.kind === 'scanning' || view.kind === 'done') && (
+        <footer className="flex shrink-0 gap-2 border-t border-border bg-canvas p-4">
+          {view.kind === 'ready' && (
+            <Button
+              className="flex-1"
+              disabled={!view.consented && !checked}
+              onClick={() => handleCheck(view)}
+            >
+              {t('popup.checkThisSite')}
+            </Button>
+          )}
+          {view.kind === 'scanning' && (
+            <Button variant="secondary" className="flex-1" onClick={() => handleCancel(view)}>
+              {t('popup.cancel')}
+            </Button>
+          )}
+          {view.kind === 'done' && (
+            <>
+              <Button variant="secondary" onClick={() => handleAgain(view)}>
+                {t('popup.checkAgain')}
+              </Button>
+              <Button className="flex-1" onClick={() => openReport(view)}>
+                {t('popup.openReport')}
+              </Button>
+            </>
+          )}
+        </footer>
+      )}
     </main>
+  );
+}
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <Popup />
+    </ThemeProvider>
   );
 }
