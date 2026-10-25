@@ -1,0 +1,6 @@
+{
+  "name": "acme/shop",
+  "require": {
+    "php": "^8.2"
+  }
+}

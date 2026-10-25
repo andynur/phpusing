@@ -1,7 +1,8 @@
+import { EXPOSURE_CHECKS, planFor } from '../checks/exposure';
 import type { Fingerprint } from '../shared/types';
 import type { ProbeSpec } from './scan';
 
-// Probe plan (scan pipeline step 5). Exposure and config probes join with F-013 and F-014.
+// Probe plan (scan pipeline step 5). Generic critical paths always run; runScan trims by severity.
 export function buildPlan(_fingerprint: Fingerprint): ProbeSpec[] {
-  return [];
+  return planFor(EXPOSURE_CHECKS);
 }

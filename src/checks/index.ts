@@ -1,7 +1,8 @@
 import type { ScanContext } from '../scanner/scan';
 import type { Finding, Fingerprint } from '../shared/types';
+import { EXPOSURE_CHECKS, runPathChecks } from './exposure';
 
-// Runs every check over the collected responses. Exposure and config checks join with F-013, F-014.
-export function analyze(_context: ScanContext, _fingerprint: Fingerprint): Finding[] {
-  return [];
+// Runs every check over the collected responses. Config checks join with F-014.
+export function analyze(context: ScanContext, _fingerprint: Fingerprint): Finding[] {
+  return runPathChecks(EXPOSURE_CHECKS, context.responses, context.baseline);
 }

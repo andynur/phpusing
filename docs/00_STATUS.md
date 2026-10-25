@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-012 fingerprint: `src/checks/fingerprint.ts` (FP-01..FP-05, `readMarkers`, `parseMarkers`), `scripting` permission, fingerprint in `ScanResult`; `pnpm check` green, 132 tests
-- **Next task:** F-013, exposure checks EX-01..EX-12 in `src/checks/exposure.ts` plus their probes in `buildPlan`
+- **Last done:** 2026-10-25, F-013 exposure checks: `src/checks/exposure.ts` (EX-01..EX-12, 26 probes), EN/ID strings, fixtures in `tests/fixtures/EX-*`, `tests/redaction.test.ts`; `pnpm check` green
+- **Next task:** F-014, config checks CF-01, CF-02, CF-04 in `src/checks/config.ts`
 
 ## Blockers and open questions
 
@@ -21,6 +21,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
 - Manifest: `storage`, `activeTab`, `scripting`, `optional_host_permissions`.
+- F-013: `PathCheck` + `runPathChecks` in `exposure.ts` are reusable for CF-04. Fixtures are excluded from Prettier (raw bytes matter). All 26 paths are always planned; budget trims by severity.
 - F-012: `buildPlan(fingerprint)` and `analyze(context, fingerprint)` get the fingerprint via a closure in `scan-service.ts`. FP-06 (CodeIgniter) not done: roadmap row says FP-01..FP-05.
 - F-011: `buildPlan` and `analyze` (`src/checks/index.ts`) are empty stubs; F-012..F-014 fill them. Verdict is hard-coded `unknown` in `scan-service.ts` until F-021. `dataVersion` is empty until F-020; VerdictCard then shows only the request count. No `Range` header (03_ARCHITECTURE.md). Rate limiter is in memory per service worker.
 - F-010: `revoke()` exists, its settings UI lands with the report page (F-022). `allowLocalTargets` setting has no UI yet, so localhost is refused for now. ConsentBox links to the GitHub `WHAT_WE_NEVER_DO.md`. Bundle URL check now skips `*` match patterns.

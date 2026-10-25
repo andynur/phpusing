@@ -14,6 +14,8 @@ const ALLOWED = [
   'https://reactjs.org/',
   'https://tailwindcss.com', // license banner in CSS
   'https://github.com/andynur/phpusing',
+  // Reference links in findings: opened by the user in a tab, never fetched by the extension.
+  'https://nvd.nist.gov/vuln/detail/',
 ];
 
 function* files(dir) {

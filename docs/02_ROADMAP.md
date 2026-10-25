@@ -4,13 +4,14 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 
 ## v0.1 — MVP (target: as soon as possible, PHP2Shell window)
 
+- [x] H-001 Agent harness: shared context routing, compact checks, Codex/Claude project setup (see `10_AGENT_HARNESS.md`)
 - [x] F-000 Scaffold: WXT, React, Tailwind 4 tokens, Vitest, ESLint/Prettier, `pnpm check`
 - [x] F-001 i18n core: `en.json`, `id.json`, `t()`, EN/ID toggle, parity test
 - [x] F-002 Design tokens and primitives from `DESIGN.md` (Button, Card, SeverityBadge, VerdictCard, FindingRow)
 - [x] F-010 Popup: Check this site, consent step, runtime permission request
 - [x] F-011 Scanner core: budget, concurrency, timeout, read cap, cancel, soft-404 baseline
 - [x] F-012 Fingerprint: FP-01..FP-05
-- [ ] F-013 Exposure checks: EX-01..EX-12
+- [x] F-013 Exposure checks: EX-01..EX-12
 - [ ] F-014 Config checks: CF-01, CF-02, CF-04
 - [ ] F-020 PHP core version check: VU-01 (PHP2Shell + EOL), bundled data
 - [ ] F-021 Verdict and severity logic

@@ -6,3 +6,4 @@ playwright-report/
 test-results/
 data/dist/
 **/*.md
+tests/fixtures/

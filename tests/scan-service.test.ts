@@ -31,20 +31,23 @@ function done() {
 
 describe('scan service', () => {
   it('scans an authorized origin and stores the result in session storage', async () => {
-    const service = createScanService({ fetchImpl: fakeFetch(() => ({ body: 'ok' })) });
+    const service = createScanService({
+      slotDelayMs: 0,
+      fetchImpl: fakeFetch(() => ({ body: 'ok' })),
+    });
     expect(await service.handle({ type: 'scan/start', tabId: TAB })).toEqual({ ok: true });
     const last = await done();
     expect(parseBroadcast(last)?.type).toBe('scan/result');
     const stored = (await fakeBrowser.storage.session.get(scanKey(TAB, ORIGIN)))[
       scanKey(TAB, ORIGIN)
     ];
-    expect(stored).toMatchObject({ origin: ORIGIN, requestsUsed: 2, verdict: 'unknown' });
+    expect(stored).toMatchObject({ origin: ORIGIN, requestsUsed: 28, verdict: 'unknown' });
     expect(await fakeBrowser.storage.local.get(null)).not.toHaveProperty(scanKey(TAB, ORIGIN));
   });
 
   it('refuses origins without consent or host permission', async () => {
     await fakeBrowser.storage.local.set({ authorizedOrigins: [] });
-    const service = createScanService({ fetchImpl: fakeFetch(() => ({})) });
+    const service = createScanService({ slotDelayMs: 0, fetchImpl: fakeFetch(() => ({})) });
     expect(await service.handle({ type: 'scan/start', tabId: TAB })).toEqual({
       ok: false,
       reason: 'not-authorized',
@@ -54,6 +57,7 @@ describe('scan service', () => {
   it('refuses a second scan in the same tab and the third scan in a minute', async () => {
     let t = 0;
     const service = createScanService({
+      slotDelayMs: 0,
       fetchImpl: fakeFetch(() => ({ body: 'ok', delayMs: 20 })),
       now: () => t,
     });
@@ -74,6 +78,7 @@ describe('scan service', () => {
 
   it('cancel stops the scan and reports cancelled', async () => {
     const service = createScanService({
+      slotDelayMs: 0,
       fetchImpl: fakeFetch(() => ({ body: 'ok', delayMs: 50 })),
     });
     await service.handle({ type: 'scan/start', tabId: TAB });
