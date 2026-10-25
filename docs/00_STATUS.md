@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-090: `LICENSE` (MIT, Q-1 confirmed by Andy), `PRIVACY.md` final for v0.1, `docs/store/LISTING.md` (EN/ID text, permission justifications, screenshot spec); all v0.1 roadmap rows ticked; `pnpm check` green
-- **Next task:** v0.1 release prep: take the 5 store screenshots (manual), manual checks in `08_TEST_PLAN.md` (real site with WAF, ≤ 60 requests, EN/ID, themes, keyboard), `pnpm zip`, tag. Then v0.2 F-030
+- **Last done:** 2026-10-25, F-090: `LICENSE` (MIT, Q-1 confirmed by Andy), `PRIVACY.md` final for v0.1, `docs/store/LISTING.md` (EN/ID text, permission justifications), 10 screenshots in `docs/store/screenshots/` via `tools/store-shots/shots.sh`; all v0.1 roadmap rows ticked; `pnpm check` green
+- **Next task:** v0.1 release prep: manual checks in `08_TEST_PLAN.md` (real site with WAF, ≤ 60 requests, EN/ID, themes, keyboard), `pnpm zip`, tag. Then v0.2 F-030
 
 ## Blockers and open questions
 

@@ -79,9 +79,9 @@ Open source: https://github.com/andynur/phpusing
 - Category: Developer Tools.
 - Languages: English, Indonesian.
 
-## Screenshots (1280×800, manual)
+## Screenshots (1280×800)
 
-Take on a site you own, light theme, then repeat in Indonesian:
+In `docs/store/screenshots/` (`en-*` and `id-*`), made from the built extension with synthetic data: `pnpm build && tools/store-shots/shots.sh`. Light theme. Upload the five of one language per listing locale:
 
 1. Popup before a check: origin and "Check this site" with the consent box.
 2. Popup during a check: progress bar.
