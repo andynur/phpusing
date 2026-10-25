@@ -28,6 +28,8 @@ const bad = [];
 for (const file of files(ROOT)) {
   const text = readFileSync(file, 'utf8');
   for (const [url] of text.matchAll(/https?:\/\/[^\s"'`)<>\\]+/g)) {
+    // Match patterns (manifest optional_host_permissions) are not fetchable URLs.
+    if (url.includes('*')) continue;
     if (!ALLOWED.some((prefix) => url.startsWith(prefix))) bad.push(`${file}: ${url}`);
   }
 }

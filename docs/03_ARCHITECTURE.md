@@ -35,7 +35,7 @@ report page (React) ◀── storage.session (scan result, memory only)
 | Permission | Why |
 |---|---|
 | `activeTab` | Read DOM markers on the page the user clicked from |
-| `scripting` | Run the one marker-reading function in that tab |
+| `scripting` | Run the one marker-reading function in that tab (added with F-012, not before) |
 | `storage` | `local`: language, theme, authorized origins, data version. `session`: scan results |
 | `optional_host_permissions: ["https://*/*", "http://*/*"]` | Requested at runtime for one origin only (`origin/*`) |
 
