@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
 - **Phase:** building v0.2; v0.1.0 Chrome Web Store upload deferred to the end (owner)
-- **Last done:** 2026-10-26, F-034 CISA KEV flag: `normalizeKev` in `tools/build-data/lib.mjs` (KEV feed, only CVEs our data names), `kev` in advisory data, VU-01/VU-02 set `kev` (VU-02 then critical). `pnpm check` green. Before: F-033 composer.lock check on the report page; D-015; F-032 VU-02; F-031 data update (not tried against the live Pages host from a real Chrome yet); v0.1.0 tagged (`cc506e1`), not pushed.
-- **Next task:** v0.2 F-035 Markdown report export. Owner: push, then run the advisory-data workflow so the live bundle gets `kev`; manual Update now on the live host in Chrome 137+; try the composer.lock check with a real project lock. Chrome Web Store upload last (owner).
+- **Last done:** 2026-10-26, F-035 Markdown report export (`src/shared/markdown-report.ts`, Download button on the report page). `pnpm check` green. Before: F-034 CISA KEV flag (`7490757`); F-033 composer.lock check (`770dd5c`); D-015; F-032; F-031 (not tried against the live Pages host from a real Chrome yet); v0.1.0 tagged (`cc506e1`). Nothing pushed.
+- **Next task:** v0.2 F-036 owner-entered PHP version when VU-01 is hidden (FR-19, D-013). Owner: push, then run the advisory-data workflow so the live bundle gets `kev`; manual Update now on the live host in Chrome 137+; try the composer.lock check with a real project lock. Chrome Web Store upload last (owner).
 
 ## Blockers and open questions
 

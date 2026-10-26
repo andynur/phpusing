@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: download the report as a Markdown file (F-035), in the developer message language, with redacted evidence only.
 - feat: flag advisories in the CISA KEV catalog as exploited in the wild (F-034): the data pipeline adds a `kev` list, VU-02 findings with a KEV CVE become critical, and VU-01 and VU-02 show the KEV badge.
 - feat: check a `composer.lock` on the report page (F-033): pick or drop the file, it is audited in the browser against package advisories and never uploaded or stored.
 - feat: read up to 2 MB of an exposed `composer.lock` so VU-02 audits the whole file (D-015); other responses stay at 64 KB.

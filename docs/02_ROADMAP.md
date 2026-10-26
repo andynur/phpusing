@@ -26,7 +26,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [x] F-032 VU-02: audit exposed `composer.lock`
 - [x] F-033 Drop `composer.lock` on report page (local parse)
 - [x] F-034 CISA KEV flag on matched advisories
-- [ ] F-035 Markdown report export
+- [x] F-035 Markdown report export
 - [ ] F-036 Owner-entered PHP version when VU-01 is hidden (FR-19, D-013)
 
 ## v0.3 — WordPress

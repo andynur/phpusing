@@ -73,6 +73,33 @@ describe('report page', () => {
     expect(screen.getByRole('heading', { name: 'Findings' })).toBeInTheDocument();
   });
 
+  it('downloads the report as Markdown in the developer message language', async () => {
+    await fakeBrowser.storage.session.set({ [scanKey(7, ORIGIN)]: RESULT });
+    let blob: Blob | undefined;
+    const create = vi.fn((b: Blob) => {
+      blob = b;
+      return 'blob:report';
+    });
+    Object.assign(URL, { createObjectURL: create, revokeObjectURL: vi.fn() });
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (
+      this: HTMLAnchorElement,
+    ) {
+      expect(this.download).toBe('phpusing-shop.example.com-2026-10-25.md');
+      expect(this.href).toBe('blob:report');
+    });
+    renderReport(reportPath(7, ORIGIN).replace('/report.html', ''));
+
+    const group = await screen.findByRole('group', { name: 'Developer message language' });
+    await userEvent.click(within(group).getByRole('button', { name: 'ID' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Download report (Markdown)' }));
+    expect(click).toHaveBeenCalledOnce();
+    expect(blob?.type).toBe('text/markdown;charset=utf-8');
+    const text = await blob?.text();
+    expect(text).toContain('# Laporan phpusing untuk https://shop.example.com');
+    expect(text).toContain('keys: APP_KEY, DB_PASSWORD');
+    click.mockRestore();
+  });
+
   it('explains a missing result and still shows settings', async () => {
     renderReport('?tab=7&origin=https%3A%2F%2Fother.example');
     expect(await screen.findByText(/No check result for this tab/)).toBeInTheDocument();

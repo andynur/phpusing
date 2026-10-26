@@ -4,6 +4,7 @@ import { dataDate } from '../../advisories/load';
 import { currentAdvisories } from '../../advisories/update';
 import { loadAuthorizedOrigins, revoke } from '../../shared/consent';
 import { developerMessage } from '../../shared/developer-message';
+import { markdownReport, reportFileName } from '../../shared/markdown-report';
 import type { Lang } from '../../shared/i18n';
 import { useI18n } from '../../shared/i18n/I18nProvider';
 import { scanKey, type DataReply } from '../../shared/messages';
@@ -38,20 +39,39 @@ export function isStale(version: string, now: number): boolean {
   return !date || now - Date.parse(date) > STALE_DAYS * 86_400_000;
 }
 
+/** Saves through a blob link: no downloads permission, nothing leaves the browser. */
+function downloadMarkdown(text: string, fileName: string) {
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/markdown;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
 function Findings({ result }: { result: ScanResult }) {
   const { lang, t } = useI18n();
   const [messageLang, setMessageLang] = useState<Lang>(lang);
 
-  if (result.findings.length === 0) return <EmptyState message={t('report.empty')} />;
   return (
     <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-semibold">{t('report.findings')}</h2>
-        <div className="flex items-center gap-2 text-xs text-fg-muted">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
           <span>{t('report.messageLang')}</span>
           <LangToggle value={messageLang} onChange={setMessageLang} labelKey="report.messageLang" />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              downloadMarkdown(markdownReport(messageLang, result), reportFileName(result))
+            }
+          >
+            {t('export.download')}
+          </Button>
         </div>
       </div>
+      {result.findings.length === 0 && <EmptyState message={t('report.empty')} />}
       {SEVERITIES.map((severity) => {
         const group = result.findings.filter((f) => f.severity === severity);
         if (group.length === 0) return null;
