@@ -23,12 +23,13 @@ Do not use WPScan data: its license restricts redistribution.
      "generatedAt": "2026-10-25T00:00:00Z",
      "php": [{ "id": "PHP2SHELL", "cves": ["…"], "fixed": ["8.5.12", "8.4.27", "8.3.36", "8.2.35"], "unfixedBelow": "8.2", "source": "https://www.php.net/…" }],
      "eol": { "php": [{ "cycle": "8.1", "eol": "2025-12-31", "latest": "8.1.x" }] },
-     "packages": { "laravel/framework": [{ "id": "PKSA-…", "cve": "CVE-…", "affected": ">=10.0,<10.48.29", "cvss": 9.8, "kev": false, "url": "…" }] }
+     "packages": { "laravel/framework": [{ "id": "PKSA-…", "cve": "CVE-… or null", "affected": ">=10.0,<10.48.29", "severity": "critical or null", "url": "https://… or null" }] }
    }
    ```
-3. Sort keys, minify, compute SHA-256, sign with Ed25519 (private key in GitHub Actions secret only).
-4. Publish `advisories.json` + `advisories.json.sig` + `meta.json` to static hosting (Q-5).
-5. Copy the same files into `data/snapshot/` for the bundled snapshot at release time.
+   Built by `tools/build-data/build.mjs` (Node built-ins only) from `tools/build-data/php-core.json` (hand-curated), endoflife.date `api/php.json` and Packagist `api/security-advisories/?updatedSince=0`. Package entries carry Packagist's `severity` label; OSV CVSS vectors are not merged yet, and the KEV flag arrives with F-034. Version is `<UTC date>.<workflow run number>`. The build fails on any entry that breaks the rules in `tools/build-data/lib.mjs` (CVE format, https source, explicit EOL date).
+3. Sort keys, minify, compute SHA-256, sign with Ed25519 (private key in GitHub Actions secret `PHPUSING_DATA_KEY` only; create the pair once with `node tools/build-data/keygen.mjs`). The signature covers the exact bytes of `advisories.json`; `meta.json` is an unsigned hint.
+4. Publish `advisories.json` + `advisories.json.sig` + `meta.json` to GitHub Pages under `https://andynur.github.io/phpusing/v1/` (D-014) from `.github/workflows/advisory-data.yml`, daily and on demand. Size on 2026-10-26: 1.3 MB, 254 KB gzipped.
+5. Copy the same files into `data/snapshot/` for the bundled snapshot at release time. Not automated yet: the snapshot keeps `packages` empty until VU-02 (F-032) needs them, and a test keeps its `php` entries equal to `php-core.json`.
 
 All values in `php` entries must carry a source URL. Never hand-type a CVE ID or version without one.
 

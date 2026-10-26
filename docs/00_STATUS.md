@@ -3,9 +3,9 @@
 Single source of "where are we". Update at the end of every task. Keep it under 40 lines.
 
 - **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
-- **Phase:** v0.1.0 packaged; Chrome Web Store upload pending (owner)
-- **Last done:** 2026-10-26, v0.1.0 release: owner passed the manual checks (public site with WAF, dark theme, toolbar `activeTab` + permission prompt, Enter key); `pnpm zip` built, tag `v0.1.0`. Same day: hidden-version copy (D-013), popup `sendResponse` fix, `.test` local hosts.
-- **Next task:** owner uploads `.output/phpusing-0.1.0-chrome.zip` with `docs/store/LISTING.md`; then v0.2 F-030 (Q-5 first)
+- **Phase:** building v0.2; v0.1.0 Chrome Web Store upload deferred to the end (owner)
+- **Last done:** 2026-10-26, F-030 advisory data pipeline: `tools/build-data/` (build, sign, keygen; Node built-ins only), daily GitHub Pages workflow, Q-5 resolved as GitHub Pages (D-014). Local run: 1114 packages, 1.3 MB. Earlier today: v0.1.0 tagged (`cc506e1`), not pushed.
+- **Next task:** v0.2 F-031 in-extension data update (WebCrypto Ed25519, public key in `src/advisories/config.ts`, add host to `tools/check-bundle-urls.mjs`). Chrome Web Store upload last (owner).
 
 ## Blockers and open questions
 
@@ -13,7 +13,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 |---|---|---|---|
 | Q-3 | Wordfence Intelligence data license allows bundling in an open-source extension? | Andy | v0.3 |
 | Q-4 | Register `phpusing.dev` and GitHub org `phpusing` (both free on 2026-10-25). Deferred: v0.1 links use `github.com/andynur/phpusing`. | Andy | landing page |
-| Q-5 | Advisory data host: GitHub Releases vs GitHub Pages. | agent | F-030 |
+| Q-6 | Advisory data goes live: run `node tools/build-data/keygen.mjs`, save the private key as repo secret `PHPUSING_DATA_KEY`, set Pages source to GitHub Actions, push, run workflow `advisory-data`. Keep the public key for F-031. | Andy | F-031 |
 
 ## Notes for the next session
 

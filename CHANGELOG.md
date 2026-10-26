@@ -4,6 +4,8 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: advisory data pipeline `tools/build-data` (php.net core entries, endoflife.date, Packagist), Ed25519 signing and a daily GitHub Pages workflow (F-030, D-014).
+
 ## [0.1.0] - 2026-10-26
 
 - feat: clearer "PHP version hidden" finding (EN/ID): says hiding is good, how to check the version, which releases have the PHP2Shell fix, and warns against a public phpinfo page.

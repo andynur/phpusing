@@ -1,0 +1,43 @@
+# Builds, signs and publishes the advisory data to GitHub Pages (docs/05_ADVISORY_DATA.md, D-014).
+# Needs repository secret PHPUSING_DATA_KEY and Pages source "GitHub Actions".
+name: advisory-data
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Build and sign
+        run: node tools/build-data/build.mjs --out data/dist --serial ${{ github.run_number }}
+        env:
+          PHPUSING_DATA_KEY: ${{ secrets.PHPUSING_DATA_KEY }}
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: data/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

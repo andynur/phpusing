@@ -7,7 +7,7 @@ User-facing promises live in `PRIVACY.md` and `WHAT_WE_NEVER_DO.md`. This file i
 The extension makes exactly two kinds of requests:
 
 1. **Scan probes** to the scanned origin, after consent and host permission for that origin.
-2. **Advisory data** download from the single static host defined in `src/advisories/config.ts`.
+2. **Advisory data** download from the single static host defined in `src/advisories/config.ts`: `https://andynur.github.io/phpusing/v1/` (D-014).
 
 Nothing else: no fonts, CDNs, analytics, error reporting, update pings, or link previews. A unit test scans the built bundle for URL literals and fails on anything outside this list. Reference links in findings (`https://nvd.nist.gov/vuln/detail/…`) are allowlisted because the user opens them in a tab; the extension never fetches them. The same applies to source URLs inside the bundled advisory snapshot (`https://www.php.net/`, `https://endoflife.date/php`).
 
