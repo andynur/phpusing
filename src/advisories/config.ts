@@ -3,4 +3,4 @@
 export const DATA_BASE_URL = 'https://andynur.github.io/phpusing/v1/';
 
 /** Ed25519 public key, 32 raw bytes in base64. */
-export const DATA_PUBLIC_KEY = 'xfMGmhPU9mYODMgYTWyy+gmb4oB2+Qr4ShdEwKFSjhE=';
+export const DATA_PUBLIC_KEY = 'DxPG/vPshKUTOljDmV3LVxI3ZabeslvcXptaQXAcnw8=';

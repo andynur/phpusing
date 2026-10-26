@@ -13,7 +13,6 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 |---|---|---|---|
 | Q-3 | Wordfence Intelligence data license allows bundling in an open-source extension? | Andy | v0.3 |
 | Q-4 | Register `phpusing.dev` and GitHub org `phpusing` (both free on 2026-10-25). Deferred: v0.1 links use `github.com/andynur/phpusing`. | Andy | landing page |
-| Q-6 | Advisory data goes live: run `node tools/build-data/keygen.mjs`, save the private key as repo secret `PHPUSING_DATA_KEY`, set Pages source to GitHub Actions, push, run workflow `advisory-data`. Keep the public key for F-031. | Andy | F-031 |
 
 ## Notes for the next session
 
