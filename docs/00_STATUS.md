@@ -2,17 +2,17 @@
 
 Single source of "where are we". Update at the end of every task. Keep it under 40 lines.
 
-- **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
-- **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-26, hidden-version copy: VU-01 "version hidden" now tells owners how to check, which releases are fixed, and not to publish phpinfo (production site `sisda.kaltimprov.go.id` gave no insight). Planned owner-entered version for v0.2 (FR-19, F-036, D-013). Earlier today: popup `sendResponse` fix, `.test` local hosts.
-- **Next task:** v0.1 release prep, remaining: real public site with WAF, dark theme, toolbar-click `activeTab` + permission prompt, Enter on "Check this site" (automation could not cover these); `pnpm zip`, tag. Then v0.2 F-030
+- **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
+- **Phase:** v0.1.0 packaged; Chrome Web Store upload pending (owner)
+- **Last done:** 2026-10-26, v0.1.0 release: owner passed the manual checks (public site with WAF, dark theme, toolbar `activeTab` + permission prompt, Enter key); `pnpm zip` built, tag `v0.1.0`. Same day: hidden-version copy (D-013), popup `sendResponse` fix, `.test` local hosts.
+- **Next task:** owner uploads `.output/phpusing-0.1.0-chrome.zip` with `docs/store/LISTING.md`; then v0.2 F-030 (Q-5 first)
 
 ## Blockers and open questions
 
 | ID | Question | Owner | Needed by |
 |---|---|---|---|
 | Q-3 | Wordfence Intelligence data license allows bundling in an open-source extension? | Andy | v0.3 |
-| Q-4 | Register `phpusing.dev` and GitHub org `phpusing` (both free on 2026-10-25). | Andy | v0.1 publish |
+| Q-4 | Register `phpusing.dev` and GitHub org `phpusing` (both free on 2026-10-25). Deferred: v0.1 links use `github.com/andynur/phpusing`. | Andy | landing page |
 | Q-5 | Advisory data host: GitHub Releases vs GitHub Pages. | agent | F-030 |
 
 ## Notes for the next session
