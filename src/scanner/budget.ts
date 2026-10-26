@@ -5,6 +5,8 @@ export const LIMITS = {
   slotDelayMs: 150,
   timeoutMs: 8000,
   readCapBytes: 64 * 1024,
+  /** `/composer.lock` only, so VU-02 can audit a whole lock file (D-015). */
+  lockReadCapBytes: 2 * 1024 * 1024,
   blockStreak: 3,
   scansPerOriginPerMinute: 2,
 } as const;

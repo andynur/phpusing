@@ -20,6 +20,7 @@ describe('budget primitives', () => {
       slotDelayMs: 150,
       timeoutMs: 8000,
       readCapBytes: 65536,
+      lockReadCapBytes: 2097152,
       blockStreak: 3,
       scansPerOriginPerMinute: 2,
     });

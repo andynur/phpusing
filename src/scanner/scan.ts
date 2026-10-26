@@ -11,6 +11,8 @@ export interface ProbeSpec {
   method?: ProbeMethod;
   /** Highest severity the probe can reveal; used to trim the plan to the budget. */
   severity: Severity;
+  /** Overrides the default read cap; only `/composer.lock` uses it (D-015). */
+  readCapBytes?: number;
 }
 
 export interface ScanContext {
@@ -96,9 +98,9 @@ export async function runScan({
   const stop = new AbortController();
   const probeSignal = AbortSignal.any([signal, stop.signal]);
 
-  const get = async (path: string, method: ProbeMethod = 'GET') => {
+  const get = async (path: string, method: ProbeMethod = 'GET', readCapBytes?: number) => {
     budget.take();
-    const res = await probe(origin, path, { method, signal, fetchImpl });
+    const res = await probe(origin, path, { method, signal, fetchImpl, readCapBytes });
     if (block.record(res.status)) {
       blocked = true;
       stop.abort();
@@ -125,7 +127,7 @@ export async function runScan({
       if (!first) await wait(slotDelayMs, probeSignal);
       first = false;
       if (budget.remaining <= 0) return;
-      responses.set(spec.path, await get(spec.path, spec.method));
+      responses.set(spec.path, await get(spec.path, spec.method, spec.readCapBytes));
       onProgress?.({ done: ++done, total, phase: 'probe' });
     }
   };

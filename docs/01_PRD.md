@@ -87,7 +87,7 @@ Out of scope as users: visitors checking third-party sites (PHPeek covers this),
 | Area | Requirement |
 |---|---|
 | Privacy | No backend, no telemetry, no third-party scripts, no remote code. See `06_SECURITY_PRIVACY.md`. |
-| Politeness | ≤ 60 requests per scan, concurrency 3, 8 s timeout, 64 KB read cap per response. |
+| Politeness | ≤ 60 requests per scan, concurrency 3, 8 s timeout, 64 KB read cap per response (2 MB for `/composer.lock`, D-015). |
 | Performance | Popup interactive < 300 ms; scan p50 < 20 s on a normal site. |
 | Size | Extension package < 3 MB including the bundled advisory snapshot. |
 | Accessibility | WCAG 2.2 AA contrast, full keyboard use, severity never conveyed by color alone. |

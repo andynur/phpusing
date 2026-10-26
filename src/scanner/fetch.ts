@@ -13,7 +13,7 @@ export interface ProbeResponse {
   error?: 'network' | 'timeout';
   /** Allowlisted, lower-case header names. */
   headers: Record<string, string>;
-  /** First 64 KB of the body, decoded as UTF-8. Never log or store it. */
+  /** First 64 KB of the body (2 MB for `/composer.lock`), decoded as UTF-8. Never log or store it. */
   bodyText: string;
   /** SHA-256 hex of the bytes read; empty for HEAD and failed requests. */
   bodyHash: string;

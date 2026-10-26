@@ -56,8 +56,8 @@ Forbidden: `<all_urls>` as a static permission, `cookies`, `webRequest`, `tabs`,
 
 - `credentials: "omit"`, `redirect: "manual"`, `cache: "no-store"`.
 - `AbortSignal.timeout(8000)` combined with the scan's cancel signal.
-- Read the body with a stream reader; stop at 64 KB. No `Range` header: it adds 206/416 handling and the stream cap already bounds the download.
-- Return `{ url, status, headers (allowlisted), bodyText (≤64 KB), bodyHash, contentType }`.
+- Read the body with a stream reader; stop at 64 KB (2 MB for `/composer.lock`, D-015). No `Range` header: it adds 206/416 handling and the stream cap already bounds the download.
+- Return `{ url, status, headers (allowlisted), bodyText (≤64 KB, or ≤2 MB for the lock), bodyHash, contentType }`.
 - Never pass bodies outside `src/checks/`; checks return redacted evidence only.
 
 ## Messages (`src/shared/messages.ts`)

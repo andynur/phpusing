@@ -1,4 +1,5 @@
 import { isNotFound, isOk, safeText, type Baseline } from '../scanner/baseline';
+import { LIMITS } from '../scanner/budget';
 import type { ProbeMethod, ProbeResponse } from '../scanner/fetch';
 import type { ProbeSpec } from '../scanner/scan';
 import { makeFinding } from './finding';
@@ -12,6 +13,7 @@ export interface PathCheck {
   confidence: Confidence;
   paths: readonly string[];
   method?: ProbeMethod;
+  readCapBytes?: number;
   refs?: Finding['refs'];
   /** Redacted evidence lines beyond the request line, or null when the signature does not match. */
   match: (res: ProbeResponse, baseline: Baseline) => string[] | null;
@@ -72,7 +74,8 @@ export const EXPOSURE_CHECKS: readonly PathCheck[] = [
     severity: 'critical',
     confidence: 'confirmed',
     paths: ['/composer.lock'],
-    // Lock files often exceed the 64 KB read cap, so match markers instead of parsing JSON.
+    readCapBytes: LIMITS.lockReadCapBytes,
+    // Markers, not JSON.parse: a lock larger than the cap arrives cut off.
     match: (res) =>
       jsonStart(res.bodyText) &&
       /"content-hash"\s*:/.test(res.bodyText) &&
@@ -172,6 +175,7 @@ export function planFor(checks: readonly PathCheck[]): ProbeSpec[] {
       path,
       severity: c.severity,
       ...(c.method ? { method: c.method } : {}),
+      ...(c.readCapBytes ? { readCapBytes: c.readCapBytes } : {}),
     })),
   );
 }

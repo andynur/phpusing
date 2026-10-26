@@ -1,6 +1,7 @@
 import { satisfies } from '../advisories/composer-semver';
 import type { AdvisoryData, PackageAdvisory } from '../advisories/load';
 import { safeText } from '../scanner/baseline';
+import { LIMITS } from '../scanner/budget';
 import type { ScanContext } from '../scanner/scan';
 import type { Finding, Severity } from '../shared/types';
 import { makeFinding } from './finding';
@@ -122,7 +123,7 @@ export function withLockAudit(
   const note =
     Object.keys(data.packages).length === 0
       ? 'packages not audited: no package advisory data yet'
-      : `packages audited: ${audit.checked}${lock.complete ? '' : ' (file larger than the 64 KB read limit, first part only)'}`;
+      : `packages audited: ${audit.checked}${lock.complete ? '' : ` (file larger than the ${LIMITS.lockReadCapBytes / 1024 / 1024} MB read limit, first part only)`}`;
   const out = [...findings];
   out[exposed] = { ...exposure, evidence: [...exposure.evidence, note] };
   return [...out, ...audit.findings];

@@ -72,7 +72,15 @@ describe('scan service', () => {
     });
     const lock = JSON.stringify({
       'content-hash': '0123456789abcdef0123456789abcdef',
-      packages: [{ name: 'guzzlehttp/guzzle', version: '7.4.3' }],
+      // Past the default 64 KB cap: only the composer.lock cap (D-015) reaches guzzle.
+      packages: [
+        ...Array.from({ length: 60 }, (_, i) => ({
+          name: `vendor/p${i}`,
+          version: '1.0.0',
+          description: 'x'.repeat(1500),
+        })),
+        { name: 'guzzlehttp/guzzle', version: '7.4.3' },
+      ],
     });
     const service = createScanService({
       slotDelayMs: 0,
@@ -86,6 +94,7 @@ describe('scan service', () => {
     expect(result?.findings.map((f) => f.checkId)).toEqual(
       expect.arrayContaining(['EX-04', 'VU-02']),
     );
+    expect(result?.findings[0]?.evidence).toContain('packages audited: 61');
     expect(JSON.stringify(result)).not.toContain('0123456789abcdef');
   });
 
