@@ -3,7 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import snapshot from '../data/snapshot/advisories.json';
+import { loadAdvisories } from '../src/advisories/load';
 import { makeFinding } from '../src/checks/finding';
+import { checkPhpVersion } from '../src/checks/versions';
 import { App, isStale } from '../src/entrypoints/report/App';
 import { developerMessage } from '../src/shared/developer-message';
 import { I18nProvider } from '../src/shared/i18n/I18nProvider';
@@ -144,6 +146,52 @@ describe('report page', () => {
         autoDataCheck: false,
       }),
     );
+  });
+});
+
+describe('owner-entered PHP version', () => {
+  it('re-judges a hidden-version scan in memory and labels it as entered', async () => {
+    const hidden = checkPhpVersion({ phpDetected: true }, loadAdvisories(), '2026-10-25');
+    const scan: ScanResult = {
+      ...RESULT,
+      findings: hidden.findings,
+      verdict: 'unknown',
+    };
+    await fakeBrowser.storage.session.set({ [scanKey(7, ORIGIN)]: scan });
+    renderReport(reportPath(7, ORIGIN).replace('/report.html', ''));
+    expect(await screen.findByRole('heading', { name: "Can't tell yet" })).toBeInTheDocument();
+    const before = JSON.stringify([
+      await fakeBrowser.storage.local.get(null),
+      await fakeBrowser.storage.session.get(null),
+    ]);
+
+    const input = screen.getByLabelText('PHP version');
+    await userEvent.type(input, '8.3');
+    await userEvent.click(screen.getByRole('button', { name: 'Check this version' }));
+    expect(await screen.findByText(/Enter all three numbers/)).toBeInTheDocument();
+
+    await userEvent.clear(input);
+    await userEvent.type(input, 'PHP 8.3.35 (cli)');
+    await userEvent.click(screen.getByRole('button', { name: 'Check this version' }));
+    expect(await screen.findByRole('heading', { name: 'Major headache' })).toBeInTheDocument();
+    expect(screen.getByText(/the PHP version you entered \(8\.3\.35\)/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /affected by PHP2Shell/ }));
+    expect(screen.getByText('PHP version entered by you: 8.3.35')).toBeInTheDocument();
+    const after = JSON.stringify([
+      await fakeBrowser.storage.local.get(null),
+      await fakeBrowser.storage.session.get(null),
+    ]);
+    expect(after).toBe(before);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
+    expect(await screen.findByRole('heading', { name: "Can't tell yet" })).toBeInTheDocument();
+  });
+
+  it('is not offered when the scan saw the PHP version', async () => {
+    await fakeBrowser.storage.session.set({ [scanKey(7, ORIGIN)]: RESULT });
+    renderReport(reportPath(7, ORIGIN).replace('/report.html', ''));
+    expect(await screen.findByRole('heading', { name: 'Major headache' })).toBeInTheDocument();
+    expect(screen.queryByLabelText('PHP version')).toBeNull();
   });
 });
 

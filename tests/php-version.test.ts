@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { dataDate, loadAdvisories } from '../src/advisories/load';
-import { checkPhpVersion, parsePhpVersion } from '../src/checks/versions';
+import { makeFinding } from '../src/checks/finding';
+import { checkPhpVersion, parseOwnerPhpVersion, parsePhpVersion } from '../src/checks/versions';
+import { phpVersionHidden, withOwnerVersion } from '../src/shared/owner-version';
+import type { ScanResult } from '../src/shared/types';
 import en from '../src/shared/i18n/en.json';
 import id from '../src/shared/i18n/id.json';
 
@@ -13,6 +16,48 @@ describe('parsePhpVersion', () => {
   it('keeps the upstream part of distro versions', () => {
     expect(parsePhpVersion('8.1.2-1ubuntu2.14')).toEqual({ major: 8, minor: 1, patch: 2 });
     expect(parsePhpVersion('8.3')).toBeNull();
+  });
+});
+
+describe('owner-entered PHP version (FR-19, D-013)', () => {
+  const hidden = check(undefined).findings;
+  const scanned: ScanResult = {
+    origin: 'https://shop.example.com',
+    startedAt: '2026-10-25T10:00:00.000Z',
+    requestsUsed: 32,
+    fingerprint: { phpDetected: true },
+    findings: [makeFinding('CF-01', 'low', 'confirmed', ['missing: CSP']), ...hidden],
+    verdict: 'unknown',
+    dataVersion: data.version,
+  };
+
+  it('reads a typed version or php -v output and nothing vaguer', () => {
+    expect(parseOwnerPhpVersion('8.3.12')).toBe('8.3.12');
+    expect(parseOwnerPhpVersion(' v8.2.35 ')).toBe('8.2.35');
+    expect(
+      parseOwnerPhpVersion('PHP 8.1.2-1ubuntu2.14 (cli) (built: Aug 18 2023)\nZend Engine v4.1.2'),
+    ).toBe('8.1.2');
+    expect(parseOwnerPhpVersion('8.3')).toBeNull();
+    expect(parseOwnerPhpVersion('Zend Engine v4.1.2')).toBeNull();
+    expect(parseOwnerPhpVersion('')).toBeNull();
+  });
+
+  it('replaces the hidden finding and labels the version as entered by the owner', () => {
+    expect(phpVersionHidden(scanned)).toBe(true);
+    const r = withOwnerVersion(scanned, '8.3.35', data, TODAY);
+    expect(r.findings.map((f) => f.checkId)).toEqual(['CF-01', 'VU-01']);
+    expect(r.findings[1]?.evidence[0]).toBe('PHP version entered by you: 8.3.35');
+    expect(r).toMatchObject({ verdict: 'major', phpEnteredByOwner: '8.3.35' });
+    expect(phpVersionHidden(r)).toBe(false);
+    expect(scanned.findings).toHaveLength(2);
+  });
+
+  it('can only reach calm when the entered version is supported and unaffected', () => {
+    expect(withOwnerVersion(scanned, '8.4.27', data, TODAY).verdict).toBe('calm');
+    expect(withOwnerVersion({ ...scanned, blocked: true }, '8.4.27', data, TODAY).verdict).toBe(
+      'unknown',
+    );
+    expect(withOwnerVersion(scanned, '7.4.33', data, TODAY).verdict).toBe('major');
   });
 });
 

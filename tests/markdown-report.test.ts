@@ -47,6 +47,10 @@ describe('markdown report', () => {
     expect(md).toContain('cannot see logic bugs');
     expect(md).toContain('No attack was attempted.');
     expect(markdownReport('id', RESULT)).toContain('Tingkat bahaya: Kritis');
+    expect(md).not.toContain('PHP version you entered');
+    expect(markdownReport('en', { ...RESULT, phpEnteredByOwner: '8.3.35' })).toContain(
+      'Verdict and findings use the PHP version you entered (8.3.35).',
+    );
   });
 
   it('keeps scanned-site text and odd refs from becoming markup or links', () => {

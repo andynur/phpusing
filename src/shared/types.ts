@@ -54,4 +54,6 @@ export interface ScanResult {
   /** Advisory data version, e.g. "2026-10-25.1" (05_ADVISORY_DATA.md). */
   dataVersion: string;
   blocked?: boolean;
+  /** PHP version the owner entered on the report page (FR-19, D-013). Never stored. */
+  phpEnteredByOwner?: string;
 }

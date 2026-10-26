@@ -17,6 +17,18 @@ export function parsePhpVersion(raw: string): Version | null {
   return m ? { major: Number(m[1]), minor: Number(m[2]), patch: Number(m[3]) } : null;
 }
 
+/**
+ * Version the owner typed or pasted (FR-19, D-013), e.g. "8.3.12" or the first line of `php -v`.
+ * Returns "major.minor.patch" or null.
+ */
+export function parseOwnerPhpVersion(text: string): string | null {
+  const input = text.slice(0, 2000);
+  const m =
+    /\bPHP\s+v?(\d{1,2}\.\d{1,2}\.\d{1,3})/i.exec(input) ??
+    /^\s*v?(\d{1,2}\.\d{1,2}\.\d{1,3})/.exec(input);
+  return m?.[1] ?? null;
+}
+
 const cmpMinor = (a: Version, b: Version) => a.major - b.major || a.minor - b.minor;
 
 function asVersion(s: string): Version {
@@ -32,7 +44,13 @@ export interface VersionCheck {
 
 const key = (part: string) => part as MessageKey;
 
-export function checkPhpVersion(fp: Fingerprint, data: AdvisoryData, today: string): VersionCheck {
+/** `owner`: the version came from the owner, not from the site (D-013). */
+export function checkPhpVersion(
+  fp: Fingerprint,
+  data: AdvisoryData,
+  today: string,
+  source: 'header' | 'owner' = 'header',
+): VersionCheck {
   if (!fp.phpDetected) return { findings: [], phpSupported: false };
   if (!fp.php) {
     const hidden = makeFinding('VU-01', 'info', 'version-hidden', ['X-Powered-By: no PHP version']);
@@ -52,7 +70,8 @@ export function checkPhpVersion(fp: Fingerprint, data: AdvisoryData, today: stri
   if (!v) return { findings: [], phpSupported: false };
 
   const findings: Finding[] = [];
-  const header = `X-Powered-By: PHP/${fp.php}`;
+  const header =
+    source === 'owner' ? `PHP version entered by you: ${fp.php}` : `X-Powered-By: PHP/${fp.php}`;
 
   for (const adv of data.php) {
     const fixed = adv.fixed.map(asVersion).find((f) => cmpMinor(f, v) === 0);

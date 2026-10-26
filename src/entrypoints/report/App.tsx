@@ -19,6 +19,8 @@ import { LangToggle } from '../../shared/ui/LangToggle';
 import { ThemeToggle } from '../../shared/ui/ThemeToggle';
 import { ThemeProvider } from '../../shared/theme/ThemeProvider';
 import { LockCheck } from './LockCheck';
+import { OwnerVersion } from './OwnerVersion';
+import { phpVersionHidden } from '../../shared/owner-version';
 import { VerdictCard } from '../../shared/ui/VerdictCard';
 import { countSeverities } from '../../shared/verdict';
 
@@ -224,12 +226,14 @@ function Report() {
   const { t } = useI18n();
   const [load, setLoad] = useState<Load>({ kind: 'loading' });
   const [now] = useState(() => Date.now());
+  const [entered, setEntered] = useState<ScanResult | null>(null);
 
   useEffect(() => {
     loadResult().then(setLoad, () => setLoad({ kind: 'missing' }));
   }, []);
 
-  const result = load.kind === 'ready' ? load.result : undefined;
+  const scanned = load.kind === 'ready' ? load.result : undefined;
+  const result = entered ?? scanned;
 
   return (
     <div className="min-h-screen bg-canvas text-sm text-fg">
@@ -260,6 +264,11 @@ function Report() {
               requestsUsed={result.requestsUsed}
               dataDate={dataDate(result.dataVersion)}
             />
+            {result.phpEnteredByOwner && (
+              <p role="status" className="rounded-md bg-sev-info-bg p-3 text-sev-info">
+                {t('owner.note', { version: result.phpEnteredByOwner })}
+              </p>
+            )}
             {isStale(result.dataVersion, now) && (
               <p role="status" className="rounded-md bg-sev-medium-bg p-3 text-sev-medium">
                 {t('report.stale')}
@@ -269,6 +278,13 @@ function Report() {
               <p role="status" className="text-fg-muted">
                 {t('popup.blocked')}
               </p>
+            )}
+            {scanned && phpVersionHidden(scanned) && (
+              <OwnerVersion
+                scanned={scanned}
+                entered={result.phpEnteredByOwner}
+                onChange={setEntered}
+              />
             )}
             <Findings result={result} />
           </>

@@ -73,6 +73,9 @@ export function markdownReport(lang: Lang, result: ScanResult): string {
       data: dataDate(result.dataVersion) || '-',
     }),
   ];
+  if (result.phpEnteredByOwner) {
+    lines.push('', t('owner.note', { version: plain(result.phpEnteredByOwner) }));
+  }
   if (result.blocked) lines.push('', t('popup.blocked'));
   lines.push('', `## ${t('report.findings')}`);
   if (result.findings.length === 0) lines.push('', t('report.empty'));
