@@ -4,6 +4,8 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- fix: background replies via `sendResponse` + `return true`, so the popup no longer shows "Something went wrong" on Chrome builds that ignore a Promise returned from `onMessage` (seen on Chromium 141).
+- fix: treat `.test`, `.internal` and `.home.arpa` hosts as local targets (FR-4); they need the developer setting like `localhost`.
 - docs: add EN/ID branding and marketing kit with actual-UI demo screenshots, README banners, social cards, store promo tiles, logo lockups, copy and a reproducible renderer; remove unverified timing claims from store copy.
 
 - feat: clearer popup for non-technical owners: logo header, compact language toggle plus a one-tap theme icon, site shown at the top, check IDs hidden, "+N more" hint, action buttons pinned at the bottom.

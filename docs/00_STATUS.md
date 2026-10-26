@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-25, F-090 EN/ID marketing kit: composed actual-UI demo screenshots, README/social banners, promo tiles, logo lockups, copy and renderer in `docs/marketing/` and `tools/marketing/`; 21 PNG dimensions verified, representative visual QA and `pnpm check` passed.
-- **Next task:** v0.1 release prep: manual checks in `08_TEST_PLAN.md` (real site with WAF, ≤ 60 requests, EN/ID, themes, keyboard), `pnpm zip`, tag. Then v0.2 F-030
+- **Last done:** 2026-10-26, release-prep QA: automated Playwright run against a local Laravel site (`esetda-new.test`) found PHP2Shell + debug mode in 32 requests, no cookies sent. Fixed popup "Something went wrong" on older Chrome (`onMessage` Promise reply, now `sendResponse`) and `.test`/`.internal`/`.home.arpa` now count as local targets. `pnpm check` green; QA passes on Chromium 141 and 156.
+- **Next task:** v0.1 release prep, remaining: real public site with WAF, dark theme, toolbar-click `activeTab` + permission prompt, Enter on "Check this site" (automation could not cover these); `pnpm zip`, tag. Then v0.2 F-030
 
 ## Blockers and open questions
 

@@ -35,11 +35,13 @@ function isPrivateIPv6(host: string): boolean {
   );
 }
 
+// Special-use and private-use names that dev setups (Herd, Valet, Docker) point at local hosts.
+const LOCAL_SUFFIXES = ['.localhost', '.local', '.test', '.internal', '.home.arpa'];
+
 export function isLocalHost(host: string): boolean {
   return (
     host === 'localhost' ||
-    host.endsWith('.localhost') ||
-    host.endsWith('.local') ||
+    LOCAL_SUFFIXES.some((suffix) => host.endsWith(suffix)) ||
     isPrivateIPv4(host) ||
     isPrivateIPv6(host)
   );

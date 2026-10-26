@@ -31,6 +31,9 @@ describe('checkTarget', () => {
     'http://localhost:3000/',
     'http://app.localhost/',
     'http://printer.local/',
+    'http://esetda-new.test/login',
+    'http://api.internal/',
+    'http://nas.home.arpa/',
     'http://127.0.0.1/',
     'http://10.1.2.3/',
     'http://172.20.0.1/',
@@ -49,6 +52,8 @@ describe('checkTarget', () => {
     expect(isLocalHost('8.8.8.8')).toBe(false);
     expect(isLocalHost('172.32.0.1')).toBe(false);
     expect(isLocalHost('localhost.example.com')).toBe(false);
+    expect(isLocalHost('test.example.com')).toBe(false);
+    expect(isLocalHost('latest')).toBe(false);
     expect(isLocalHost('[2001:db8::1]')).toBe(false);
   });
 
