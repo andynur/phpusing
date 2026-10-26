@@ -34,6 +34,8 @@ export interface AdvisoryData {
   eol: { source: string; php: PhpCycle[] };
   /** Keyed by lower-case package name. Empty in the bundled snapshot until a release copies it. */
   packages: Record<string, PackageAdvisory[]>;
+  /** CVE IDs listed in the CISA KEV catalog ("exploited in the wild"). */
+  kev: string[];
 }
 
 export function loadAdvisories(): AdvisoryData {

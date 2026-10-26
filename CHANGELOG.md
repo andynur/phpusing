@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: flag advisories in the CISA KEV catalog as exploited in the wild (F-034): the data pipeline adds a `kev` list, VU-02 findings with a KEV CVE become critical, and VU-01 and VU-02 show the KEV badge.
 - feat: check a `composer.lock` on the report page (F-033): pick or drop the file, it is audited in the browser against package advisories and never uploaded or stored.
 - feat: read up to 2 MB of an exposed `composer.lock` so VU-02 audits the whole file (D-015); other responses stay at 64 KB.
 - feat: VU-02 audits an exposed `composer.lock` against Packagist advisories (F-032): one finding per affected package at its worst advisory severity, Composer constraint matching in `src/advisories/composer-semver.ts`, and a note on the EX-04 finding saying how many packages were audited.

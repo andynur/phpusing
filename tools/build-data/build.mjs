@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { DATA_PUBLIC_KEY } from '../../src/advisories/config.ts';
-import { EOL_URL, PACKAGIST_URL, buildBundle, signBundle, verifyBundle } from './lib.mjs';
+import { EOL_URL, KEV_URL, PACKAGIST_URL, buildBundle, signBundle, verifyBundle } from './lib.mjs';
 
 const { values } = parseArgs({
   options: {
@@ -36,12 +36,17 @@ async function getJson(url, attempts = 3) {
   }
 }
 
-const [eolRaw, packagistRaw] = await Promise.all([getJson(EOL_URL), getJson(PACKAGIST_URL)]);
+const [eolRaw, packagistRaw, kevRaw] = await Promise.all([
+  getJson(EOL_URL),
+  getJson(PACKAGIST_URL),
+  getJson(KEV_URL),
+]);
 const phpCore = JSON.parse(readFileSync(new URL('./php-core.json', import.meta.url), 'utf8')).php;
 const bundle = buildBundle({
   phpCore,
   eolRaw,
   packagistRaw,
+  kevRaw,
   generatedAt: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
   serial: Number(values.serial),
 });
@@ -58,5 +63,5 @@ writeFileSync(join(dir, 'advisories.json'), body);
 writeFileSync(join(dir, 'advisories.json.sig'), signature);
 writeFileSync(join(dir, 'meta.json'), JSON.stringify(meta));
 console.log(
-  `advisory data ${meta.version}: ${Object.keys(bundle.packages).length} packages, ${meta.bytes} bytes, sha256 ${meta.sha256}`,
+  `advisory data ${meta.version}: ${Object.keys(bundle.packages).length} packages, ${bundle.kev.length} KEV, ${meta.bytes} bytes, sha256 ${meta.sha256}`,
 );

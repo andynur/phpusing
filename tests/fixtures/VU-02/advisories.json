@@ -1,6 +1,22 @@
 {
-  "_source": "https://andynur.github.io/phpusing/v1/advisories.json, version 2026-10-26.4, packages subset",
+  "_source": "packages: https://andynur.github.io/phpusing/v1/advisories.json, version 2026-10-26.4, subset. kev: CISA KEV catalog 2026.10.23 (https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json), CVE-2020-11023 listed",
   "packages": {
+    "components/jquery": [
+      {
+        "affected": ">=1.0.3,<3.5.0",
+        "cve": "CVE-2020-11023",
+        "id": "PKSA-jqsz-ykjr-qncb",
+        "severity": "medium",
+        "url": "https://github.com/advisories/GHSA-jpcq-cgw6-v4j6"
+      },
+      {
+        "affected": ">=1.12.0,<3.5.0",
+        "cve": "CVE-2020-11022",
+        "id": "PKSA-jvpv-pcrn-dfzc",
+        "severity": "medium",
+        "url": "https://github.com/advisories/GHSA-gxr4-xjj5-5px2"
+      }
+    ],
     "guzzlehttp/guzzle": [
       {
         "affected": ">=7,<7.4.4|>=4,<6.5.7",
@@ -245,5 +261,8 @@
         "url": "https://github.com/Seldaek/monolog/pull/448#issuecomment-68208704"
       }
     ]
-  }
+  },
+  "kev": [
+    "CVE-2020-11023"
+  ]
 }

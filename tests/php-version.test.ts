@@ -30,6 +30,15 @@ describe('VU-01 PHP2Shell and end of life', () => {
     expect(r.phpSupported).toBe(false);
   });
 
+  it('marks a KEV-listed PHP advisory as exploited in the wild', () => {
+    // Synthetic: no CISA KEV entry for PHP2Shell was found on 2026-10-26.
+    const kev = { ...data, kev: ['CVE-2026-109619'] };
+    const [finding] = checkPhpVersion({ phpDetected: true, php: '8.3.35' }, kev, TODAY).findings;
+    expect(finding?.kev).toBe(true);
+    expect(finding?.evidence.at(-1)).toBe('exploited in the wild (CISA KEV): CVE-2026-109619');
+    expect(check('8.3.35').findings[0]?.kev).toBeUndefined();
+  });
+
   it('passes fixed and newer versions', () => {
     for (const v of ['8.5.12', '8.4.27', '8.3.36', '8.2.40']) {
       expect(check(v)).toEqual({ findings: [], phpSupported: true });

@@ -8,6 +8,7 @@ import {
   dataVersion,
   generateKeys,
   normalizeEol,
+  normalizeKev,
   normalizePackages,
   parsePrivateKey,
   signBundle,
@@ -42,10 +43,21 @@ const packagistRaw = {
   },
 };
 
+// Synthetic catalog: one CVE our packages name, one they do not, one malformed ID.
+const kevRaw = {
+  catalogVersion: '2026.10.23',
+  vulnerabilities: [
+    { cveID: 'CVE-2026-114509' },
+    { cveID: 'CVE-2014-0001' },
+    { cveID: 'not-a-cve' },
+  ],
+};
+
 const input = {
   phpCore: phpCore.php,
   eolRaw,
   packagistRaw,
+  kevRaw,
   generatedAt: '2026-10-27T03:17:00Z',
   serial: 4,
 };
@@ -76,6 +88,7 @@ describe('advisory data pipeline', () => {
         },
       ],
     });
+    expect(bundle.kev).toEqual(['CVE-2026-114509']);
   });
 
   it('keeps the bundled snapshot in step with the curated PHP core entries', () => {
@@ -89,6 +102,8 @@ describe('advisory data pipeline', () => {
     expect(() => normalizeEol([{ cycle: '8.4', eol: false, latest: '8.4.27' }])).toThrow(/EOL/);
     expect(() => normalizeEol([])).toThrow();
     expect(() => normalizePackages({})).toThrow();
+    expect(() => normalizeKev({ vulnerabilities: [] }, [], {})).toThrow(/KEV/);
+    expect(() => normalizeKev({ vulnerabilities: [{ cveID: 'x' }] }, [], {})).toThrow(/KEV/);
     expect(() => dataVersion('2026-10-27', 0)).toThrow();
   });
 

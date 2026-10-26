@@ -12,6 +12,8 @@ import {
 export const EOL_SOURCE = 'https://endoflife.date/php';
 export const EOL_URL = 'https://endoflife.date/api/php.json';
 export const PACKAGIST_URL = 'https://packagist.org/api/security-advisories/?updatedSince=0';
+export const KEV_URL =
+  'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
 
 const CVE = /^CVE-\d{4}-\d{4,}$/;
 const PATCH = /^\d+\.\d+\.\d+$/;
@@ -95,6 +97,24 @@ export function normalizePackages(raw) {
   return out;
 }
 
+/**
+ * CVE IDs from the CISA KEV catalog that our php or package entries name. Only those ship, so
+ * the bundle stays small and the flag is a plain lookup in the extension.
+ */
+export function normalizeKev(raw, php, packages) {
+  const list = raw?.vulnerabilities;
+  if (!Array.isArray(list) || list.length === 0) fail('CISA KEV returned no vulnerabilities');
+  const known = new Set(
+    list.map((v) => v?.cveID).filter((id) => typeof id === 'string' && CVE.test(id)),
+  );
+  if (known.size === 0) fail('CISA KEV has no usable CVE IDs');
+  const named = new Set([
+    ...php.flatMap((e) => e.cves),
+    ...Object.values(packages).flatMap((l) => l.map((a) => a.cve).filter(Boolean)),
+  ]);
+  return [...named].filter((id) => known.has(id)).sort();
+}
+
 /** "2026-10-27" + serial 12 -> "2026-10-27.12"; reports show the date part. */
 export function dataVersion(date, serial) {
   if (!DATE.test(date)) fail(`bad date ${date}`);
@@ -102,13 +122,16 @@ export function dataVersion(date, serial) {
   return `${date}.${serial}`;
 }
 
-export function buildBundle({ phpCore, eolRaw, packagistRaw, generatedAt, serial }) {
+export function buildBundle({ phpCore, eolRaw, packagistRaw, kevRaw, generatedAt, serial }) {
+  const php = validatePhpCore(phpCore);
+  const packages = normalizePackages(packagistRaw);
   return {
     version: dataVersion(generatedAt.slice(0, 10), serial),
     generatedAt,
-    php: validatePhpCore(phpCore),
+    php,
     eol: { source: EOL_SOURCE, php: normalizeEol(eolRaw) },
-    packages: normalizePackages(packagistRaw),
+    packages,
+    kev: normalizeKev(kevRaw, php, packages),
   };
 }
 

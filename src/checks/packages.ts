@@ -83,23 +83,27 @@ export function auditPackages(packages: LockedPackage[], data: AdvisoryData): Lo
     const hits = (advisories ?? []).filter((a) => satisfies(pkg.version, a.affected) === true);
     if (satisfies(pkg.version, '*') !== null) checked++;
     if (hits.length === 0) continue;
-    const severity = SEVERITY_RANK.find((s) => hits.some((a) => severityOf(a) === s)) ?? 'medium';
+    const exploited = hits.flatMap((a) => (a.cve && data.kev.includes(a.cve) ? [a.cve] : []));
+    // KEV means attackers already use it: critical whatever the advisory label (04_CHECKS.md).
+    const severity = exploited.length
+      ? 'critical'
+      : (SEVERITY_RANK.find((s) => hits.some((a) => severityOf(a) === s)) ?? 'medium');
     const shown = hits.slice(0, EVIDENCE_CAP).map((a) => `${a.id}${a.cve ? ` (${a.cve})` : ''}`);
     const more = hits.length - shown.length;
     const refs = hits.map(refOf).filter((r): r is NonNullable<typeof r> => r !== null);
     // The lock may not match what is deployed, so "likely" rather than "confirmed".
-    findings.push(
-      makeFinding(
-        'VU-02',
-        severity,
-        'likely',
-        [
-          `composer.lock: ${pkg.name} ${pkg.version}`,
-          `advisories: ${shown.join(', ')}${more > 0 ? ` (+${more} more)` : ''}`,
-        ],
-        refs.slice(0, REF_CAP),
-      ),
+    const finding = makeFinding(
+      'VU-02',
+      severity,
+      'likely',
+      [
+        `composer.lock: ${pkg.name} ${pkg.version}`,
+        `advisories: ${shown.join(', ')}${more > 0 ? ` (+${more} more)` : ''}`,
+        ...(exploited.length ? [`exploited in the wild (CISA KEV): ${exploited.join(', ')}`] : []),
+      ],
+      refs.slice(0, REF_CAP),
     );
+    findings.push(exploited.length ? { ...finding, kev: true } : finding);
   }
   return { findings, checked };
 }

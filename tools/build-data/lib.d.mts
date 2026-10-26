@@ -2,6 +2,7 @@
 export const EOL_SOURCE: string;
 export const EOL_URL: string;
 export const PACKAGIST_URL: string;
+export const KEV_URL: string;
 
 export interface PackageAdvisory {
   id: string;
@@ -17,17 +18,25 @@ export interface Bundle {
   php: { id: string; cves: string[]; fixed: string[]; unfixedBelow: string; source: string }[];
   eol: { source: string; php: { cycle: string; eol: string; latest: string }[] };
   packages: Record<string, PackageAdvisory[]>;
+  /** CVE IDs in the CISA KEV catalog that `php` or `packages` name. */
+  kev: string[];
 }
 
 export function canonicalJson(value: unknown): string;
 export function validatePhpCore(entries: unknown): Bundle['php'];
 export function normalizeEol(raw: unknown): Bundle['eol']['php'];
 export function normalizePackages(raw: unknown): Bundle['packages'];
+export function normalizeKev(
+  raw: unknown,
+  php: Bundle['php'],
+  packages: Bundle['packages'],
+): string[];
 export function dataVersion(date: string, serial: number): string;
 export function buildBundle(input: {
   phpCore: unknown;
   eolRaw: unknown;
   packagistRaw: unknown;
+  kevRaw: unknown;
   generatedAt: string;
   serial: number;
 }): Bundle;

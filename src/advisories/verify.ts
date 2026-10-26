@@ -85,11 +85,12 @@ function parsePackages(value: Record<string, unknown>): Record<string, PackageAd
 /** Keeps only the fields the checks read; returns null when the bundle has the wrong shape. */
 export function parseAdvisoryData(value: unknown): AdvisoryData | null {
   if (!isRecord(value) || !isString(value.version) || !VERSION.test(value.version)) return null;
-  const { php, eol, packages } = value;
+  const { php, eol, packages, kev = [] } = value;
   if (!Array.isArray(php) || !isRecord(eol) || !Array.isArray(eol.php) || !isString(eol.source)) {
     return null;
   }
-  if (!isRecord(packages)) return null;
+  // Bundles built before F-034 have no `kev`: read as an empty list.
+  if (!isRecord(packages) || !isStrings(kev)) return null;
   const phpOk = php.every(
     (e) =>
       isRecord(e) &&
@@ -119,5 +120,6 @@ export function parseAdvisoryData(value: unknown): AdvisoryData | null {
       php: eol.php.map(({ cycle, eol: date, latest }) => ({ cycle, eol: date, latest })),
     },
     packages: pkgs,
+    kev: [...kev],
   };
 }

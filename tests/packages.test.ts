@@ -127,6 +127,16 @@ describe('VU-02 audit', () => {
     expect(guzzle?.refs.every((r) => r.url.startsWith('https://'))).toBe(true);
   });
 
+  it('raises a KEV-listed advisory to critical and marks it', () => {
+    const jquery = [{ name: 'components/jquery', version: '3.4.1' }];
+    const [finding] = auditPackages(jquery, { ...DATA, kev: subset.kev }).findings;
+    expect(finding).toMatchObject({ severity: 'critical', kev: true });
+    expect(finding?.evidence.at(-1)).toBe('exploited in the wild (CISA KEV): CVE-2020-11023');
+    // Same package without the KEV list keeps the Packagist label.
+    expect(auditPackages(jquery, DATA).findings[0]).toMatchObject({ severity: 'medium' });
+    expect(auditPackages(jquery, DATA).findings[0]?.kev).toBeUndefined();
+  });
+
   it('reports nothing for patched versions', () => {
     const { findings } = auditPackages([{ name: 'guzzlehttp/guzzle', version: '7.15.2' }], DATA);
     expect(findings).toEqual([]);
@@ -158,6 +168,11 @@ describe('package advisory data', () => {
     expect(parseAdvisoryData(DATA)?.packages).toEqual(subset.packages);
     const bad = { ...DATA, packages: { 'a/b': [{ id: 'X', affected: 1 }] } };
     expect(parseAdvisoryData(bad)).toBeNull();
+    // Bundles from before F-034 have no kev list; a malformed one is rejected.
+    const { kev: _kev, ...noKev } = { ...DATA, kev: subset.kev };
+    expect(parseAdvisoryData(noKev)?.kev).toEqual([]);
+    expect(parseAdvisoryData({ ...DATA, kev: subset.kev })?.kev).toEqual(['CVE-2020-11023']);
+    expect(parseAdvisoryData({ ...DATA, kev: [1] })).toBeNull();
     const { packages: _, ...noPackages } = DATA;
     expect(parseAdvisoryData(noPackages)).toBeNull();
     const packages: unknown = JSON.parse('{"__proto__": []}');

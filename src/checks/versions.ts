@@ -60,21 +60,22 @@ export function checkPhpVersion(fp: Fingerprint, data: AdvisoryData, today: stri
       cmpMinor(v, asVersion(adv.unfixedBelow)) < 0 ||
       (fixed !== undefined && v.patch < fixed.patch);
     if (!affected) continue;
+    const exploited = adv.cves.filter((cve) => data.kev.includes(cve));
     // Distributions backport fixes without changing the upstream version, hence "likely".
-    findings.push(
-      makeFinding(
-        'VU-01',
-        'critical',
-        'likely',
-        [
-          header,
-          fixed
-            ? `fixed in ${fixed.major}.${fixed.minor}.${fixed.patch}`
-            : 'no upstream fix for this branch',
-        ],
-        adv.cves.map((cve) => ({ label: cve, url: `https://nvd.nist.gov/vuln/detail/${cve}` })),
-      ),
+    const finding = makeFinding(
+      'VU-01',
+      'critical',
+      'likely',
+      [
+        header,
+        fixed
+          ? `fixed in ${fixed.major}.${fixed.minor}.${fixed.patch}`
+          : 'no upstream fix for this branch',
+        ...(exploited.length ? [`exploited in the wild (CISA KEV): ${exploited.join(', ')}`] : []),
+      ],
+      adv.cves.map((cve) => ({ label: cve, url: `https://nvd.nist.gov/vuln/detail/${cve}` })),
     );
+    findings.push(exploited.length ? { ...finding, kev: true } : finding);
   }
 
   const cycle = data.eol.php.find((c) => c.cycle === `${v.major}.${v.minor}`);

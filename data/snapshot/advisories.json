@@ -27,5 +27,6 @@
       { "cycle": "5.6", "eol": "2018-12-31", "latest": "5.6.40" }
     ]
   },
-  "packages": {}
+  "packages": {},
+  "kev": []
 }
