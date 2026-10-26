@@ -27,6 +27,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [ ] F-033 Drop `composer.lock` on report page (local parse)
 - [ ] F-034 CISA KEV flag on matched advisories
 - [ ] F-035 Markdown report export
+- [ ] F-036 Owner-entered PHP version when VU-01 is hidden (FR-19, D-013)
 
 ## v0.3 — WordPress
 
@@ -43,4 +44,5 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 ## Later (not scheduled)
 
 - Landing page on `phpusing.dev` (static, no analytics).
+- Optional verification file for a hidden PHP version: the owner uploads a random-named file that prints only `PHP_VERSION`, phpusing reads it once, then checks it is gone (404). Needs a decision entry first: new owner flow and a probe outside `04_CHECKS.md`.
 - Optional "share anonymized result" — rejected for now (D-006).

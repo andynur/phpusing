@@ -67,6 +67,7 @@ Out of scope as users: visitors checking third-party sites (PHPeek covers this),
 - FR-7. Match detected versions against the local advisory data (`05_ADVISORY_DATA.md`). Flag CISA KEV entries as "exploited in the wild".
 - FR-8. If `composer.lock` is exposed, audit it in memory and report the exposure itself as critical.
 - FR-9. (v0.2) Owner can drop a `composer.lock` on the report page; parsed locally, never uploaded.
+- FR-19. (v0.2) When VU-01 reports the PHP version as hidden, the owner can type or paste their PHP version (for example `php -v` output) on the report page. It is parsed and matched locally against the advisory data, never sent anywhere and not persisted beyond the tab session. Findings and the verdict say the version was entered by the owner (D-013).
 
 ### 5.3 Reporting
 - FR-10. Verdict: one of four levels (DESIGN.md §4). Derived only from findings, never from absence of evidence alone.

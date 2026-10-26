@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { dataDate, loadAdvisories } from '../src/advisories/load';
 import { checkPhpVersion, parsePhpVersion } from '../src/checks/versions';
 import en from '../src/shared/i18n/en.json';
+import id from '../src/shared/i18n/id.json';
 
 const data = loadAdvisories();
 const TODAY = '2026-10-25';
@@ -53,6 +54,15 @@ describe('VU-01 PHP2Shell and end of life', () => {
     const r = check(undefined);
     expect(r.findings[0]).toMatchObject({ severity: 'info', confidence: 'version-hidden' });
     expect(r.phpSupported).toBe(false);
+  });
+
+  it('tells owners of a hidden version which releases are fixed, without a public phpinfo page', () => {
+    const fixed = data.php.flatMap((a) => a.fixed);
+    for (const strings of [en, id]) {
+      const fix = strings['check.VU-01.hidden.fix'];
+      for (const v of fixed) expect(fix).toContain(v);
+      expect(fix).toMatch(/phpinfo/);
+    }
   });
 
   it('says nothing when PHP is not detected or the cycle is unknown', () => {

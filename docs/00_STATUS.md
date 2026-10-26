@@ -4,7 +4,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.1 (MVP), see `02_ROADMAP.md`
 - **Phase:** scaffold done, building v0.1 features
-- **Last done:** 2026-10-26, release-prep QA: automated Playwright run against a local Laravel site (`esetda-new.test`) found PHP2Shell + debug mode in 32 requests, no cookies sent. Fixed popup "Something went wrong" on older Chrome (`onMessage` Promise reply, now `sendResponse`) and `.test`/`.internal`/`.home.arpa` now count as local targets. `pnpm check` green; QA passes on Chromium 141 and 156.
+- **Last done:** 2026-10-26, hidden-version copy: VU-01 "version hidden" now tells owners how to check, which releases are fixed, and not to publish phpinfo (production site `sisda.kaltimprov.go.id` gave no insight). Planned owner-entered version for v0.2 (FR-19, F-036, D-013). Earlier today: popup `sendResponse` fix, `.test` local hosts.
 - **Next task:** v0.1 release prep, remaining: real public site with WAF, dark theme, toolbar-click `activeTab` + permission prompt, Enter on "Check this site" (automation could not cover these); `pnpm zip`, tag. Then v0.2 F-030
 
 ## Blockers and open questions

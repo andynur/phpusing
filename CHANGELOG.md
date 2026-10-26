@@ -4,6 +4,8 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: clearer "PHP version hidden" finding (EN/ID): says hiding is good, how to check the version, which releases have the PHP2Shell fix, and warns against a public phpinfo page.
+- docs: plan owner-entered PHP version for hidden-version sites (FR-19, F-036, D-013) and log the verification-file idea.
 - fix: background replies via `sendResponse` + `return true`, so the popup no longer shows "Something went wrong" on Chrome builds that ignore a Promise returned from `onMessage` (seen on Chromium 141).
 - fix: treat `.test`, `.internal` and `.home.arpa` hosts as local targets (FR-4); they need the developer setting like `localhost`.
 - docs: add EN/ID branding and marketing kit with actual-UI demo screenshots, README banners, social cards, store promo tiles, logo lockups, copy and a reproducible renderer; remove unverified timing claims from store copy.
