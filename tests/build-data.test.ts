@@ -9,6 +9,7 @@ import {
   generateKeys,
   normalizeEol,
   normalizePackages,
+  parsePrivateKey,
   signBundle,
   validatePhpCore,
   verifyBundle,
@@ -89,6 +90,22 @@ describe('advisory data pipeline', () => {
     expect(() => normalizeEol([])).toThrow();
     expect(() => normalizePackages({})).toThrow();
     expect(() => dataVersion('2026-10-27', 0)).toThrow();
+  });
+
+  it('finds the private key in a pasted secret without echoing it', () => {
+    const keys = generateKeys();
+    const pasted = `Public key (commit to src/advisories/config.ts):\n${keys.publicKey}\n\nPrivate key (GitHub secret PHPUSING_DATA_KEY, never commit):\n${keys.privateKey}\n`;
+    const { body, signature } = signBundle(buildBundle(input), pasted);
+    expect(verifyBundle(body, signature, keys.publicKey)).toBe(true);
+    expect(() => parsePrivateKey(keys.publicKey)).toThrow(/found 0/);
+    expect(() => parsePrivateKey(`${keys.privateKey}\n${generateKeys().privateKey}`)).toThrow(
+      /found 2/,
+    );
+    try {
+      parsePrivateKey('secret-material-xyz');
+    } catch (error) {
+      expect(String(error)).not.toContain('secret-material-xyz');
+    }
   });
 
   it('signs bytes that verify with the raw public key, in Node and WebCrypto', async () => {

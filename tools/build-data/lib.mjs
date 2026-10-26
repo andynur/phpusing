@@ -113,13 +113,26 @@ export function buildBundle({ phpCore, eolRaw, packagistRaw, generatedAt, serial
 }
 
 /** advisories.json bytes, its detached Ed25519 signature and meta.json. */
-export function signBundle(bundle, privateKeyBase64) {
+// Every Ed25519 PKCS#8 key in base64 is 64 characters with this fixed prefix.
+const PKCS8_ED25519 = /MC4CAQAwBQYDK2VwBCIEI[A-Za-z0-9+/]{43}/g;
+
+/**
+ * Finds the private key in a pasted secret, tolerating the keygen label or the public key
+ * pasted alongside it. Error messages never include the secret.
+ */
+export function parsePrivateKey(secret) {
+  const found = [...new Set(String(secret).match(PKCS8_ED25519) ?? [])];
+  if (found.length !== 1) {
+    fail(
+      `PHPUSING_DATA_KEY must hold exactly one private key line from keygen.mjs (found ${found.length})`,
+    );
+  }
+  return createPrivateKey({ key: Buffer.from(found[0], 'base64'), format: 'der', type: 'pkcs8' });
+}
+
+export function signBundle(bundle, privateKeySecret) {
   const body = Buffer.from(canonicalJson(bundle));
-  const key = createPrivateKey({
-    key: Buffer.from(privateKeyBase64, 'base64'),
-    format: 'der',
-    type: 'pkcs8',
-  });
+  const key = parsePrivateKey(privateKeySecret);
   if (key.asymmetricKeyType !== 'ed25519') fail('signing key is not Ed25519');
   const signature = sign(null, body, key).toString('base64');
   const meta = {

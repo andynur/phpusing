@@ -31,6 +31,7 @@ export function buildBundle(input: {
   generatedAt: string;
   serial: number;
 }): Bundle;
+export function parsePrivateKey(secret: string): import('node:crypto').KeyObject;
 export function signBundle(
   bundle: Bundle,
   privateKeyBase64: string,
