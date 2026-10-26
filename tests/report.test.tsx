@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
+import snapshot from '../data/snapshot/advisories.json';
 import { makeFinding } from '../src/checks/finding';
 import { App, isStale } from '../src/entrypoints/report/App';
 import { developerMessage } from '../src/shared/developer-message';
@@ -9,6 +10,7 @@ import { I18nProvider } from '../src/shared/i18n/I18nProvider';
 import { scanKey } from '../src/shared/messages';
 import { parseReportQuery, reportPath } from '../src/shared/report-url';
 import type { ScanResult } from '../src/shared/types';
+import subset from './fixtures/VU-02/advisories.json';
 
 const ORIGIN = 'https://shop.example.com';
 const env = makeFinding('EX-01', 'critical', 'confirmed', [
@@ -115,6 +117,75 @@ describe('report page', () => {
         autoDataCheck: false,
       }),
     );
+  });
+});
+
+describe('composer.lock check', () => {
+  const lockFile = (body: string, name = 'composer.lock') =>
+    new File([body], name, { type: 'application/json' });
+  const lock = JSON.stringify({
+    'content-hash': '0123456789abcdef0123456789abcdef',
+    packages: [
+      { name: 'guzzlehttp/guzzle', version: '7.4.3' },
+      { name: 'vendor/unknown', version: '1.0.0' },
+    ],
+    'packages-dev': [{ name: 'monolog/monolog', version: '1.11.0' }],
+  });
+
+  it('audits a picked lock file in the page and stores nothing', async () => {
+    await fakeBrowser.storage.local.set({
+      advisoryData: { ...snapshot, version: '2026-10-26.4', packages: subset.packages },
+    });
+    const before = JSON.stringify([
+      await fakeBrowser.storage.local.get(null),
+      await fakeBrowser.storage.session.get(null),
+    ]);
+    renderReport('');
+    await userEvent.upload(await screen.findByLabelText('Choose file'), lockFile(lock));
+    expect(
+      await screen.findByText(
+        'composer.lock: 2 packages checked against advisory data from 2026-10-26.',
+      ),
+    ).toBeInTheDocument();
+    const rows = screen.getAllByRole('button', { name: /A package your site uses/ });
+    expect(rows).toHaveLength(1);
+    await userEvent.click(rows[0] as HTMLElement);
+    expect(screen.getByText('composer.lock: guzzlehttp/guzzle 7.4.3')).toBeInTheDocument();
+    expect(screen.queryByText(/monolog/)).toBeNull();
+    const after = JSON.stringify([
+      await fakeBrowser.storage.local.get(null),
+      await fakeBrowser.storage.session.get(null),
+    ]);
+    expect(after).toBe(before);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
+    expect(screen.queryByText(/packages checked/)).toBeNull();
+  });
+
+  it('says when nothing matched without calling the project safe', async () => {
+    await fakeBrowser.storage.local.set({
+      advisoryData: { ...snapshot, version: '2026-10-26.4', packages: subset.packages },
+    });
+    renderReport('');
+    const patched = lock.replace('7.4.3', '7.15.2');
+    await userEvent.upload(await screen.findByLabelText('Choose file'), lockFile(patched));
+    expect(await screen.findByText(/This is not a guarantee/)).toBeInTheDocument();
+  });
+
+  it('refuses odd, oversized or unauditable files', async () => {
+    renderReport('');
+    const input = await screen.findByLabelText('Choose file');
+    await userEvent.upload(input, lockFile('<html>nope</html>', 'composer.lock'));
+    expect(await screen.findByText(/does not look like a composer.lock/)).toBeInTheDocument();
+
+    const big = lockFile(lock);
+    Object.defineProperty(big, 'size', { value: 16 * 1024 * 1024 + 1 });
+    await userEvent.upload(input, big);
+    expect(await screen.findByText(/larger than 16 MB/)).toBeInTheDocument();
+
+    // The bundled snapshot has no package advisories yet.
+    await userEvent.upload(input, lockFile(lock));
+    expect(await screen.findByText(/No package advisory data yet/)).toBeInTheDocument();
   });
 });
 

@@ -27,7 +27,7 @@ report page (React) ◀── storage.session (scan result, memory only)
 
 - **popup** — start, consent, progress, verdict, top findings. No scan logic.
 - **background** — owns the scan: permission check, budget, probes, check execution, result assembly. Validates every message sender is the extension itself.
-- **report** — full findings, copy message, settings, data status, (v0.2) composer.lock drop.
+- **report** — full findings, copy message, settings, data status, composer.lock check (`report/LockCheck.tsx`: pick or drop a file, read with `File.text()` in the page, `parseComposerLock` + `auditPackages` against `currentAdvisories()`; files over 16 MB are refused unread; the text and results stay in component state, never stored or messaged; results are separate from the scan verdict).
 - **checks** — pure functions over a normalized response; easy to unit-test with fixtures.
 
 ## Permissions (manifest)

@@ -24,7 +24,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 - [x] F-030 Advisory data pipeline (`tools/build-data`), Ed25519 signing, static hosting
 - [x] F-031 In-extension data update with signature check
 - [x] F-032 VU-02: audit exposed `composer.lock`
-- [ ] F-033 Drop `composer.lock` on report page (local parse)
+- [x] F-033 Drop `composer.lock` on report page (local parse)
 - [ ] F-034 CISA KEV flag on matched advisories
 - [ ] F-035 Markdown report export
 - [ ] F-036 Owner-entered PHP version when VU-01 is hidden (FR-19, D-013)

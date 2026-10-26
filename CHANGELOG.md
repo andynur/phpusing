@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- feat: check a `composer.lock` on the report page (F-033): pick or drop the file, it is audited in the browser against package advisories and never uploaded or stored.
 - feat: read up to 2 MB of an exposed `composer.lock` so VU-02 audits the whole file (D-015); other responses stay at 64 KB.
 - feat: VU-02 audits an exposed `composer.lock` against Packagist advisories (F-032): one finding per affected package at its worst advisory severity, Composer constraint matching in `src/advisories/composer-semver.ts`, and a note on the EX-04 finding saying how many packages were audited.
 - feat: in-extension advisory data update (F-031): report page shows the data date, **Update now** and an auto-check switch; scans check for newer data when ours is older than 7 days. Downloads the whole file, verifies Ed25519 with WebCrypto, rejects older versions and keeps the old data on any failure.

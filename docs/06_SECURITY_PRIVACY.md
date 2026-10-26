@@ -20,6 +20,7 @@ Nothing else: no fonts, CDNs, analytics, error reporting, update pings, or link 
 | Delay between requests per slot | 150 ms |
 | Timeout per request | 8 s |
 | Body read cap | 64 KB; 2 MB for `/composer.lock` only (D-015) |
+| Dropped `composer.lock` (F-033) | Read locally, no network request, not stored; refused over 16 MB |
 | Consecutive 403/429 before stopping | 3 |
 | Scans per origin per minute | 2 |
 

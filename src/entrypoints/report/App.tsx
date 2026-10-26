@@ -17,6 +17,7 @@ import { FindingRow } from '../../shared/ui/FindingRow';
 import { LangToggle } from '../../shared/ui/LangToggle';
 import { ThemeToggle } from '../../shared/ui/ThemeToggle';
 import { ThemeProvider } from '../../shared/theme/ThemeProvider';
+import { LockCheck } from './LockCheck';
 import { VerdictCard } from '../../shared/ui/VerdictCard';
 import { countSeverities } from '../../shared/verdict';
 
@@ -252,6 +253,7 @@ function Report() {
             <Findings result={result} />
           </>
         )}
+        <LockCheck />
         <Settings />
         <footer className="text-xs text-fg-subtle">{t('report.limits')}</footer>
       </main>
