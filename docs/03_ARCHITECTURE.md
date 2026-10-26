@@ -120,7 +120,7 @@ No scan history in `local`. Ever (D-006).
 ```
 src/
   entrypoints/ background/ (index.ts, scan-service.ts), popup/, report/
-  checks/      fingerprint.ts, exposure.ts, config.ts, versions.ts
+  checks/      fingerprint.ts, exposure.ts, config.ts, versions.ts, packages.ts
   scanner/     fetch.ts, budget.ts, baseline.ts, plan.ts, scan.ts
   advisories/  load.ts, verify.ts, update.ts, composer-semver.ts
   shared/      types.ts, messages.ts, verdict.ts, i18n/{en,id}.json, ui/

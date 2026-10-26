@@ -18,10 +18,22 @@ export interface PhpCycle {
   latest: string;
 }
 
+/** One Packagist advisory; `affected` is a Composer constraint. */
+export interface PackageAdvisory {
+  id: string;
+  cve: string | null;
+  affected: string;
+  /** Packagist label: critical, high, medium, low, or null when the advisory has none. */
+  severity: string | null;
+  url: string | null;
+}
+
 export interface AdvisoryData {
   version: string;
   php: PhpCoreAdvisory[];
   eol: { source: string; php: PhpCycle[] };
+  /** Keyed by lower-case package name. Empty in the bundled snapshot until a release copies it. */
+  packages: Record<string, PackageAdvisory[]>;
 }
 
 export function loadAdvisories(): AdvisoryData {

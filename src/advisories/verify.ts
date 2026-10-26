@@ -1,5 +1,5 @@
 import { DATA_PUBLIC_KEY } from './config';
-import type { AdvisoryData } from './load';
+import type { AdvisoryData, PackageAdvisory } from './load';
 
 // Signature and shape checks for downloaded advisory data (docs/05_ADVISORY_DATA.md).
 
@@ -50,13 +50,46 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
 }
 
+const isNullableString = (v: unknown): v is string | null => v === null || isString(v);
+
+function parsePackages(value: Record<string, unknown>): Record<string, PackageAdvisory[]> | null {
+  const entries: [string, PackageAdvisory[]][] = [];
+  for (const [name, list] of Object.entries(value)) {
+    if (!Array.isArray(list)) return null;
+    const advisories: PackageAdvisory[] = [];
+    for (const a of list) {
+      if (
+        !isRecord(a) ||
+        !isString(a.id) ||
+        !isString(a.affected) ||
+        !isNullableString(a.cve) ||
+        !isNullableString(a.severity) ||
+        !isNullableString(a.url)
+      ) {
+        return null;
+      }
+      advisories.push({
+        id: a.id,
+        cve: a.cve,
+        affected: a.affected,
+        severity: a.severity,
+        url: a.url,
+      });
+    }
+    entries.push([name, advisories]);
+  }
+  // fromEntries defines own properties, so a "__proto__" key cannot change the prototype.
+  return Object.fromEntries(entries);
+}
+
 /** Keeps only the fields the checks read; returns null when the bundle has the wrong shape. */
 export function parseAdvisoryData(value: unknown): AdvisoryData | null {
   if (!isRecord(value) || !isString(value.version) || !VERSION.test(value.version)) return null;
-  const { php, eol } = value;
+  const { php, eol, packages } = value;
   if (!Array.isArray(php) || !isRecord(eol) || !Array.isArray(eol.php) || !isString(eol.source)) {
     return null;
   }
+  if (!isRecord(packages)) return null;
   const phpOk = php.every(
     (e) =>
       isRecord(e) &&
@@ -70,6 +103,8 @@ export function parseAdvisoryData(value: unknown): AdvisoryData | null {
     (c) => isRecord(c) && isString(c.cycle) && isString(c.eol) && isString(c.latest),
   );
   if (!phpOk || !eolOk) return null;
+  const pkgs = parsePackages(packages);
+  if (!pkgs) return null;
   return {
     version: value.version,
     php: php.map(({ id, cves, fixed, unfixedBelow, source }) => ({
@@ -83,5 +118,6 @@ export function parseAdvisoryData(value: unknown): AdvisoryData | null {
       source: eol.source,
       php: eol.php.map(({ cycle, eol: date, latest }) => ({ cycle, eol: date, latest })),
     },
+    packages: pkgs,
   };
 }

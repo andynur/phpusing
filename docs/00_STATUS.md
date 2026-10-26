@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
 - **Phase:** building v0.2; v0.1.0 Chrome Web Store upload deferred to the end (owner)
-- **Last done:** 2026-10-26, F-031 in-extension data update: `src/advisories/update.ts` + `verify.ts`, `data/update` message, report Data settings (date, Update now, auto-check switch), data host on the bundle URL allowlist. `pnpm check` green. Not tried against the live Pages host from a real Chrome yet. Earlier: F-030 pipeline; v0.1.0 tagged (`cc506e1`), not pushed.
-- **Next task:** v0.2 F-032 VU-02 exposed `composer.lock` audit (extend `parseAdvisoryData` with `packages`, add `composer-semver.ts`). Before that, owner: manual Update now on the live host in Chrome 137+. Chrome Web Store upload last (owner).
+- **Last done:** 2026-10-26, F-032 VU-02: `src/checks/packages.ts` (lock parse + audit, note on EX-04), `src/advisories/composer-semver.ts`, `packages` in advisory data. `pnpm check` green. Earlier: F-031 data update (not tried against the live Pages host from a real Chrome yet); F-030 pipeline; v0.1.0 tagged (`cc506e1`), not pushed.
+- **Next task:** v0.2 F-033 drop `composer.lock` on report page (reuse `parseComposerLock` + `auditPackages`; a dropped file has no 64 KB cap). Owner: manual Update now on the live host in Chrome 137+. Chrome Web Store upload last (owner).
 
 ## Blockers and open questions
 
@@ -16,7 +16,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 ## Notes for the next session
 
-- F-031: `vitest.setup.ts` stubs global `fetch` to reject, so code must take an injected fetch (`dataFetchImpl` in scan service). Stored data keeps `php` and `eol` only.
+- F-031: `vitest.setup.ts` stubs global `fetch` to reject, so code must take an injected fetch (`dataFetchImpl` in scan service).
+- F-032: bundled snapshot still has `packages: {}`, so VU-02 finds nothing until data is downloaded (Update now, or auto-check after 7 days). Copying the live bundle into the snapshot at release adds 1.3 MB and many advisory URL literals, which `tools/check-bundle-urls.mjs` will reject unless data URLs are exempted. Real lock files are usually larger than 64 KB, so an exposed lock is audited only in part; raising the cap for `/composer.lock` needs a decision entry. Constraint matching not yet compared with `composer audit`.
 - Product handoff before H-002: F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green
 
 - README states v0.1 only: Composer package matching and signed advisory updates remain v0.2; it does not claim publication before the Chrome Web Store release.

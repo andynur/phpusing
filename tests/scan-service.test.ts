@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { createScanService } from '../src/entrypoints/background/scan-service';
 import { isTrustedSender, parseBroadcast, parseRequest, scanKey } from '../src/shared/messages';
+import snapshot from '../data/snapshot/advisories.json';
+import subset from './fixtures/VU-02/advisories.json';
 import { fakeFetch } from './helpers/fake-site';
 
 const ORIGIN = 'https://shop.example.com';
@@ -62,6 +64,29 @@ describe('scan service', () => {
     const last = parseBroadcast(await done());
     expect(last?.type === 'scan/result' && last.result.verdict).toBe('major');
     expect(badge).toHaveBeenCalledWith({ tabId: TAB, text: '!' });
+  });
+
+  it('audits an exposed composer.lock against stored package advisories', async () => {
+    await fakeBrowser.storage.local.set({
+      advisoryData: { ...snapshot, version: '2026-10-26.4', packages: subset.packages },
+    });
+    const lock = JSON.stringify({
+      'content-hash': '0123456789abcdef0123456789abcdef',
+      packages: [{ name: 'guzzlehttp/guzzle', version: '7.4.3' }],
+    });
+    const service = createScanService({
+      slotDelayMs: 0,
+      fetchImpl: fakeFetch((p) => (p === '/composer.lock' ? { body: lock } : undefined)),
+      now: () => Date.parse('2026-10-26T12:00:00Z'),
+    });
+    await service.handle({ type: 'scan/start', tabId: TAB });
+    const last = parseBroadcast(await done());
+    const result = last?.type === 'scan/result' ? last.result : null;
+    expect(result?.dataVersion).toBe('2026-10-26.4');
+    expect(result?.findings.map((f) => f.checkId)).toEqual(
+      expect.arrayContaining(['EX-04', 'VU-02']),
+    );
+    expect(JSON.stringify(result)).not.toContain('0123456789abcdef');
   });
 
   it('refuses origins without consent or host permission', async () => {

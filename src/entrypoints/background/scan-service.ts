@@ -3,6 +3,7 @@ import { loadAdvisories } from '../../advisories/load';
 import { advisoriesForScan } from '../../advisories/update';
 import { analyze } from '../../checks';
 import { fingerprint, parseMarkers, readMarkers } from '../../checks/fingerprint';
+import { withLockAudit } from '../../checks/packages';
 import { checkPhpVersion } from '../../checks/versions';
 import { ScanRateLimiter } from '../../scanner/budget';
 import { buildPlan } from '../../scanner/plan';
@@ -92,10 +93,10 @@ export function createScanService({
         slotDelayMs,
         onProgress: (p) => broadcast({ type: 'scan/progress', tabId, ...p }),
       });
-      // VU-01 needs no requests: it matches the fingerprint against advisory data.
+      // VU-01 and VU-02 need no requests: they match what the scan saw against advisory data.
       const data = await dataReady;
       const vu = checkPhpVersion(fp, data, startedAt.slice(0, 10));
-      const findings = [...run.findings, ...vu.findings];
+      const findings = [...withLockAudit(run.findings, run.context, data), ...vu.findings];
       const result: ScanResult = {
         origin,
         startedAt,

@@ -40,7 +40,7 @@ All values in `php` entries must carry a source URL. Never hand-type a CVE ID or
 - Bundled snapshot loads first, so scans work offline and on first run.
 - Update: download the **whole** file (never per-package or sharded requests, so the host learns nothing about the user's stack). Verify the Ed25519 signature with the public key compiled into the extension (WebCrypto `Ed25519`; fallback to a vetted small library only if needed, with a decision entry). Reject on mismatch and keep the old data.
 - Report always shows the data version date. Warn if older than 14 days.
-- F-031 (`src/advisories/update.ts`, `verify.ts`): the background fetches `meta.json` first (unsigned hint; it can only skip the download), then `advisories.json` and `.sig`. Fetches omit credentials, refuse redirects, time out after 15 s and stop at 8 MB. Verified data is stored in `storage.local` (`advisoryData`, only the `php` and `eol` fields the checks read; F-032 adds `packages`) with `advisoryMeta`. A signed file whose version is not newer than the current data is ignored, so an old file cannot roll data back. Auto-check (FR-17) runs on scan when the data is older than 7 days, at most once per 6 h, and can be disabled on the report page.
+- F-031 (`src/advisories/update.ts`, `verify.ts`): the background fetches `meta.json` first (unsigned hint; it can only skip the download), then `advisories.json` and `.sig`. Fetches omit credentials, refuse redirects, time out after 15 s and stop at 8 MB. Verified data is stored in `storage.local` (`advisoryData`: `version`, `php`, `eol` and `packages`) with `advisoryMeta`. A signed file whose version is not newer than the current data is ignored, so an old file cannot roll data back. Auto-check (FR-17) runs on scan when the data is older than 7 days, at most once per 6 h, and can be disabled on the report page.
 - WebCrypto `Ed25519` ships in Chrome 137 and later. On older Chrome, verification fails closed and the bundled snapshot stays in use; no fallback library was added.
 
 ## Composer constraint matching (`src/advisories/composer-semver.ts`)
@@ -48,6 +48,8 @@ All values in `php` entries must carry a source URL. Never hand-type a CVE ID or
 Must support what advisories use: `|` / `||` (or), `,` and space (and), `>`, `>=`, `<`, `<=`, `=`, `!=`, exact versions, `x`/`*` wildcards, and normalization of `v` prefixes and 4-part versions (`1.2.3.4`). Stability suffixes (`-beta1`, `-RC2`) compare below the release. Dev branches (`dev-main`) are not matched; report as "cannot evaluate".
 
 Test against a table of real advisory constraints (`tests/fixtures/constraints.json`) and compare results with `composer audit` output for a known lock file.
+
+F-032: `satisfies(installed, constraint)` returns `true`, `false` or `null` (cannot evaluate). As in composer/semver, `<X` and `>=X` without a stability mean `<X-dev` and `>=X-dev`, so `7.15.2-beta1` is not `<7.15.2`. Date versions (`2020-09-14`) are read as dotted versions. `~` and `^` give `null`; Packagist advisory constraints in the 2026-10-26 data do not use them. Not yet compared with `composer audit` output (unverified).
 
 ## PHP version matching
 
