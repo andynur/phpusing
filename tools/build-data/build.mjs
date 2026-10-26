@@ -3,7 +3,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
-import { EOL_URL, PACKAGIST_URL, buildBundle, signBundle } from './lib.mjs';
+import { DATA_PUBLIC_KEY } from '../../src/advisories/config.ts';
+import { EOL_URL, PACKAGIST_URL, buildBundle, signBundle, verifyBundle } from './lib.mjs';
 
 const { values } = parseArgs({
   options: {
@@ -18,10 +19,21 @@ if (!key) {
   process.exit(1);
 }
 
-async function getJson(url) {
-  const response = await fetch(url, { headers: { 'User-Agent': 'phpusing-build-data' } });
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  return response.json();
+async function getJson(url, attempts = 3) {
+  for (let i = 1; ; i++) {
+    try {
+      const response = await fetch(url, {
+        headers: { 'User-Agent': 'phpusing-build-data' },
+        signal: AbortSignal.timeout(60_000),
+      });
+      if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      if (i >= attempts) throw error;
+      console.warn(`${url}: attempt ${i} failed (${error.message}), retrying`);
+      await new Promise((resolve) => setTimeout(resolve, 5000 * i));
+    }
+  }
 }
 
 const [eolRaw, packagistRaw] = await Promise.all([getJson(EOL_URL), getJson(PACKAGIST_URL)]);
@@ -34,6 +46,10 @@ const bundle = buildBundle({
   serial: Number(values.serial),
 });
 const { body, signature, meta } = signBundle(bundle, key);
+if (!verifyBundle(body, signature, DATA_PUBLIC_KEY)) {
+  console.error('PHPUSING_DATA_KEY does not match DATA_PUBLIC_KEY in src/advisories/config.ts.');
+  process.exit(1);
+}
 
 // Versioned path, so the format can change later without breaking installed extensions.
 const dir = join(values.out, 'v1');

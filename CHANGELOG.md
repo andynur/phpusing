@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- fix: advisory-data workflow no longer fails on setup-node's pnpm cache; build retries source downloads, refuses a signing key that does not match `DATA_PUBLIC_KEY` in `src/advisories/config.ts`, and runs on pushes that touch the pipeline.
 - feat: advisory data pipeline `tools/build-data` (php.net core entries, endoflife.date, Packagist), Ed25519 signing and a daily GitHub Pages workflow (F-030, D-014).
 
 ## [0.1.0] - 2026-10-26

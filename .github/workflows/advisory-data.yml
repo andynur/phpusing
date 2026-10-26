@@ -6,6 +6,12 @@ on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/build-data/**'
+      - 'src/advisories/config.ts'
+      - '.github/workflows/advisory-data.yml'
 
 permissions:
   contents: read
@@ -24,10 +30,14 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          # package.json names pnpm; this job needs no install, so skip setup-node's pnpm cache.
+          package-manager-cache: false
       - name: Build and sign
         run: node tools/build-data/build.mjs --out data/dist --serial ${{ github.run_number }}
         env:
           PHPUSING_DATA_KEY: ${{ secrets.PHPUSING_DATA_KEY }}
+      - name: Check published shape
+        run: test -s data/dist/v1/advisories.json && test -s data/dist/v1/advisories.json.sig && test -s data/dist/v1/meta.json
       - uses: actions/upload-pages-artifact@v4
         with:
           path: data/dist
