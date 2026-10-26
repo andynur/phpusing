@@ -4,6 +4,7 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+- fix: **Update now** on the report page always failed: the background ignored messages whose sender has `sender.tab`, which Chrome sets for the report page because it runs in a tab. Trust now depends on the extension ID and the extension URL only.
 - feat: enter the PHP version by hand when the scan could not see it (F-036, FR-19, D-013): parsed from a version or `php -v` output, matched in the browser, kept in memory only; the verdict, findings, copied message and Markdown report say it was entered by the owner.
 - feat: download the report as a Markdown file (F-035), in the developer message language, with redacted evidence only.
 - feat: flag advisories in the CISA KEV catalog as exploited in the wild (F-034): the data pipeline adds a `kev` list, VU-02 findings with a KEV CVE become critical, and VU-01 and VU-02 show the KEV badge.

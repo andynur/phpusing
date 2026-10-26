@@ -16,6 +16,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 ## Notes for the next session
 
+- Messages: `isTrustedSender` must not reject `sender.tab`; the report page runs in a tab (Update now failed in real Chrome 156 until this was fixed). Tests now use a report-page sender with `tab` set.
 - F-031: `vitest.setup.ts` stubs global `fetch` to reject, so code must take an injected fetch (`dataFetchImpl` in scan service).
 - F-032: bundled snapshot still has `packages: {}`, so VU-02 finds nothing until data is downloaded (Update now, or auto-check after 7 days). Copying the live bundle into the snapshot at release adds 1.3 MB and many advisory URL literals, which `tools/check-bundle-urls.mjs` will reject unless data URLs are exempted. D-015 (owner-approved): `/composer.lock` is read up to 2 MB; larger locks are audited in part. Constraint matching not yet compared with `composer audit`. F-033: the lock check says "no package advisory data yet" until data is downloaded; its results are not part of the scan verdict. F-036: an entered version may reach `calm` (same rule as a seen version) and the note says phpusing cannot confirm it; the copied message shows it in evidence. F-034: snapshot `kev` is empty; the live bundle on 2026-10-26.4 predates `kev` and reads as an empty list until the workflow runs again.
 - Product handoff before H-002: F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green

@@ -76,13 +76,15 @@ export function parseBroadcast(value: unknown): Broadcast | null {
   return null;
 }
 
-// Only our own extension pages may talk to the background (no content scripts exist).
+// Only our own extension pages may talk to the background (no content scripts exist). The URL
+// decides, not `sender.tab`: the report page runs in a tab, and code in a web page reports the
+// page URL.
 export function isTrustedSender(
   sender: { id?: string; url?: string; tab?: unknown },
   runtimeId: string,
   extensionOrigin: string,
 ): boolean {
-  return sender.id === runtimeId && !sender.tab && (sender.url ?? '').startsWith(extensionOrigin);
+  return sender.id === runtimeId && (sender.url ?? '').startsWith(extensionOrigin);
 }
 
 // storage.session key for one tab's result (docs/03_ARCHITECTURE.md, "Storage").

@@ -160,6 +160,10 @@ describe('messages', () => {
   it('trusts only extension pages of this extension', () => {
     const ext = 'chrome-extension://abc/';
     expect(isTrustedSender({ id: 'abc', url: `${ext}popup.html` }, 'abc', ext)).toBe(true);
+    // The report page runs in a tab, so Chrome sets sender.tab for it.
+    expect(isTrustedSender({ id: 'abc', url: `${ext}report.html`, tab: {} }, 'abc', ext)).toBe(
+      true,
+    );
     expect(isTrustedSender({ id: 'xyz', url: `${ext}popup.html` }, 'abc', ext)).toBe(false);
     expect(
       isTrustedSender({ id: 'abc', url: 'https://shop.example.com/', tab: {} }, 'abc', ext),

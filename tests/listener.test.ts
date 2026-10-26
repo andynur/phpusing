@@ -28,13 +28,29 @@ describe('background message listener', () => {
     );
   });
 
+  it('answers the report page, which Chrome sends with sender.tab set', async () => {
+    const listener = createMessageListener(
+      async () => ({ ok: true, status: 'updated', version: '2026-10-26.6' }),
+      ID,
+      ORIGIN,
+    );
+    const sendResponse = vi.fn();
+    const report = { id: ID, url: `${ORIGIN}report.html?tab=7`, tab: { id: 8 } };
+    expect(listener({ type: 'data/update' }, report, sendResponse)).toBe(true);
+    await vi.waitFor(() =>
+      expect(sendResponse).toHaveBeenCalledWith(expect.objectContaining({ ok: true })),
+    );
+  });
+
   it('ignores untrusted senders and malformed messages', () => {
     const handle = vi.fn();
     const listener = createMessageListener(handle, ID, ORIGIN);
     const sendResponse = vi.fn();
-    expect(listener({ type: 'scan/start', tabId: 1 }, { ...popup, tab: {} }, sendResponse)).toBe(
-      false,
-    );
+    const webPage = { id: ID, url: 'https://shop.example.com/', tab: { id: 1 } };
+    expect(listener({ type: 'scan/start', tabId: 1 }, webPage, sendResponse)).toBe(false);
+    expect(
+      listener({ type: 'scan/start', tabId: 1 }, { ...popup, id: 'other' }, sendResponse),
+    ).toBe(false);
     expect(listener({ type: 'nope' }, popup, sendResponse)).toBe(false);
     expect(handle).not.toHaveBeenCalled();
     expect(sendResponse).not.toHaveBeenCalled();

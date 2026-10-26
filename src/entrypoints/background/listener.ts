@@ -1,6 +1,6 @@
 import { isTrustedSender, parseRequest, type Reply, type Request } from '../../shared/messages';
 
-type Sender = { id?: string; url?: string; tab?: unknown };
+type Sender = { id?: string; url?: string };
 
 // Replies through sendResponse and `return true`: older Chrome ignores a Promise returned
 // from an onMessage listener, so the popup would receive `undefined`.
