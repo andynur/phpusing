@@ -1,7 +1,7 @@
 {
   "name": "phpusing",
   "description": "Find out if your PHP site has a headache. Local-only checks for exposed files, risky config and vulnerable versions.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "license": "MIT",
   "type": "module",

@@ -2,10 +2,10 @@
 
 Single source of "where are we". Update at the end of every task. Keep it under 40 lines.
 
-- **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
-- **Phase:** building v0.2; v0.1.0 Chrome Web Store upload deferred to the end (owner)
-- **Last done:** 2026-10-26, F-036 owner-entered PHP version (`report/OwnerVersion.tsx`, `src/shared/owner-version.ts`); all v0.2 roadmap items done. `pnpm check` green. Before: F-035 Markdown export (`ba309d6`); F-034 CISA KEV flag (`7490757`); F-033 composer.lock check (`770dd5c`); D-015; F-032; F-031 (not tried against the live Pages host from a real Chrome yet); v0.1.0 tagged (`cc506e1`). Nothing pushed.
-- **Next task:** v0.2 release: owner checks below, then bump to 0.2.0 and tag; after that v0.3 F-040. Owner: push, then run the advisory-data workflow so the live bundle gets `kev`; manual Update now on the live host in Chrome 137+; try the composer.lock check with a real project lock; try the PHP version box on a hidden-version site. Chrome Web Store upload last (owner).
+- **Current release:** v0.3 (WordPress), see `02_ROADMAP.md`. v0.2.0 tagged 2026-10-26; v0.1.0 tagged 2026-10-26
+- **Phase:** v0.2.0 packaged (`.output/phpusing-0.2.0-chrome.zip`); building v0.3. Chrome Web Store upload deferred (owner)
+- **Last done:** 2026-10-26, v0.2.0 release: owner passed the v0.2 checks (push, advisory-data workflow with `kev`, Update now in Chrome, real composer.lock, typed PHP version); PRIVACY.md 0.2.0 now covers the data download, local composer.lock check and typed version; README status updated; `pnpm check` green, `pnpm zip` built, tag `v0.2.0`. Before: F-036 (`3fc5032`), F-035, F-034, F-033, D-015, F-032, F-031, v0.1.0 (`cc506e1`).
+- **Next task:** v0.3 F-040 VU-03 WordPress core version. Owner: push the `v0.2.0` tag; before the store upload, refresh `docs/store/LISTING.md` (still says v0.1) for the github.io data download and composer.lock audit.
 
 ## Blockers and open questions
 

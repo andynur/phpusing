@@ -4,6 +4,9 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## Unreleased
 
+## [0.2.0] - 2026-10-26
+
+- docs: privacy policy 0.2.0 describes the signed vulnerability-data download, the local `composer.lock` check and the typed PHP version; README status updated.
 - fix: **Update now** on the report page always failed: the background ignored messages whose sender has `sender.tab`, which Chrome sets for the report page because it runs in a tab. Trust now depends on the extension ID and the extension URL only.
 - feat: enter the PHP version by hand when the scan could not see it (F-036, FR-19, D-013): parsed from a version or `php -v` output, matched in the browser, kept in memory only; the verdict, findings, copied message and Markdown report say it was entered by the owner.
 - feat: download the report as a Markdown file (F-035), in the developer message language, with redacted evidence only.

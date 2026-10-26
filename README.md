@@ -12,7 +12,7 @@ It is detection tooling, not a vulnerability scanner or a guarantee of security.
 
 ## Status
 
-v0.1 is feature-complete and preparing for its first Chrome Web Store release. The extension is not published yet. The EN/ID marketing kit is ready; manual browser checks remain before release; see [project status](docs/00_STATUS.md).
+v0.2.0 is tagged and adds Composer depth: `composer.lock` auditing against Packagist advisories, signed advisory-data updates, CISA KEV flags, Markdown export and an owner-entered PHP version. The extension is not published on the Chrome Web Store yet; see [project status](docs/00_STATUS.md).
 
 ## Product preview
 
@@ -39,8 +39,9 @@ Hasil tenang bukan jaminan keamanan. Periksa hanya situs milik Anda atau yang bo
 - Exposed `.env`, `.git`, Composer files, Laravel logs, backups, database dumps, and `phpinfo()` pages.
 - Public debug pages, directory listings, Telescope, Horizon, Adminer, phpMyAdmin, and the PHPUnit `eval-stdin.php` path.
 - Plain-HTTP use on the site currently open in the browser.
+- Known-vulnerable Composer packages in an exposed `composer.lock`, or in one you drop on the report page (checked locally), with CISA KEV advisories marked as exploited in the wild.
 
-The exact shipped checks, signatures, severities, and release scope live in the [checks catalog](docs/04_CHECKS.md). Composer package vulnerability matching is planned for v0.2; it is not part of v0.1.
+The exact shipped checks, signatures, severities, and release scope live in the [checks catalog](docs/04_CHECKS.md). WordPress core and plugin checks are planned for v0.3.
 
 ## Privacy and safety model
 
@@ -109,7 +110,7 @@ The extension uses `activeTab`, `scripting`, and `storage`, plus an optional hos
 | `src/shared/` | Types, i18n, verdict logic, and reusable UI |
 | `tests/` | Unit tests and synthetic fixtures |
 | `docs/` | Product, architecture, checks, privacy, decisions, and test plans |
-| `data/snapshot/` | Bundled v0.1 advisory snapshot |
+| `data/snapshot/` | Bundled advisory snapshot; newer signed data is downloaded at runtime |
 
 ## Contributing
 
