@@ -4,8 +4,8 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 - **Current release:** v0.2 (Composer depth), see `02_ROADMAP.md`. v0.1.0 tagged 2026-10-26
 - **Phase:** building v0.2; v0.1.0 Chrome Web Store upload deferred to the end (owner)
-- **Last done:** 2026-10-26, F-030 advisory data pipeline: `tools/build-data/` (build, sign, keygen; Node built-ins only), daily GitHub Pages workflow, Q-5 resolved as GitHub Pages (D-014). Local run: 1114 packages, 1.3 MB. Earlier today: v0.1.0 tagged (`cc506e1`), not pushed.
-- **Next task:** v0.2 F-031 in-extension data update (WebCrypto Ed25519, public key in `src/advisories/config.ts`, add host to `tools/check-bundle-urls.mjs`). Chrome Web Store upload last (owner).
+- **Last done:** 2026-10-26, F-031 in-extension data update: `src/advisories/update.ts` + `verify.ts`, `data/update` message, report Data settings (date, Update now, auto-check switch), data host on the bundle URL allowlist. `pnpm check` green. Not tried against the live Pages host from a real Chrome yet. Earlier: F-030 pipeline; v0.1.0 tagged (`cc506e1`), not pushed.
+- **Next task:** v0.2 F-032 VU-02 exposed `composer.lock` audit (extend `parseAdvisoryData` with `packages`, add `composer-semver.ts`). Before that, owner: manual Update now on the live host in Chrome 137+. Chrome Web Store upload last (owner).
 
 ## Blockers and open questions
 
@@ -16,6 +16,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 
 ## Notes for the next session
 
+- F-031: `vitest.setup.ts` stubs global `fetch` to reject, so code must take an injected fetch (`dataFetchImpl` in scan service). Stored data keeps `php` and `eol` only.
 - Product handoff before H-002: F-020 VU-01: `src/checks/versions.ts`, `src/advisories/load.ts`, `data/snapshot/advisories.json` (hand-curated, sources inside); verdict can now be calm; `pnpm check` green
 
 - README states v0.1 only: Composer package matching and signed advisory updates remain v0.2; it does not claim publication before the Chrome Web Store release.
@@ -24,7 +25,7 @@ Single source of "where are we". Update at the end of every task. Keep it under 
 - pnpm comes from corepack (`corepack enable pnpm`). Tokens are Tailwind utilities: `bg-canvas`, `text-fg-muted`, `bg-sev-critical-bg text-sev-critical`; the default palette is removed, so `bg-red-500` does not compile.
 - Manifest: `storage`, `activeTab`, `scripting`, `optional_host_permissions`.
 - F-020: Q-2 resolved on php.net (CVE-2026-109618/109619; fixed 8.5.12, 8.4.27, 8.3.36, 8.2.35; 8.1 and older no upstream release, treated as affected). Unverified single-vendor claim (Abstract Security) that patched 8.2.35 is still exploitable: not reflected in data. KEV flag not set: no CISA KEV entry verified. Refresh `advisories.json` by hand until F-030.
-- F-022: manual light/dark override (FR-16) is done. Data "Update now" (FR-17) needs F-031 in v0.2. Report reads `scan:<tab>:<origin>` from `storage.session` via `?tab=&origin=`.
+- F-022: manual light/dark override (FR-16) is done. Data "Update now" (FR-17) done in F-031. Report reads `scan:<tab>:<origin>` from `storage.session` via `?tab=&origin=`.
 - F-021: `calm` needs `phpSupported: true` from VU-01.
 - F-014: CF-02 deviates from the catalog's https probe (see 04_CHECKS.md row). `analyze` ignores the fingerprint so far; VU-01 will use `fingerprint.php`.
 - F-013: `PathCheck` + `runPathChecks` in `exposure.ts` are reusable for CF-04. Fixtures are excluded from Prettier (raw bytes matter). All 26 paths are always planned; budget trims by severity.

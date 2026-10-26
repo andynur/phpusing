@@ -35,11 +35,13 @@ All values in `php` entries must carry a source URL. Never hand-type a CVE ID or
 
 ## In-extension use
 
-- v0.1: `data/snapshot/advisories.json` is curated by hand (PHP2Shell from the php.net advisory of 21 Oct 2026, PHP cycles from endoflife.date on 2026-10-25), with `packages` empty. It ships inside the extension package, so it is not separately signed; the pipeline and signatures arrive with F-030.
+- Snapshot: `data/snapshot/advisories.json` is curated by hand (PHP2Shell from the php.net advisory of 21 Oct 2026, PHP cycles from endoflife.date on 2026-10-25), with `packages` empty. It ships inside the extension package, so it is not separately signed; the pipeline and signatures arrive with F-030.
 
 - Bundled snapshot loads first, so scans work offline and on first run.
 - Update: download the **whole** file (never per-package or sharded requests, so the host learns nothing about the user's stack). Verify the Ed25519 signature with the public key compiled into the extension (WebCrypto `Ed25519`; fallback to a vetted small library only if needed, with a decision entry). Reject on mismatch and keep the old data.
 - Report always shows the data version date. Warn if older than 14 days.
+- F-031 (`src/advisories/update.ts`, `verify.ts`): the background fetches `meta.json` first (unsigned hint; it can only skip the download), then `advisories.json` and `.sig`. Fetches omit credentials, refuse redirects, time out after 15 s and stop at 8 MB. Verified data is stored in `storage.local` (`advisoryData`, only the `php` and `eol` fields the checks read; F-032 adds `packages`) with `advisoryMeta`. A signed file whose version is not newer than the current data is ignored, so an old file cannot roll data back. Auto-check (FR-17) runs on scan when the data is older than 7 days, at most once per 6 h, and can be disabled on the report page.
+- WebCrypto `Ed25519` ships in Chrome 137 and later. On older Chrome, verification fails closed and the bundled snapshot stays in use; no fallback library was added.
 
 ## Composer constraint matching (`src/advisories/composer-semver.ts`)
 

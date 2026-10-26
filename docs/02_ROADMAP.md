@@ -22,7 +22,7 @@ Work only on the current release (see `00_STATUS.md`). Tick items when done. Che
 ## v0.2 — Composer depth
 
 - [x] F-030 Advisory data pipeline (`tools/build-data`), Ed25519 signing, static hosting
-- [ ] F-031 In-extension data update with signature check
+- [x] F-031 In-extension data update with signature check
 - [ ] F-032 VU-02: audit exposed `composer.lock`
 - [ ] F-033 Drop `composer.lock` on report page (local parse)
 - [ ] F-034 CISA KEV flag on matched advisories

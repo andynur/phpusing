@@ -7,10 +7,18 @@ export type ScanErrorReason =
 
 export type ScanPhase = 'baseline' | 'probe' | 'analyze';
 
-export type Request =
+export type ScanRequest =
   { type: 'scan/start'; tabId: number } | { type: 'scan/cancel'; tabId: number };
 
+export type Request = ScanRequest | { type: 'data/update' };
+
 export type StartReply = { ok: true } | { ok: false; reason: ScanErrorReason };
+
+/** `data/update` reply: the background downloads, verifies and stores the data. */
+export type DataReply =
+  { ok: true; status: 'updated' | 'current'; version: string } | { ok: false; reason: 'failed' };
+
+export type Reply = StartReply | DataReply;
 
 export type Broadcast =
   | { type: 'scan/progress'; tabId: number; done: number; total: number; phase: ScanPhase }
@@ -24,6 +32,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 }
 
 export function parseRequest(value: unknown): Request | null {
+  if (isRecord(value) && value.type === 'data/update') return { type: value.type };
   if (!isRecord(value) || !isTabId(value.tabId)) return null;
   if (value.type === 'scan/start' || value.type === 'scan/cancel') {
     return { type: value.type, tabId: value.tabId };

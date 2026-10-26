@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { browser } from 'wxt/browser';
 import { dataDate } from '../../advisories/load';
+import { currentAdvisories } from '../../advisories/update';
 import { loadAuthorizedOrigins, revoke } from '../../shared/consent';
 import { developerMessage } from '../../shared/developer-message';
 import type { Lang } from '../../shared/i18n';
 import { useI18n } from '../../shared/i18n/I18nProvider';
-import { scanKey } from '../../shared/messages';
+import { scanKey, type DataReply } from '../../shared/messages';
 import { parseReportQuery } from '../../shared/report-url';
 import { loadSettings, saveSettings } from '../../shared/settings';
 import { SEVERITIES, type ScanResult } from '../../shared/types';
@@ -74,7 +75,76 @@ function Findings({ result }: { result: ScanResult }) {
   );
 }
 
-function Settings({ version }: { version?: string }) {
+type DataStatus = 'idle' | 'updating' | 'updated' | 'current' | 'failed';
+
+const DATA_STATUS_KEY = {
+  updating: 'settings.updating',
+  updated: 'settings.updated',
+  current: 'settings.current',
+  failed: 'settings.updateFailed',
+} as const;
+
+// PRD FR-17: data version, Update now, and the auto-check switch.
+function DataSettings() {
+  const { t } = useI18n();
+  const [version, setVersion] = useState('');
+  const [autoCheck, setAutoCheck] = useState(true);
+  const [status, setStatus] = useState<DataStatus>('idle');
+
+  useEffect(() => {
+    void currentAdvisories().then((d) => setVersion(d.version));
+    void loadSettings().then((s) => setAutoCheck(s.autoDataCheck !== false));
+  }, []);
+
+  async function update() {
+    setStatus('updating');
+    const reply = (await browser.runtime
+      .sendMessage({ type: 'data/update' })
+      .catch(() => undefined)) as DataReply | undefined;
+    if (reply?.ok) {
+      setStatus(reply.status);
+      setVersion(reply.version);
+    } else {
+      setStatus('failed');
+    }
+  }
+
+  return (
+    <>
+      <h3 className="text-sm font-semibold text-fg-muted">{t('settings.dataTitle')}</h3>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        {version && <p>{t('settings.data', { version: dataDate(version) })}</p>}
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={status === 'updating'}
+          onClick={() => void update()}
+        >
+          {t('settings.updateNow')}
+        </Button>
+      </div>
+      {status !== 'idle' && (
+        <p role="status" className="text-fg-muted">
+          {t(DATA_STATUS_KEY[status], { version: dataDate(version) })}
+        </p>
+      )}
+      <label className="flex items-start gap-2">
+        <input
+          type="checkbox"
+          checked={autoCheck}
+          onChange={(e) => {
+            setAutoCheck(e.target.checked);
+            void saveSettings({ autoDataCheck: e.target.checked ? undefined : false });
+          }}
+          className="mt-0.5 size-4 accent-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        />
+        {t('settings.autoData')}
+      </label>
+    </>
+  );
+}
+
+function Settings() {
   const { t } = useI18n();
   const [sites, setSites] = useState<string[]>([]);
   const [allowLocal, setAllowLocal] = useState(false);
@@ -122,7 +192,7 @@ function Settings({ version }: { version?: string }) {
           />
           {t('settings.local')}
         </label>
-        {version && <p className="text-xs text-fg-subtle">{t('settings.data', { version })}</p>}
+        <DataSettings />
       </section>
     </Card>
   );
@@ -182,7 +252,7 @@ function Report() {
             <Findings result={result} />
           </>
         )}
-        <Settings version={result?.dataVersion} />
+        <Settings />
         <footer className="text-xs text-fg-subtle">{t('report.limits')}</footer>
       </main>
     </div>

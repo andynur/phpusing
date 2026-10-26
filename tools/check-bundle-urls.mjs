@@ -6,7 +6,6 @@ import { join } from 'node:path';
 const ROOT = '.output/chrome-mv3';
 
 // Prefixes that are not network calls (specs, namespaces) or are allowed hosts.
-// The advisory data host joins this list with F-030.
 const ALLOWED = [
   'http://www.w3.org/',
   'https://www.w3.org/',
@@ -14,6 +13,8 @@ const ALLOWED = [
   'https://reactjs.org/',
   'https://tailwindcss.com', // license banner in CSS
   'https://github.com/andynur/phpusing',
+  // Signed advisory data host (src/advisories/config.ts, D-014): the only fetched URL.
+  'https://andynur.github.io/phpusing/v1/',
   // Reference links in findings: opened by the user in a tab, never fetched by the extension.
   'https://nvd.nist.gov/vuln/detail/',
   // Source URLs inside the bundled advisory snapshot; shown as references, never fetched.

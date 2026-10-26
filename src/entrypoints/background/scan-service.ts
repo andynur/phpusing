@@ -1,5 +1,6 @@
 import { browser } from 'wxt/browser';
 import { loadAdvisories } from '../../advisories/load';
+import { advisoriesForScan } from '../../advisories/update';
 import { analyze } from '../../checks';
 import { fingerprint, parseMarkers, readMarkers } from '../../checks/fingerprint';
 import { checkPhpVersion } from '../../checks/versions';
@@ -10,8 +11,8 @@ import { hasHostPermission, isAuthorized } from '../../shared/consent';
 import {
   scanKey,
   type Broadcast,
-  type Request,
   type ScanErrorReason,
+  type ScanRequest,
   type StartReply,
 } from '../../shared/messages';
 import { loadSettings } from '../../shared/settings';
@@ -23,12 +24,15 @@ import { computeVerdict } from '../../shared/verdict';
 
 export interface ScanServiceDeps {
   fetchImpl?: typeof fetch;
+  /** Advisory data host only; scan probes always use `fetchImpl`. */
+  dataFetchImpl?: typeof fetch;
   now?: () => number;
   slotDelayMs?: number;
 }
 
 export function createScanService({
   fetchImpl,
+  dataFetchImpl,
   now = Date.now,
   slotDelayMs,
 }: ScanServiceDeps = {}) {
@@ -69,6 +73,12 @@ export function createScanService({
     const startedAt = new Date(now()).toISOString();
     try {
       const markers = await markersFor(tabId, origin);
+      const { autoDataCheck } = await loadSettings();
+      // Runs alongside the probes; FR-17 auto-check, at most one small request when current.
+      const dataReady = advisoriesForScan(autoDataCheck !== false, {
+        fetchImpl: dataFetchImpl,
+        now,
+      }).catch(() => loadAdvisories());
       let fp: Fingerprint = {};
       const run = await runScan({
         origin,
@@ -82,8 +92,8 @@ export function createScanService({
         slotDelayMs,
         onProgress: (p) => broadcast({ type: 'scan/progress', tabId, ...p }),
       });
-      // VU-01 needs no requests: it matches the fingerprint against bundled data.
-      const data = loadAdvisories();
+      // VU-01 needs no requests: it matches the fingerprint against advisory data.
+      const data = await dataReady;
       const vu = checkPhpVersion(fp, data, startedAt.slice(0, 10));
       const findings = [...run.findings, ...vu.findings];
       const result: ScanResult = {
@@ -135,7 +145,7 @@ export function createScanService({
   }
 
   return {
-    handle(request: Request): Promise<StartReply> | StartReply {
+    handle(request: ScanRequest): Promise<StartReply> | StartReply {
       return request.type === 'scan/start' ? start(request.tabId) : cancel(request.tabId);
     },
     isRunning: (tabId: number) => running.has(tabId),

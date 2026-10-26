@@ -93,6 +93,29 @@ describe('report page', () => {
       }),
     );
   });
+
+  it('shows the data date, updates on request and saves the auto-check switch', async () => {
+    const send = vi
+      .spyOn(fakeBrowser.runtime, 'sendMessage')
+      .mockImplementation(async () => ({ ok: true, status: 'updated', version: '2026-11-09.3' }));
+    renderReport('');
+    expect(await screen.findByText('Version date: 2026-10-25')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Update now' }));
+    expect(send).toHaveBeenCalledWith({ type: 'data/update' });
+    expect(await screen.findByText('Updated to the data from 2026-11-09.')).toBeInTheDocument();
+    expect(screen.getByText('Version date: 2026-11-09')).toBeInTheDocument();
+
+    send.mockImplementation(async () => ({ ok: false, reason: 'failed' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Update now' }));
+    expect(await screen.findByText(/Update failed/)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('checkbox', { name: /newer advisory data/ }));
+    await waitFor(async () =>
+      expect((await fakeBrowser.storage.local.get('settings')).settings).toMatchObject({
+        autoDataCheck: false,
+      }),
+    );
+  });
 });
 
 describe('report helpers', () => {

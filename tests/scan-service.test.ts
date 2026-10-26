@@ -114,6 +114,9 @@ describe('messages', () => {
     });
     expect(parseRequest({ type: 'scan/start', tabId: '3' })).toBeNull();
     expect(parseRequest({ type: 'scan/delete', tabId: 3 })).toBeNull();
+    expect(parseRequest({ type: 'data/update', url: 'https://evil.example/' })).toEqual({
+      type: 'data/update',
+    });
     expect(parseBroadcast({ type: 'scan/error', tabId: 1, reason: 'nope' })).toBeNull();
     expect(
       parseBroadcast({ type: 'scan/progress', tabId: 1, done: 1, total: 2, phase: 'probe' }),

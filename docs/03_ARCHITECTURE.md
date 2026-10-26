@@ -69,7 +69,7 @@ Forbidden: `<all_urls>` as a static permission, `cookies`, `webRequest`, `tabs`,
 | `scan/progress` | bg → popup | `{ tabId, done, total, phase }` |
 | `scan/result` | bg → popup/report | `{ tabId, result: ScanResult }` |
 | `scan/error` | bg → popup | `{ tabId, reason }` (cancelled, busy, rate-limited, not-authorized, unsupported, failed) |
-| `data/update` | report → bg | — |
+| `data/update` | report → bg | — ; replies `{ ok, status: updated \| current, version }` or `{ ok: false, reason: failed }` |
 
 All messages are typed and runtime-validated. `scan/start` replies `{ ok }` or `{ ok: false, reason }`; the background re-runs preflight and never trusts the popup.
 
@@ -122,7 +122,7 @@ src/
   entrypoints/ background/ (index.ts, scan-service.ts), popup/, report/
   checks/      fingerprint.ts, exposure.ts, config.ts, versions.ts
   scanner/     fetch.ts, budget.ts, baseline.ts, plan.ts, scan.ts
-  advisories/  load.ts, verify.ts, composer-semver.ts
+  advisories/  load.ts, verify.ts, update.ts, composer-semver.ts
   shared/      types.ts, messages.ts, verdict.ts, i18n/{en,id}.json, ui/
 tools/build-data/   advisory pipeline (Node, not shipped)
 data/snapshot/      bundled, signed advisory snapshot (generated)

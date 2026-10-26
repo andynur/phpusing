@@ -9,6 +9,8 @@ export interface Settings {
   theme?: Theme;
   // PRD FR-4: localhost and private ranges are refused unless the user opts in.
   allowLocalTargets?: boolean;
+  // PRD FR-17: check for newer advisory data on scan; on unless the user turns it off.
+  autoDataCheck?: boolean;
 }
 
 const KEY = 'settings';
@@ -19,6 +21,7 @@ export async function loadSettings(): Promise<Settings> {
     lang: isLang(stored?.lang) ? stored.lang : undefined,
     theme: isTheme(stored?.theme) ? stored.theme : undefined,
     allowLocalTargets: stored?.allowLocalTargets === true ? true : undefined,
+    autoDataCheck: stored?.autoDataCheck === false ? false : undefined,
   };
 }
 
